@@ -24,7 +24,6 @@ mongoose.connect(mongoDB, options, (err, res) => {
 });
 
 function handleTopicRequest(topic_name, fname) {
-  //var topic_name = 'root_topic';
   var consumer = connection.getConsumer(topic_name);
   var producer = connection.getProducer();
   console.log("server is running ");
