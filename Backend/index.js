@@ -11,6 +11,9 @@ const corsConfig = {
 };
 app.use(cors(corsConfig));
 
+const apiRouter = require("./routes/routes");
+app.use("/", apiRouter);
+
 app.listen(process.env.PORT, () => {
   console.log(`Server listening on port ${process.env.PORT}`);
 });

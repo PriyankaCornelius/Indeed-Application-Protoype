@@ -1,6 +1,9 @@
 const { mongoDB } = require("./config");
 const mongoose = require("mongoose");
 
+//topics files
+var CompanyReviews = require("./services/CompanyReviews.js");
+
 var connection = new require("./Connection");
 
 var options = {
@@ -49,3 +52,8 @@ function handleTopicRequest(topic_name, fname) {
     });
   });
 }
+
+// Add your TOPICs here
+//first argument is topic name
+//second argument is a function that will handle this topic request
+handleTopicRequest("get_reviews_by_company_id", CompanyReviews);
