@@ -10,7 +10,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 
-const SignIn = ({}) => {
+const Register = ({}) => {
   const [personaType, setPersonaType] = useState("js");
 
   const handleChange = (e) => {
@@ -74,7 +74,7 @@ const SignIn = ({}) => {
                   textAlign: "left",
                 }}
               >
-                Sign in.
+                Create an account.
               </div>
               <Box sx={{ mt: 1 }}>
                 <TextField
@@ -158,7 +158,7 @@ const SignIn = ({}) => {
                       fontWeight: "700",
                     }}
                   >
-                    Sign In
+                    Create Account
                   </span>
                 </Button>
               </Box>
@@ -170,4 +170,4 @@ const SignIn = ({}) => {
   );
 };
 
-export default SignIn;
+export default Register;
