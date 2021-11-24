@@ -12,6 +12,8 @@ import MainHeader from "../JobSeeker/mainHeader";
 import SignIn from "../JobSeeker/signIn";
 import EmployersJobPost from "../Employer/employersJobPost";
 import UploadResume from "../JobSeeker/uploadResume";
+import Messaging from "../JobSeeker/messaging";
+import JobSeekerProfile from "../JobSeeker/jobSeekerProfile";
 
 const Routes = () => {
   const history = useHistory();
@@ -25,6 +27,8 @@ const Routes = () => {
         <Route path="/findSalaries" component={FindSalaries} />
         <Route path="/employersPostJobs" component={EmployersJobPost} />
         <Route path="/uploadResume" component={UploadResume} />
+        <Route path="/messaging" component={Messaging} />
+        <Route path="/jobSeekerProfile" component={JobSeekerProfile} />
       </Switch>
     </Router>
   );
