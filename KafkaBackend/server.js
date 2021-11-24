@@ -1,6 +1,10 @@
 const { mongoDB } = require("./config");
 const mongoose = require("mongoose");
 
+//topics files
+var CompanyReviews = require("./services/CompanyReviews.js");
+var AddCompanyReview = require("./services/AddCompanyReview.js");
+
 var connection = new require("./Connection");
 
 var options = {
@@ -43,9 +47,16 @@ function handleTopicRequest(topic_name, fname) {
       ];
 
       producer.send(payloads, function (err, data) {
-        console.log(data);
+        console.log("error", err);
+        console.log("data", data);
       });
       return;
     });
   });
 }
+
+// Add your TOPICs here
+//first argument is topic name
+//second argument is a function that will handle this topic request
+handleTopicRequest("get_reviews_by_company_id0", CompanyReviews);
+handleTopicRequest("post_company_review", AddCompanyReview);

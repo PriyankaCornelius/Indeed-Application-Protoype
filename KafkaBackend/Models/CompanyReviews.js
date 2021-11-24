@@ -21,5 +21,5 @@ var CompanyReviewsSchema = new Schema(
   }
 );
 
-const CompanyReviews = mongoose.model("CompanyReview", CompanyReviewsSchema);
+const CompanyReviews = mongoose.model("companyreview", CompanyReviewsSchema);
 module.exports = CompanyReviews;
