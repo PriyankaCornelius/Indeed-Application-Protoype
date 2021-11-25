@@ -1,17 +1,16 @@
 import React from "react";
 import { Tabs, Tab, Divider, Grid } from "@material-ui/core";
-import SignIn from "./signIn";
-import EmployersHeader from "../Employer/EmployersHeader";
+//import SignIn from "./signIn";
 import PersonIcon from "@mui/icons-material/Person";
 import MessageIcon from "@mui/icons-material/Message";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EmployersJobPost from "../Employer/employersJobPost";
 import indeedLogo from "../../Images/IndeedIcon.png";
 import { Link } from "react-router-dom";
-import UploadResume from "./uploadResume";
-import ProfileIconData from "./profileIconData";
+//import UploadResume from "./uploadResume";
+import ProfileDropDown from "./ProfileDropDown";
 
-const MainHeader = (props) => {
+const EmployersHeader = (props) => {
   let RIGHT_PROFILE_TABS;
   let user = "Signed In";
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -32,117 +31,31 @@ const MainHeader = (props) => {
       value: "",
     },
     {
-      label: "Find Jobs",
-      to: "/",
-      value: "findJobs",
+      label: "Dashboard",
+      to: "/employerDashboard",
+      value: "dashboard",
     },
 
     {
-      label: "Company Reviews",
-      to: "/companyReviews",
-      value: "companyReviews",
-    },
-    {
-      label: "Find Salaries",
-      to: "/findSalaries",
-      value: "findSalaries",
+      label: "Message",
+      to: "/employerMessages",
+      value: "message",
     },
   ];
 
-  if (user === "Signed In") {
-    RIGHT_PROFILE_TABS = [
-      {
-        value: "message",
-        icon: <MessageIcon width={20} height={20} />,
-        href: "/messaging",
-        style: {
-          textTransform: "none",
-          padding: 0,
-          margin: 10,
-          minWidth: "30px",
-        },
-        to: "/Messaging",
+  RIGHT_PROFILE_TABS = [
+    {
+      value: "profile",
+      icon: <PersonIcon width={20} height={20} onClick={handleClick} />,
+      style: {
+        textTransform: "none",
+        padding: 0,
+        margin: 10,
+        minWidth: "30px",
+        color: "black",
       },
-      {
-        value: "find",
-        icon: <NotificationsIcon width={20} height={20} />,
-        style: {
-          textTransform: "none",
-          padding: 0,
-          margin: 10,
-          minWidth: "30px",
-          color: "black",
-        },
-      },
-      {
-        value: "profile",
-        icon: <PersonIcon width={20} height={20} onClick={handleClick} />,
-        style: {
-          textTransform: "none",
-          padding: 0,
-          margin: 10,
-          minWidth: "30px",
-          color: "black",
-        },
-      },
-
-      {
-        label: "Employers / Post Job",
-        href: "/employerHeader",
-        value: "employersPostJobs",
-        style: {
-          textTransform: "none",
-          padding: 0,
-          margin: 10,
-          minWidth: "20px",
-          color: "black",
-        },
-      },
-    ];
-  } else {
-    RIGHT_PROFILE_TABS = [
-      {
-        label: "Upload your resume",
-        href: "/uploadResume",
-        component: <UploadResume />,
-        value: "uploadResume",
-        style: {
-          textTransform: "none",
-          padding: 0,
-          margin: 10,
-          minWidth: "20px",
-          color: "black",
-        },
-      },
-      {
-        label: "Sign in",
-        href: "/signIn",
-        component: <SignIn />,
-        value: "signIn",
-        style: {
-          textTransform: "none",
-          padding: 0,
-          margin: 10,
-          minWidth: "20px",
-          color: "#121858",
-          fontWeight: 600,
-        },
-      },
-      {
-        label: "Employers / Post Job",
-        href: "/employersPostJobs",
-        component: <EmployersJobPost />,
-        value: "employersPostJobs",
-        style: {
-          textTransform: "none",
-          padding: 0,
-          margin: 10,
-          minWidth: "20px",
-          color: "black",
-        },
-      },
-    ];
-  }
+    },
+  ];
   return (
     <div>
       <Grid container>
@@ -187,6 +100,43 @@ const MainHeader = (props) => {
         </Grid>
         <Grid item md={4}>
           <Tabs value={props.currentTab} scrollButtons="false">
+            <Grid item md={3}>
+              <Tabs>
+                <Tab
+                  style={{
+                    textTransform: "none",
+                    padding: 0,
+                    margin: 10,
+
+                    minWidth: "100px",
+                  }}
+                ></Tab>
+              </Tabs>
+            </Grid>
+            <Grid item md={3}>
+              <Tabs>
+                <Tab
+                  style={{
+                    textTransform: "none",
+                    padding: 0,
+                    margin: 10,
+                    minWidth: "10px",
+                  }}
+                ></Tab>
+              </Tabs>
+            </Grid>
+            <Grid item md={3}>
+              <Tabs>
+                <Tab
+                  style={{
+                    textTransform: "none",
+                    padding: 0,
+                    margin: 10,
+                    minWidth: "10px",
+                  }}
+                ></Tab>
+              </Tabs>
+            </Grid>
             {RIGHT_PROFILE_TABS.map((tab) => {
               return (
                 <Tab
@@ -199,8 +149,9 @@ const MainHeader = (props) => {
                 />
               );
             })}
+
             {open ? (
-              <ProfileIconData
+              <ProfileDropDown
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
@@ -215,4 +166,4 @@ const MainHeader = (props) => {
   );
 };
 
-export default MainHeader;
+export default EmployersHeader;
