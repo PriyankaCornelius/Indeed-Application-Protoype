@@ -15,6 +15,7 @@ import EmployersJobPost from "../Employer/employersJobPost";
 import UploadResume from "../JobSeeker/uploadResume";
 import Messaging from "../JobSeeker/messaging";
 import JobSeekerProfile from "../JobSeeker/jobSeekerProfile";
+import ApplyJob from "../JobSeeker/applyJob";
 
 const Routes = () => {
   const history = useHistory();
@@ -31,6 +32,7 @@ const Routes = () => {
         <Route path="/uploadResume" component={UploadResume} />
         <Route path="/messaging" component={Messaging} />
         <Route path="/jobSeekerProfile" component={JobSeekerProfile} />
+        <Route path="/apply" component={ApplyJob} />
       </Switch>
     </Router>
   );
