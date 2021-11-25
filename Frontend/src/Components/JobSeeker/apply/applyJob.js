@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MainHeader from "./mainHeader";
+import MainHeader from "../mainHeader";
 import { Grid, Divider } from "@material-ui/core";
 import { TextField, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
