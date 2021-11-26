@@ -17,6 +17,7 @@ import Messaging from "../JobSeeker/messaging";
 import JobSeekerProfile from "../JobSeeker/jobSeekerProfile";
 import ApplyJob from "../JobSeeker/apply/applyJob";
 import CompanyLandingPage from "../JobSeeker/companyPage/companyLandingPage";
+import MyJobs from "../JobSeeker/myJobs";
 
 const Routes = () => {
   const history = useHistory();
@@ -28,6 +29,7 @@ const Routes = () => {
         <Route path="/login" component={SignIn} />
         <Route path="/register" component={Register} />
         <Route path="/companyReviews" component={CompanyReviews} />
+        <Route path="/myjobs" component={MyJobs} />
         <Route path="/company" component={CompanyLandingPage} />
         <Route path="/findSalaries" component={FindSalaries} />
         <Route path="/employersPostJobs" component={EmployersJobPost} />

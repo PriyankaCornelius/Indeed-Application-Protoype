@@ -45,6 +45,7 @@ const ProfileIconData = (props) => {
         >
           archita22@gmail.com
         </Typography>
+
         <Link to="/jobSeekerProfile" style={{ textDecoration: "none" }}>
           <MenuItem>
             <ListItemIcon>
@@ -53,12 +54,15 @@ const ProfileIconData = (props) => {
             Profile
           </MenuItem>
         </Link>
-        <MenuItem>
-          <ListItemIcon>
-            <FavoriteIcon fontSize="small" />
-          </ListItemIcon>
-          My jobs
-        </MenuItem>
+
+        <Link to="/myjobs" style={{ textDecoration: "none" }}>
+          <MenuItem>
+            <ListItemIcon>
+              <FavoriteIcon fontSize="small" />
+            </ListItemIcon>
+            My jobs
+          </MenuItem>
+        </Link>
 
         <MenuItem>
           <ListItemIcon>
