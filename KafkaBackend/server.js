@@ -5,6 +5,9 @@ const mongoose = require("mongoose");
 var CompanyReviews = require("./services/CompanyReviews.js");
 var AddCompanyReview = require("./services/jobSeeker/AddCompanyReview.js");
 var LoginCommon = require("./services/LoginCommon.js");
+var RegisterCommon = require("./services/RegisterCommon.js");
+var SavedJobsByJobseeker = require("./services/SavedJobsByJobseeker.js");
+var AppliedJobsByJobseeker = require("./services/AppliedJobsByJobseeker.js");
 
 var connection = new require("./Connection");
 
@@ -61,3 +64,6 @@ function handleTopicRequest(topic_name, fname) {
 handleTopicRequest("get_reviews_by_company_id", CompanyReviews);
 handleTopicRequest("post_company_review", AddCompanyReview);
 handleTopicRequest("login_common", LoginCommon);
+handleTopicRequest("register_common", RegisterCommon);
+handleTopicRequest("get_saved_jobs_by_jobseeker_id", SavedJobsByJobseeker);
+handleTopicRequest("get_applied_jobs_by_jobseeker_id", AppliedJobsByJobseeker);
