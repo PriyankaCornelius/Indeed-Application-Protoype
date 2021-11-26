@@ -1,11 +1,12 @@
-const { mongoDB } = require("./config");
+const { mongoDB } = require("./mongoDBConfig");
 const mongoose = require("mongoose");
+const con = require("./sqlDbConfig");
 
 //topics files
 var CompanyReviews = require("./services/CompanyReviews.js");
-var AddCompanyReview = require("./services/AddCompanyReview.js");
 var GetEmployerProfile = require("./services/GetEmployerProfile");
 var UpdateEmployerProfile = require("./services/PutEmployerProfile");
+var AddCompanyReview = require("./services/jobSeeker/AddCompanyReview.js");
 
 var connection = new require("./Connection");
 
