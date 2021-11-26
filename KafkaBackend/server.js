@@ -1,10 +1,10 @@
 const { mongoDB } = require("./mongoDBConfig");
 const mongoose = require("mongoose");
-const con = require("./sqlDbConfig");
 
 //topics files
 var CompanyReviews = require("./services/CompanyReviews.js");
 var AddCompanyReview = require("./services/jobSeeker/AddCompanyReview.js");
+var LoginCommon = require("./services/LoginCommon.js");
 
 var connection = new require("./Connection");
 
@@ -58,5 +58,6 @@ function handleTopicRequest(topic_name, fname) {
 // Add your TOPICs here
 //first argument is topic name
 //second argument is a function that will handle this topic request
-handleTopicRequest("get_reviews_by_company_id0", CompanyReviews);
+handleTopicRequest("get_reviews_by_company_id", CompanyReviews);
 handleTopicRequest("post_company_review", AddCompanyReview);
+handleTopicRequest("login_common", LoginCommon);

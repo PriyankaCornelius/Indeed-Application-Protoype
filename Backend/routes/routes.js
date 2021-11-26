@@ -26,6 +26,9 @@ const redisClient = Redis.createClient();
 
 const DEFAULT_EXPIRATION = 3600;
 
+const jwt = require("jsonwebtoken");
+const { secret } = require("../mongoDBconfig");
+
 router.get("/reviews/company/:companyid", async (req, res, next) => {
   //   const companyId = req.params.companyid;
   //   redisClient.get(`reviews?companyId=${companyId}`, async (error, reviews) => {
@@ -48,7 +51,7 @@ router.get("/reviews/company/:companyid", async (req, res, next) => {
   //     }
   //   });
   kafka.make_request(
-    "get_reviews_by_company_id0",
+    "get_reviews_by_company_id",
     req.params.companyid,
     function (err, results) {
       if (err) {
@@ -81,5 +84,29 @@ router.get("/reviews/company/:companyid", async (req, res, next) => {
 //     }
 //   });
 // });
+
+// Common Login
+router.post("/commonLogin", async (req, res, next) => {
+  kafka.make_request("login_common", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      let finalData = [];
+      finalData.push(results);
+      const payload = { _id: results.id, email: results.email };
+      const token = jwt.sign(payload, secret, {
+        expiresIn: 1008000,
+      });
+      finalData.push(token);
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify(finalData));
+    }
+  });
+});
 
 module.exports = router;

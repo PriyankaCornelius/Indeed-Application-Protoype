@@ -119,11 +119,6 @@ const Register = ({}) => {
                         control={<Radio />}
                         label="Employer"
                       />
-                      <FormControlLabel
-                        value="a"
-                        control={<Radio />}
-                        label="Admin"
-                      />
                     </RadioGroup>
                   </FormControl>
                 </div>
