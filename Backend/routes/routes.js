@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 var kafka = require("../kafka/client");
 
-const { mongoDB } = require("../config");
+const { mongoDB } = require("../mongoDBconfig");
 const mongoose = require("mongoose");
 var options = {
   useNewUrlParser: true,

@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const con = require("./sqlDbConfig");
 var express = require("express");
 var app = express();
 app.use(express.json());

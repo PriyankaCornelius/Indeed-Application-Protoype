@@ -1,9 +1,10 @@
-const { mongoDB } = require("./config");
+const { mongoDB } = require("./mongoDBConfig");
 const mongoose = require("mongoose");
+const con = require("./sqlDbConfig");
 
 //topics files
 var CompanyReviews = require("./services/CompanyReviews.js");
-var AddCompanyReview = require("./services/AddCompanyReview.js");
+var AddCompanyReview = require("./services/jobSeeker/AddCompanyReview.js");
 
 var connection = new require("./Connection");
 

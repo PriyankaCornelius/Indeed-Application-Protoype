@@ -64,13 +64,14 @@ const ProfileIconData = (props) => {
           </MenuItem>
         </Link>
 
-        <MenuItem>
-          <ListItemIcon>
-            <ReviewsIcon fontSize="small" />
-          </ListItemIcon>
-          My reviews
-        </MenuItem>
-
+        <Link to="/myReviews" style={{ textDecoration: "none" }}>
+          <MenuItem>
+            <ListItemIcon>
+              <ReviewsIcon fontSize="small" />
+            </ListItemIcon>
+            My reviews
+          </MenuItem>
+        </Link>
         <MenuItem>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
