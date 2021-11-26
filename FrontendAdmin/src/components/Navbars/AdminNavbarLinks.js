@@ -48,9 +48,9 @@ export default function AdminNavbarLinks() {
     setOpenProfile(null);
   };
   return (
-    <div>
+    // <div>
       <div className={classes.searchWrapper}>
-        <CustomInput
+        {/* <CustomInput
           formControlProps={{
             className: classes.margin + " " + classes.search,
           }}
@@ -154,7 +154,7 @@ export default function AdminNavbarLinks() {
             </Grow>
           )}
         </Poppers>
-      </div>
+      </div> */}
       <div className={classes.manager}>
         <Button
           color={window.innerWidth > 959 ? "transparent" : "white"}
@@ -193,7 +193,7 @@ export default function AdminNavbarLinks() {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role="menu">
-                    <MenuItem
+                    {/* <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}
                     >
@@ -205,7 +205,7 @@ export default function AdminNavbarLinks() {
                     >
                       Settings
                     </MenuItem>
-                    <Divider light />
+                    <Divider light /> */}
                     <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}

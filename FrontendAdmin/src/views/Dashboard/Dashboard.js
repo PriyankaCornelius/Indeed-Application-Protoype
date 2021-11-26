@@ -32,12 +32,16 @@ import CardFooter from "components/Card/CardFooter.js";
 import { bugs, website, server } from "variables/general.js";
 
 import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart,
+  noOfReviews,
+  topReviewedCompanies,
+  avgRatingsChart,
+  jobSeekersReviews,
+  topCEO,
+  topCompanies
 } from "variables/charts.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
+
 
 const useStyles = makeStyles(styles);
 
@@ -46,105 +50,52 @@ export default function Dashboard() {
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={3}>
-          <Card>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Icon>content_copy</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
-              <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
-              </h3>
+        <GridItem xs={12} sm={12} md={4}>
+          <Card chart>
+            <CardHeader color="primary">
+              <ChartistGraph
+                className="ct-chart"
+                data={noOfReviews.data}
+                type="Line"
+                options={noOfReviews.options}
+                listener={noOfReviews.animation}
+              />
             </CardHeader>
-            <CardFooter stats>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Number of Reviews Per Day</h4>
+              <p className={classes.cardCategory}>
+                {/* <span className={classes.successText}>
+                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
+                </span>{" "} */}
+                Last 7 days.
+              </p>
+            </CardBody>
+            <CardFooter chart>
               <div className={classes.stats}>
-                <Danger>
-                  <Warning />
-                </Danger>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  Get more space
-                </a>
+                <AccessTime /> updated right now
               </div>
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
-          <Card>
-            <CardHeader color="success" stats icon>
-              <CardIcon color="success">
-                <Store />
-              </CardIcon>
-              <p className={classes.cardCategory}>Revenue</p>
-              <h3 className={classes.cardTitle}>$34,245</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <DateRange />
-                Last 24 Hours
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
-          <Card>
-            <CardHeader color="danger" stats icon>
-              <CardIcon color="danger">
-                <Icon>info_outline</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Fixed Issues</p>
-              <h3 className={classes.cardTitle}>75</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <LocalOffer />
-                Tracked from Github
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
-          <Card>
-            <CardHeader color="info" stats icon>
-              <CardIcon color="info">
-                <Accessibility />
-              </CardIcon>
-              <p className={classes.cardCategory}>Followers</p>
-              <h3 className={classes.cardTitle}>+245</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <Update />
-                Just Updated
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
-      <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
             <CardHeader color="success">
               <ChartistGraph
                 className="ct-chart"
-                data={dailySalesChart.data}
-                type="Line"
-                options={dailySalesChart.options}
-                listener={dailySalesChart.animation}
+                data={topReviewedCompanies.data}
+                type="Bar"
+                options={topReviewedCompanies.options}
+                responsiveOptions={topReviewedCompanies.responsiveOptions}
+                listener={topReviewedCompanies.animation}
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Daily Sales</h4>
-              <p className={classes.cardCategory}>
-                <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
-                </span>{" "}
-                increase in today sales.
-              </p>
+              <h4 className={classes.cardTitle}>Most Reviewed Companies</h4>
+              <p className={classes.cardCategory}>Top 5 Companies Based on Most Reviews.</p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> updated 4 minutes ago
+                <AccessTime /> Based on all reviews
               </div>
             </CardFooter>
           </Card>
@@ -154,109 +105,96 @@ export default function Dashboard() {
             <CardHeader color="warning">
               <ChartistGraph
                 className="ct-chart"
-                data={emailsSubscriptionChart.data}
-                type="Bar"
-                options={emailsSubscriptionChart.options}
-                responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                listener={emailsSubscriptionChart.animation}
+                data={avgRatingsChart.data}
+                type="Pie"
+                options={avgRatingsChart.options}
+                listener={avgRatingsChart.animation}
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Email Subscriptions</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+              <h4 className={classes.cardTitle}>Average Ratings</h4>
+              <p className={classes.cardCategory}>Top 5 Companies based on Avg Ratings.</p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart>
-            <CardHeader color="danger">
-              <ChartistGraph
-                className="ct-chart"
-                data={completedTasksChart.data}
-                type="Line"
-                options={completedTasksChart.options}
-                listener={completedTasksChart.animation}
-              />
-            </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>Completed Tasks</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
+                <AccessTime /> refreshed now
               </div>
             </CardFooter>
           </Card>
         </GridItem>
       </GridContainer>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
-          <CustomTabs
-            title="Tasks:"
-            headerColor="primary"
-            tabs={[
-              {
-                tabName: "Bugs",
-                tabIcon: BugReport,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0, 3]}
-                    tasksIndexes={[0, 1, 2, 3]}
-                    tasks={bugs}
-                  />
-                ),
-              },
-              {
-                tabName: "Website",
-                tabIcon: Code,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0]}
-                    tasksIndexes={[0, 1]}
-                    tasks={website}
-                  />
-                ),
-              },
-              {
-                tabName: "Server",
-                tabIcon: Cloud,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[1]}
-                    tasksIndexes={[0, 1, 2]}
-                    tasks={server}
-                  />
-                ),
-              },
-            ]}
-          />
-        </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
-          <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
-              <p className={classes.cardCategoryWhite}>
-                New employees on 15th September, 2016
-              </p>
+      <GridItem xs={12} sm={12} md={5}>
+          <Card chart>
+            <CardHeader color="info">
+              <ChartistGraph
+                className="ct-chart"
+                data={jobSeekersReviews.data}
+                type="Pie"
+                options={jobSeekersReviews.options}
+                listener={jobSeekersReviews.animation}
+              />
             </CardHeader>
             <CardBody>
-              <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"],
-                ]}
-              />
+              <h4 className={classes.cardTitle}>Top Job Seeker Reviewers</h4>
+              <p className={classes.cardCategory}>Top 5 Job Seekers based on Accepted Reviews.</p>
             </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> refreshed now
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={7}>
+          <Card chart>
+            <CardHeader color="danger">
+              <ChartistGraph
+                className="ct-chart"
+                data={topCompanies.data}
+                type="Bar"
+                options={topCompanies.options}
+                listener={topCompanies.animation}
+              />
+            </CardHeader>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Top CEOs</h4>
+              <p className={classes.cardCategory}>Top 10 CEOs based on ratings. </p>
+            </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> refreshed just now
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+      </GridContainer>
+      <GridContainer>
+      <GridItem xs={12} sm={12} md={7}>
+          <Card chart>
+            <CardHeader color="primary">
+              <ChartistGraph
+                className="ct-chart"
+                data={topCompanies.data}
+                type="Line"
+                options={topCompanies.options}
+                listener={topCompanies.animation}
+              />
+            </CardHeader>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Top Company Views</h4>
+              <p className={classes.cardCategory}>
+                {/* <span className={classes.successText}>
+                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
+                </span>{" "} */}
+                Top Companies based on Views per day.
+              </p>
+            </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> updated right now
+              </div>
+            </CardFooter>
           </Card>
         </GridItem>
       </GridContainer>

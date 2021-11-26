@@ -15,17 +15,17 @@ var delays2 = 80,
 // // // Daily Sales
 // #############################
 
-const dailySalesChart = {
+const noOfReviews = {
   data: {
-    labels: ["M", "T", "W", "T", "F", "S", "S"],
-    series: [[12, 17, 7, 17, 23, 18, 38]],
+    labels: ["1", "2", "3", "4", "5", "6", "7"],
+    series: [[2, 1, 5, 3, 4, 7, 7]],
   },
   options: {
     lineSmooth: Chartist.Interpolation.cardinal({
       tension: 0,
     }),
     low: 0,
-    high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    high: 9, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
     chartPadding: {
       top: 0,
       right: 0,
@@ -69,23 +69,16 @@ const dailySalesChart = {
 // // // Email Subscriptions
 // #############################
 
-const emailsSubscriptionChart = {
+const topReviewedCompanies = {
   data: {
     labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
+      "Google",
+      "Amazon",
+      "Netflix",
+      "Meta",
+      "Microsoft",
     ],
-    series: [[542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]],
+    series: [[542, 900, 320, 780, 553]],
   },
   options: {
     axisX: {
@@ -130,30 +123,166 @@ const emailsSubscriptionChart = {
   },
 };
 
+
+
+
+const avgRatingsChart = {
+  data: {
+    labels: [
+      "Google",
+      "Amazon",
+      "Netflix",
+      "Meta",
+      "Microsoft",
+    ],
+    series: [15,15,17,20,25],
+    donut: true,
+    showLabel: false
+  },
+  
+  options: {
+    // axisX: {
+    //   showGrid: false,
+    // },
+    // low: 0,
+    // high: 1000,
+    // labelInterpolationFnc: function(value) {
+    //   return value[0]
+    // },
+   
+    chartPadding: 0
+  },
+  responsiveOptions: [
+    ['screen and (min-width: 740px)', {
+      chartPadding: 10,
+      labelOffset: 10,
+      labelDirection: 'explode',
+      
+    }],
+    ['screen and (min-width: 1024px)', {
+      labelOffset: 10,
+      chartPadding: 10
+    }]
+  ],
+  animation: {
+    draw: function (data) {
+      if (data.type === "Pie") {
+        data.element.animate({
+          opacity: {
+            begin: (data.index + 1) * delays2,
+            dur: durations2,
+            from: 0,
+            to: 1,
+            easing: "ease",
+          },
+        });
+      }
+    },
+  },
+};
+
+
+
+
+
+
+const jobSeekersReviews = {
+  data: {
+    labels: [
+      "Sushan",
+      "Anay",
+      "Archita",
+      "Priyanka",
+      "Anish",
+    ],
+    series: [5,4,3,2,1],
+    
+  },
+  
+  options: {
+    // axisX: {
+    //   showGrid: false,
+    // },
+    // low: 0,
+    // high: 1000,
+    // labelInterpolationFnc: function(value) {
+    //   return value[0]
+    // },
+    chartPadding: 0
+  },
+  responsiveOptions: [
+    ['screen and (min-width: 740px)', {
+      chartPadding: 10,
+      labelOffset: 10,
+      labelDirection: 'explode',
+      
+    }],
+    ['screen and (min-width: 1024px)', {
+      labelOffset: 10,
+      chartPadding: 10
+    }]
+  ],
+  animation: {
+    draw: function (data) {
+      if (data.type === "Pie") {
+        data.element.animate({
+          opacity: {
+            begin: (data.index + 1) * delays2,
+            dur: durations2,
+            from: 0,
+            to: 1,
+            easing: "ease",
+          },
+        });
+      }
+    },
+  },
+};
 // ##############################
 // // // Completed Tasks
 // #############################
 
-const completedTasksChart = {
+
+const topCEO = {
   data: {
-    labels: ["12am", "3pm", "6pm", "9pm", "12pm", "3am", "6am", "9am"],
-    series: [[230, 750, 450, 300, 280, 240, 200, 190]],
+    labels: [
+      "Google",
+      "Amazon",
+      "Netflix",
+      "Meta",
+      "Microsoft",
+    ],
+    series: [[542, 900, 320, 780, 553]],
   },
   options: {
-    lineSmooth: Chartist.Interpolation.cardinal({
-      tension: 0,
-    }),
+    axisX: {
+      showGrid: false,
+    },
     low: 0,
-    high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    high: 1000,
     chartPadding: {
       top: 0,
-      right: 0,
+      right: 5,
       bottom: 0,
       left: 0,
     },
   },
+  responsiveOptions: [
+    [
+      "screen and (max-width: 640px)",
+      {
+        seriesBarDistance: 5,
+        axisX: {
+          labelInterpolationFnc: function (value) {
+            return value[0];
+          },
+        },
+      },
+    ],
+  ],
   animation: {
     draw: function (data) {
+      
       if (data.type === "line" || data.type === "area") {
         data.element.animate({
           d: {
@@ -183,8 +312,47 @@ const completedTasksChart = {
   },
 };
 
+const topCompanies = {
+  data: {
+    labels: ["AB", "CD", "EF", "GH", "IJ", "KL", "MN", "OP", "QR", "ST"],
+    series: [[10,9,8,7,6,5,4,3,2,1]],
+  },
+  options: {
+    lineSmooth: Chartist.Interpolation.cardinal({
+      tension: 0,
+    }),
+    low: 0,
+    high: 15, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    chartPadding: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    },
+  },
+  animation: {
+    draw: function (data) {
+      if (data.type === "bar") {
+        data.element.animate({
+          opacity: {
+            begin: (data.index + 1) * delays2,
+            dur: durations2,
+            from: 0,
+            to: 1,
+            easing: "ease",
+          },
+        });
+      }
+    },
+    
+  },
+};
+
 module.exports = {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart,
+  noOfReviews,
+  topReviewedCompanies,
+  avgRatingsChart,
+  jobSeekersReviews,
+  topCEO,
+  topCompanies,
 };

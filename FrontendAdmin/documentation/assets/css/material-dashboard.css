@@ -5711,6 +5711,7 @@ footer .btn {
 }
 
 .ct-chart-line .ct-label,
+.ct-chart-pie .ct-label,
 .ct-chart-bar .ct-label {
   display: block;
   display: -webkit-box;
@@ -5884,6 +5885,7 @@ footer .btn {
 .ct-series-a .ct-point,
 .ct-series-a .ct-line,
 .ct-series-a .ct-bar,
+.ct-series-a .ct-pie,
 .ct-series-a .ct-slice-donut {
   stroke: #00bcd4;
 }
@@ -5896,6 +5898,7 @@ footer .btn {
 .ct-series-b .ct-point,
 .ct-series-b .ct-line,
 .ct-series-b .ct-bar,
+.ct-series-b .ct-pie,
 .ct-series-b .ct-slice-donut {
   stroke: #f44336;
 }
@@ -5908,6 +5911,7 @@ footer .btn {
 .ct-series-c .ct-point,
 .ct-series-c .ct-line,
 .ct-series-c .ct-bar,
+.ct-series-c .ct-pie,
 .ct-series-c .ct-slice-donut {
   stroke: #ff9800;
 }
@@ -5920,6 +5924,7 @@ footer .btn {
 .ct-series-d .ct-point,
 .ct-series-d .ct-line,
 .ct-series-d .ct-bar,
+.ct-series-d .ct-pie,
 .ct-series-d .ct-slice-donut {
   stroke: #9c27b0;
 }
@@ -5932,6 +5937,7 @@ footer .btn {
 .ct-series-e .ct-point,
 .ct-series-e .ct-line,
 .ct-series-e .ct-bar,
+.ct-series-e .ct-pie,
 .ct-series-e .ct-slice-donut {
   stroke: #4caf50;
 }
@@ -5944,6 +5950,7 @@ footer .btn {
 .ct-series-f .ct-point,
 .ct-series-f .ct-line,
 .ct-series-f .ct-bar,
+.ct-series-f .ct-pie,
 .ct-series-f .ct-slice-donut {
   stroke: #9c9b99;
 }
@@ -5956,6 +5963,7 @@ footer .btn {
 .ct-series-g .ct-point,
 .ct-series-g .ct-line,
 .ct-series-g .ct-bar,
+.ct-series-g .ct-pie,
 .ct-series-g .ct-slice-donut {
   stroke: #999999;
 }
@@ -5968,6 +5976,7 @@ footer .btn {
 .ct-series-h .ct-point,
 .ct-series-h .ct-line,
 .ct-series-h .ct-bar,
+.ct-series-h .ct-pie,
 .ct-series-h .ct-slice-donut {
   stroke: #dd4b39;
 }
@@ -5980,6 +5989,7 @@ footer .btn {
 .ct-series-i .ct-point,
 .ct-series-i .ct-line,
 .ct-series-i .ct-bar,
+.ct-series-i .ct-pie,
 .ct-series-i .ct-slice-donut {
   stroke: #35465c;
 }
@@ -5992,6 +6002,7 @@ footer .btn {
 .ct-series-j .ct-point,
 .ct-series-j .ct-line,
 .ct-series-j .ct-bar,
+.ct-series-j .ct-pie,
 .ct-series-j .ct-slice-donut {
   stroke: #e52d27;
 }
@@ -6004,6 +6015,7 @@ footer .btn {
 .ct-series-k .ct-point,
 .ct-series-k .ct-line,
 .ct-series-k .ct-bar,
+.ct-series-k .ct-pie,
 .ct-series-k .ct-slice-donut {
   stroke: #55acee;
 }
@@ -6016,6 +6028,7 @@ footer .btn {
 .ct-series-l .ct-point,
 .ct-series-l .ct-line,
 .ct-series-l .ct-bar,
+.ct-series-l .ct-pie,
 .ct-series-l .ct-slice-donut {
   stroke: #cc2127;
 }
@@ -6028,6 +6041,7 @@ footer .btn {
 .ct-series-m .ct-point,
 .ct-series-m .ct-line,
 .ct-series-m .ct-bar,
+.ct-series-m .ct-pie,
 .ct-series-m .ct-slice-donut {
   stroke: #1769ff;
 }
@@ -6040,6 +6054,7 @@ footer .btn {
 .ct-series-n .ct-point,
 .ct-series-n .ct-line,
 .ct-series-n .ct-bar,
+.ct-series-n .ct-pie,
 .ct-series-n .ct-slice-donut {
   stroke: #6188e2;
 }
@@ -6052,6 +6067,7 @@ footer .btn {
 .ct-series-o .ct-point,
 .ct-series-o .ct-line,
 .ct-series-o .ct-bar,
+.ct-series-o .ct-pie,
 .ct-series-o .ct-slice-donut {
   stroke: #a748ca;
 }
