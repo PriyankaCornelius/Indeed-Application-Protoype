@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MainHeader from "./mainHeader";
 import { Grid, Divider, Typography } from "@material-ui/core";
 import {
@@ -12,11 +12,16 @@ import {
 } from "@mui/material";
 
 const FindJobs = (props) => {
+  const [showJobs, setShowJobs] = useState(false);
   const jobTittles = [
     { title: "Software development" },
     { title: "Data Analyst" },
     { title: "Business Analyst" },
   ];
+
+  const onClickHandler = () => {
+    setShowJobs(true);
+  };
   return (
     <div>
       <MainHeader currentTab="findJobs"></MainHeader>
@@ -71,6 +76,7 @@ const FindJobs = (props) => {
             style={{
               textTransform: "none",
             }}
+            onClick={onClickHandler}
           >
             Find jobs
           </Button>
@@ -87,78 +93,81 @@ const FindJobs = (props) => {
         </Stack>
       </Grid>
       <Divider></Divider>
-      <Grid container>
-        <Grid item md={1}></Grid>
-        <Grid item>
-          <Card
-            variant="outlined"
-            style={{
-              display: "block",
-              width: "30vw",
-              margin: 15,
-              height: "17vw",
-              textAlign: "left",
-            }}
-          >
-            <CardContent>
-              <Typography
-                sx={{ fontSize: 14 }}
-                color="text.secondary"
-                gutterBottom
-              >
-                Software Development Engineer
-              </Typography>
-              <Typography variant="h5" component="div"></Typography>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                Amazon.com Services LLC
-              </Typography>
-              <Typography variant="body2">
-                Cupertino, CA
-                <br />
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small">Learn More</Button>
-            </CardActions>
-          </Card>
-        </Grid>
 
-        {/* display of main job card */}
+      {showJobs ? (
+        <Grid container>
+          <Grid item md={1}></Grid>
+          <Grid item>
+            <Card
+              variant="outlined"
+              style={{
+                display: "block",
+                width: "30vw",
+                margin: 15,
+                height: "17vw",
+                textAlign: "left",
+              }}
+            >
+              <CardContent>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  Software Development Engineer
+                </Typography>
+                <Typography variant="h5" component="div"></Typography>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                  Amazon.com Services LLC
+                </Typography>
+                <Typography variant="body2">
+                  Cupertino, CA
+                  <br />
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small">Learn More</Button>
+              </CardActions>
+            </Card>
+          </Grid>
 
-        <Grid item>
-          <Card
-            variant="outlined"
-            style={{
-              display: "block",
-              width: "45vw",
-              margin: 15,
-              height: "80vw",
-              textAlign: "left",
-            }}
-          >
-            <CardContent>
-              <Typography
-                sx={{ fontSize: 14 }}
-                color="text.secondary"
-                gutterBottom
-              >
-                Software Development Engineer
-              </Typography>
-              <Typography variant="h5" component="div"></Typography>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                Amazon.com Services LLC
-              </Typography>
-              <Typography variant="body2">
-                Cupertino, CA
-                <br />
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small">Learn More</Button>
-            </CardActions>
-          </Card>
+          {/* display of main job card */}
+
+          <Grid item>
+            <Card
+              variant="outlined"
+              style={{
+                display: "block",
+                width: "45vw",
+                margin: 15,
+                height: "80vw",
+                textAlign: "left",
+              }}
+            >
+              <CardContent>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  Software Development Engineer
+                </Typography>
+                <Typography variant="h5" component="div"></Typography>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                  Amazon.com Services LLC
+                </Typography>
+                <Typography variant="body2">
+                  Cupertino, CA
+                  <br />
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small">Learn More</Button>
+              </CardActions>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
+      ) : null}
     </div>
   );
 };

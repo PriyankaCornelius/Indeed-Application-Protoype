@@ -115,7 +115,7 @@ const MainHeader = (props) => {
       },
       {
         label: "Sign in",
-        href: "/signIn",
+        href: "/login",
         component: <SignIn />,
         value: "signIn",
         style: {
