@@ -8,6 +8,7 @@ var LoginCommon = require("./services/LoginCommon.js");
 var RegisterCommon = require("./services/RegisterCommon.js");
 var SavedJobsByJobseeker = require("./services/SavedJobsByJobseeker.js");
 var AppliedJobsByJobseeker = require("./services/AppliedJobsByJobseeker.js");
+var ApplyJob = require("./services/ApplyJob.js");
 
 var connection = new require("./Connection");
 
@@ -67,3 +68,4 @@ handleTopicRequest("login_common", LoginCommon);
 handleTopicRequest("register_common", RegisterCommon);
 handleTopicRequest("get_saved_jobs_by_jobseeker_id", SavedJobsByJobseeker);
 handleTopicRequest("get_applied_jobs_by_jobseeker_id", AppliedJobsByJobseeker);
+handleTopicRequest("apply_job", ApplyJob);

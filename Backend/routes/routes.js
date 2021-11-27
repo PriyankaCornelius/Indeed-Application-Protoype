@@ -168,4 +168,21 @@ router.get("/appliedJobs/get/:jobseekerid", async (req, res, next) => {
   );
 });
 
+// Apply for a job
+router.post("/applyJob", async (req, res, next) => {
+  kafka.make_request("apply_job", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end("Success");
+    }
+  });
+});
+
 module.exports = router;
