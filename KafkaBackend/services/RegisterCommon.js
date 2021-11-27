@@ -7,8 +7,13 @@ function handle_request(msg, callback) {
   delete msg.personaType;
   pool.get_connection((qb) => {
     qb.insert(table, msg, (err, results) => {
-      if (err) callback(err, "Error");
-      else callback(null, results);
+      if (err) {
+        if (err.code === "ER_DUP_ENTRY")
+          callback(err, "Email id already exists");
+        else callback(err, "Error");
+      } else {
+        callback(null, "Success");
+      }
     });
   });
 }

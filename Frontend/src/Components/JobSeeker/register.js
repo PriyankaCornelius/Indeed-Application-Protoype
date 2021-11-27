@@ -9,13 +9,34 @@ import Paper from "@mui/material/Paper";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
+import { commonRegister } from "../../controllers/register";
 
 const Register = ({}) => {
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const [personaType, setPersonaType] = useState("js");
+  const [registerError, setRegisterError] = useState(null);
 
   const handleChange = (e) => {
     e.preventDefault();
     setPersonaType(e.target.value);
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    let data = {};
+    data.email = email;
+    data.password = password;
+    data.personaType = personaType;
+    commonRegister(data)
+      .then((res) => {
+        if (res.data === "Success") window.location.href = "/login";
+        else setRegisterError(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setRegisterError("Something went wrong. Please try again");
+      });
   };
 
   return (
@@ -29,7 +50,7 @@ const Register = ({}) => {
         overflow: "hidden",
       }}
     >
-      <form>
+      <form onSubmit={onSubmit}>
         <Container
           component="main"
           maxWidth="xs"
@@ -46,7 +67,7 @@ const Register = ({}) => {
               border: "1px solid #d4d2d0",
               padding: "24px",
               width: "480px",
-              height: "550px",
+              height: registerError ? "575px" : "550px",
             }}
           >
             <CssBaseline />
@@ -86,6 +107,7 @@ const Register = ({}) => {
                   name="email"
                   autoComplete="email"
                   autoFocus
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
                 <TextField
@@ -97,6 +119,7 @@ const Register = ({}) => {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
                 <div style={{ textAlign: "left" }}>
@@ -156,6 +179,17 @@ const Register = ({}) => {
                     Create Account
                   </span>
                 </Button>
+                {registerError ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontWeight: "bold",
+                      marginTop: 0,
+                    }}
+                  >
+                    {registerError}
+                  </p>
+                ) : null}
               </Box>
             </Box>
           </Paper>
