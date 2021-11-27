@@ -28,6 +28,8 @@ const ApplyJob = (props) => {
   });
 
   const [expanded, setExpanded] = useState(false);
+  const [resumeURI, setResumeURI] = useState(null);
+  const [coverLetterURI, setCoverLetterURI] = useState(null);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);

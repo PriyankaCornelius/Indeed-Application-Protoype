@@ -7,8 +7,13 @@ import noDataApplied from "../../Images/noDataApplied.png";
 import crossIcon from "../../Images/baseline_close_black_24dp.png";
 import clockIcon from "../../Images/baseline_query_builder_black_24dp.png";
 import { useLocation } from "react-router-dom";
+import { connect } from "react-redux";
+import {
+  getSavedJobsByJobseekerId,
+  getAppliedJobsByJobseekerId,
+} from "../../controllers/jobs";
 
-const JobSeekerProfile = (props) => {
+const MyJobs = ({ user }) => {
   const [savedList, setSavedList] = useState(false);
   const [savedListData, setSavedListData] = useState(null);
   const [appliedList, setAppliedList] = useState(false);
@@ -16,85 +21,105 @@ const JobSeekerProfile = (props) => {
 
   const ReturnJobList = () => {
     if (savedList) {
-      if (savedListData)
+      if (savedListData && savedListData.length > 0)
         return (
           <>
-            <Grid item xs={1}>
-              <img
-                src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/5abe00d629e40745c7f3ffb6aa792c7b"
-                style={{ width: "55px", height: "55px" }}
-              />
-            </Grid>
-            <Grid item xs={5}>
-              <div
-                style={{
-                  fontSize: "18px",
-                  fontWeight: "bold",
-                  textAlign: "left",
-                  marginTop: "10px",
-                  marginLeft: "10px",
-                }}
-              >
-                Embedded Software Engineer
-              </div>
-              <div
-                style={{
-                  fontSize: "16px",
-                  textAlign: "left",
-                  marginTop: "5px",
-                  marginLeft: "10px",
-                }}
-              >
-                Britelab, Inc
-              </div>
-              <div
-                style={{
-                  fontSize: "16px",
-                  textAlign: "left",
-                  marginTop: "5px",
-                  marginLeft: "10px",
-                }}
-              >
-                San Jose, CA
-              </div>
-            </Grid>
-            <Grid item xs={5}>
-              <Button
-                style={{
-                  height: "44px",
-                  width: "228.22px",
-                  backgroundColor: "rgb(37, 87, 167)",
-                  color: "white",
-                  fontWeight: "bold",
-                  fontSize: "1rem",
-                  lineHeight: 0,
-                  letterSpacing: 0,
-                  textTransform: "none",
-                }}
-                variant="contained"
-              >
-                Apply now
-              </Button>
-              <Button
-                style={{
-                  height: "44px",
-                  width: "154.55px",
-                  color: "rgb(37, 87, 167)",
-                  fontWeight: "bold",
-                  fontSize: "1rem",
-                  lineHeight: 0,
-                  letterSpacing: 0,
-                  textTransform: "none",
-                  marginLeft: "15px",
-                }}
-                variant="outlined"
-              >
-                Update status
-              </Button>
-            </Grid>
-            <Grid item xs={1} style={{ marginTop: "10px", cursor: "pointer" }}>
-              <img src={crossIcon} />
-            </Grid>
+            {savedListData.map((job) => (
+              <>
+                <Grid container direction="column">
+                  <Grid
+                    item
+                    container
+                    direction="row"
+                    style={{ marginTop: "15px" }}
+                  >
+                    <Grid item xs={1}>
+                      <img
+                        src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/5abe00d629e40745c7f3ffb6aa792c7b"
+                        style={{ width: "55px", height: "55px" }}
+                      />
+                    </Grid>
+                    <Grid item xs={5}>
+                      <div
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "bold",
+                          textAlign: "left",
+                          marginTop: "10px",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        {job.jobTitle}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "16px",
+                          textAlign: "left",
+                          marginTop: "5px",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        {job.companyName}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "16px",
+                          textAlign: "left",
+                          marginTop: "5px",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        {job.address.split(",")[0]}
+                      </div>
+                    </Grid>
+                    <Grid item xs={5}>
+                      <Button
+                        style={{
+                          height: "44px",
+                          width: "220.22px",
+                          backgroundColor: "rgb(37, 87, 167)",
+                          color: "white",
+                          fontWeight: "bold",
+                          fontSize: "1rem",
+                          lineHeight: 0,
+                          letterSpacing: 0,
+                          textTransform: "none",
+                        }}
+                        variant="contained"
+                      >
+                        Apply now
+                      </Button>
+                      <Button
+                        style={{
+                          height: "44px",
+                          width: "154.55px",
+                          color: "rgb(37, 87, 167)",
+                          fontWeight: "bold",
+                          fontSize: "1rem",
+                          lineHeight: 0,
+                          letterSpacing: 0,
+                          textTransform: "none",
+                          marginLeft: "15px",
+                        }}
+                        variant="outlined"
+                      >
+                        Update status
+                      </Button>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={1}
+                      style={{ marginTop: "10px", cursor: "pointer" }}
+                    >
+                      <img src={crossIcon} />
+                    </Grid>
+                  </Grid>
+                  <Grid item style={{ marginTop: "15px" }}>
+                    <Divider />
+                  </Grid>
+                </Grid>
+              </>
+            ))}
           </>
         );
       else
@@ -151,89 +176,109 @@ const JobSeekerProfile = (props) => {
           </>
         );
     } else if (appliedList) {
-      if (appliedListData)
+      if (appliedListData && appliedListData.length > 0)
         return (
           <>
-            <Grid item xs={1}>
-              <img
-                src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/5abe00d629e40745c7f3ffb6aa792c7b"
-                style={{ width: "55px", height: "55px" }}
-              />
-            </Grid>
-            <Grid item xs={5}>
-              <div
-                style={{
-                  fontSize: "18px",
-                  fontWeight: "bold",
-                  textAlign: "left",
-                  marginTop: "10px",
-                  marginLeft: "10px",
-                }}
-              >
-                Embedded Software Engineer
-              </div>
-              <div
-                style={{
-                  fontSize: "16px",
-                  textAlign: "left",
-                  marginTop: "5px",
-                  marginLeft: "10px",
-                }}
-              >
-                Britelab, Inc
-              </div>
-              <div
-                style={{
-                  fontSize: "16px",
-                  textAlign: "left",
-                  marginTop: "5px",
-                  marginLeft: "10px",
-                }}
-              >
-                San Jose, CA
-              </div>
-            </Grid>
-            <Grid item xs={5} style={{ marginTop: "10px" }}>
-              {/* <img src={clockIcon} /> */}
-              <span
-                style={{
-                  height: "44px",
-                  width: "228.22px",
-                  fontWeight: "bold",
-                  fontSize: "1rem",
-                  lineHeight: 0,
-                  letterSpacing: 0,
-                  textTransform: "none",
-                }}
-              >
-                Application submitted
-              </span>
-              <Button
-                style={{
-                  height: "44px",
-                  width: "154.55px",
-                  color: "rgb(37, 87, 167)",
-                  fontWeight: "bold",
-                  fontSize: "1rem",
-                  lineHeight: 0,
-                  letterSpacing: 0,
-                  textTransform: "none",
-                  marginLeft: "25px",
-                }}
-                variant="outlined"
-              >
-                Update status
-              </Button>
-            </Grid>
-            <Grid item xs={1} style={{ marginTop: "10px", cursor: "pointer" }}>
-              <img src={crossIcon} />
-            </Grid>
+            {appliedListData.map((job) => (
+              <>
+                <Grid container direction="column">
+                  <Grid
+                    item
+                    container
+                    direction="row"
+                    style={{ marginTop: "15px" }}
+                  >
+                    <Grid item xs={1}>
+                      <img
+                        src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/5abe00d629e40745c7f3ffb6aa792c7b"
+                        style={{ width: "55px", height: "55px" }}
+                      />
+                    </Grid>
+                    <Grid item xs={5}>
+                      <div
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "bold",
+                          textAlign: "left",
+                          marginTop: "10px",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        {job.jobTitle}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "16px",
+                          textAlign: "left",
+                          marginTop: "5px",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        {job.companyName}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "16px",
+                          textAlign: "left",
+                          marginTop: "5px",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        {job.address.split(",")[0]}
+                      </div>
+                    </Grid>
+                    <Grid item xs={5} style={{ marginTop: "10px" }}>
+                      {/* <img src={clockIcon} /> */}
+                      <span
+                        style={{
+                          height: "44px",
+                          width: "228.22px",
+                          fontWeight: "bold",
+                          fontSize: "1rem",
+                          lineHeight: 0,
+                          letterSpacing: 0,
+                          textTransform: "none",
+                        }}
+                      >
+                        Application submitted
+                      </span>
+                      <Button
+                        style={{
+                          height: "44px",
+                          width: "154.55px",
+                          color: "rgb(37, 87, 167)",
+                          fontWeight: "bold",
+                          fontSize: "1rem",
+                          lineHeight: 0,
+                          letterSpacing: 0,
+                          textTransform: "none",
+                          marginLeft: "25px",
+                        }}
+                        variant="outlined"
+                      >
+                        Update status
+                      </Button>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={1}
+                      style={{ marginTop: "10px", cursor: "pointer" }}
+                    >
+                      <img src={crossIcon} />
+                    </Grid>
+                  </Grid>
+                  <Grid item style={{ marginTop: "15px" }}>
+                    <Divider />
+                  </Grid>
+                </Grid>
+              </>
+            ))}
           </>
         );
       else
         return (
           <>
-            <Grid item container direction="column" style={{}}>
+            <Grid item container direction="column">
               <Grid item style={{ textAlign: "center" }}>
                 <img
                   src={noDataApplied}
@@ -306,6 +351,20 @@ const JobSeekerProfile = (props) => {
     } else setSavedList(true);
   }, [new URLSearchParams(search).get("tab")]);
 
+  useEffect(() => {
+    if (user) {
+      getSavedJobsByJobseekerId(user.id)
+        .then((res) => {
+          setSavedListData(res.data);
+          return getAppliedJobsByJobseekerId(user.id);
+        })
+        .then((res) => setAppliedListData(res.data))
+        .catch((err) => console.log(err));
+    }
+  }, []);
+
+  console.log("savedListData", savedListData);
+  console.log("appliedListData", appliedListData);
   return (
     <div>
       <MainHeader currentTab="profile"></MainHeader>
@@ -327,11 +386,7 @@ const JobSeekerProfile = (props) => {
             <MyJobsAppbar />
             <Divider />
           </Grid>
-          <Grid item container direction="row" style={{ marginTop: "15px" }}>
-            <ReturnJobList />
-          </Grid>
-          <br />
-          <Divider />
+          <ReturnJobList />
         </Grid>
         <Grid item xs={2} />
       </Grid>
@@ -339,4 +394,8 @@ const JobSeekerProfile = (props) => {
   );
 };
 
-export default JobSeekerProfile;
+const mapStateToProps = (state) => ({
+  user: state.login.user,
+});
+
+export default connect(mapStateToProps, {})(MyJobs);

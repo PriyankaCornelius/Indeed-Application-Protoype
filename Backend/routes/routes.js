@@ -127,7 +127,7 @@ router.post("/commonRegister", async (req, res, next) => {
 });
 
 // Get Saved Jobs by Jobseeker Id
-router.get("/savedjobs/get/:jobseekerid", async (req, res, next) => {
+router.get("/savedJobs/get/:jobseekerid", async (req, res, next) => {
   kafka.make_request(
     "get_saved_jobs_by_jobseeker_id",
     req.params.jobseekerid,
