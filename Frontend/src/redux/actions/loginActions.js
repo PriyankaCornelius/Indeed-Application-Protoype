@@ -5,7 +5,7 @@ import {
 } from "../constants/ActionTypes";
 import { commonLogin } from "../../controllers/login";
 
-export const commonLoginFunc = (payload) => (dispatch) => {
+export const commonLoginFunc = (payload, setLoginError) => (dispatch) => {
   commonLogin(payload)
     .then((res) => {
       console.log(res.data);
@@ -14,6 +14,7 @@ export const commonLoginFunc = (payload) => (dispatch) => {
           type: LOGIN_USER_ERROR,
           payload: {},
         });
+        setLoginError("Invalid email/password. Please try again");
       } else {
         dispatch({
           type: LOGIN_USER,
@@ -28,6 +29,7 @@ export const commonLoginFunc = (payload) => (dispatch) => {
         type: LOGIN_USER_ERROR,
         payload: {},
       });
+      setLoginError("Something went wrong. Please try again");
     });
 };
 

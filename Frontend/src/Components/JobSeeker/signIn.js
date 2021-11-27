@@ -12,10 +12,11 @@ import FormControl from "@mui/material/FormControl";
 import { connect } from "react-redux";
 import { commonLoginFunc } from "../../redux/actions/loginActions";
 
-const SignIn = ({ commonLoginFunc, user }) => {
+const SignIn = ({ commonLoginFunc }) => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [personaType, setPersonaType] = useState("js");
+  const [loginError, setLoginError] = useState(null);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -28,7 +29,7 @@ const SignIn = ({ commonLoginFunc, user }) => {
     data.email = email;
     data.password = password;
     data.personaType = personaType;
-    commonLoginFunc(data);
+    commonLoginFunc(data, setLoginError);
   };
 
   return (
@@ -59,7 +60,7 @@ const SignIn = ({ commonLoginFunc, user }) => {
               border: "1px solid #d4d2d0",
               padding: "24px",
               width: "480px",
-              height: !user.id ? "575px" : "550px",
+              height: loginError ? "575px" : "550px",
             }}
           >
             <CssBaseline />
@@ -180,7 +181,7 @@ const SignIn = ({ commonLoginFunc, user }) => {
                     Sign In
                   </span>
                 </Button>
-                {!user.id ? (
+                {loginError ? (
                   <p
                     style={{
                       color: "red",
@@ -188,7 +189,7 @@ const SignIn = ({ commonLoginFunc, user }) => {
                       marginTop: 0,
                     }}
                   >
-                    Invalid email/password. Please try again
+                    {loginError}
                   </p>
                 ) : null}
               </Box>
@@ -200,8 +201,4 @@ const SignIn = ({ commonLoginFunc, user }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.login.user,
-});
-
-export default connect(mapStateToProps, { commonLoginFunc })(SignIn);
+export default connect(null, { commonLoginFunc })(SignIn);
