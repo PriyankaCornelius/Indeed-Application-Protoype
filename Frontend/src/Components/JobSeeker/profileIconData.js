@@ -6,8 +6,15 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { Menu, MenuItem, Typography } from "@mui/material";
 import { ListItemIcon } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { commonLogoutFunc } from "../../redux/actions/loginActions";
+import { connect } from "react-redux";
 
 const ProfileIconData = (props) => {
+  const handleLogout = (e) => {
+    e.preventDefault();
+    props.commonLogoutFunc();
+  };
+
   return (
     <React.Fragment>
       <Menu
@@ -72,15 +79,18 @@ const ProfileIconData = (props) => {
             My reviews
           </MenuItem>
         </Link>
-        <MenuItem>
-          <ListItemIcon>
-            <LogoutIcon fontSize="small" />
-          </ListItemIcon>
-          Sign out
-        </MenuItem>
+
+        <Link to="#" onClick={handleLogout} style={{ textDecoration: "none" }}>
+          <MenuItem>
+            <ListItemIcon>
+              <LogoutIcon fontSize="small" />
+            </ListItemIcon>
+            Sign out
+          </MenuItem>
+        </Link>
       </Menu>
     </React.Fragment>
   );
 };
 
-export default ProfileIconData;
+export default connect(null, { commonLogoutFunc })(ProfileIconData);
