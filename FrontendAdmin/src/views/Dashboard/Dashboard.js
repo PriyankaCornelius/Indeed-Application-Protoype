@@ -151,10 +151,10 @@ export default function Dashboard() {
             <CardHeader color="danger">
               <ChartistGraph
                 className="ct-chart"
-                data={topCompanies.data}
+                data={topCEO.data}
                 type="Bar"
-                options={topCompanies.options}
-                listener={topCompanies.animation}
+                options={topCEO.options}
+                listener={topCEO.animation}
               />
             </CardHeader>
             <CardBody>

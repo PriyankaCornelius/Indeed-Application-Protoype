@@ -189,9 +189,9 @@ const avgRatingsChart = {
 const jobSeekersReviews = {
   data: {
     labels: [
-      "Sushan",
-      "Anay",
       "Archita",
+      "Anay",
+      "Sushan",
       "Priyanka",
       "Anish",
     ],
@@ -246,8 +246,8 @@ const jobSeekersReviews = {
 const topCEO = {
   data: {
     labels: [
-      "Google",
-      "Amazon",
+      "AB",
+      "CD",
       "Netflix",
       "Meta",
       "Microsoft",

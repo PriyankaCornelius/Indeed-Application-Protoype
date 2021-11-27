@@ -1,6 +1,7 @@
 import React from "react";
 import DescriptionIcon from "@mui/icons-material/Description";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import Reviews from "@mui/icons-material/Reviews";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Menu, MenuItem, Typography } from "@mui/material";
@@ -43,32 +44,23 @@ const ProfileIconData = (props) => {
         <Typography
           sx={{ textAlign: "center", lineHeight: 4, fontWeight: 600 }}
         >
-          archita22@gmail.com
+          company@email.com
         </Typography>
         <Link to="/jobSeekerProfile" style={{ textDecoration: "none" }}>
           <MenuItem>
             <ListItemIcon>
               <DescriptionIcon fontSize="small" />
             </ListItemIcon>
-            Profile
+            Company Profile
           </MenuItem>
         </Link>
-
         <MenuItem>
           <ListItemIcon>
-            <FavoriteIcon fontSize="small" />
+            <ReviewsIcon fontSize="small" />
           </ListItemIcon>
-          My jobs
+          Reviews
         </MenuItem>
 
-        <Link to="/myReviews" style={{ textDecoration: "none" }}>
-          <MenuItem>
-            <ListItemIcon>
-              <ReviewsIcon fontSize="small" />
-            </ListItemIcon>
-            My reviews
-          </MenuItem>
-        </Link>
         <MenuItem>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />

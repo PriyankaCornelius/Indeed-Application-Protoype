@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 var kafka = require("../kafka/client");
 
-const { mongoDB } = require("../config");
+const { mongoDB } = require("../mongoDBconfig");
 const mongoose = require("mongoose");
 var options = {
   useNewUrlParser: true,
@@ -22,7 +22,7 @@ mongoose.connect(mongoDB, options, (err, res) => {
 const CompanyReviews = require("../models/CompanyReviews");
 
 const Redis = require("redis");
-const redisClient = Redis.createClient();
+//const redisClient = Redis.createClient();
 
 const DEFAULT_EXPIRATION = 3600;
 
@@ -81,5 +81,47 @@ router.get("/reviews/company/:companyid", async (req, res, next) => {
 //     }
 //   });
 // });
+
+router.get("/getprofile/company/:companyid", async (req, res, next) => {
+  console.log("GET Request on Profile : ", req.query);
+  kafka.make_request(
+    "get_company_profile_by_company_id",
+    req.query,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
+router.put("/updateprofile/company/:companyid", async (req, res, next) => {
+  kafka.make_request(
+    "put_company_profile_by_company_id",
+    req.query,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log("Profile Updated Successfully!");
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
 
 module.exports = router;
