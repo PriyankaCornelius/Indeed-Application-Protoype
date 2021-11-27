@@ -4,7 +4,7 @@ function handle_request(msg, callback) {
   pool.get_connection((qb) => {
     qb.insert("jobapplications", msg, (err, results) => {
       if (err) callback(err, "Error");
-      else callback(null, results);
+      else callback(null, "Success");
     });
   });
 }

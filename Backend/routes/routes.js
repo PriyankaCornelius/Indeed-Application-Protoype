@@ -180,7 +180,7 @@ router.post("/applyJob", async (req, res, next) => {
       res.writeHead(200, {
         "Content-Type": "application/json",
       });
-      res.end("Success");
+      res.end(results);
     }
   });
 });
