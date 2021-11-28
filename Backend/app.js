@@ -212,6 +212,24 @@ app.post("/saveJob", function (req, res) {
   });
 });
 
+app.post("/getSaveJob", function (req, res) {
+  kafka.make_request("getSaveJob", req.body, function (err, results) {
+    console.log("in result");
+    console.log(results);
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else");
+      res.status(200).json(results);
+      res.end();
+    }
+  });
+});
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
 

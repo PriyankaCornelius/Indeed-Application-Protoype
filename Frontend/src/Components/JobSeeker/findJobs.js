@@ -15,7 +15,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  IconButton,
   CardActionArea,
 } from "@mui/material";
 
@@ -29,6 +28,7 @@ const FindJobs = (props) => {
   const [jobWhereTypeaheadList, setWhereTypeaheadList] = useState([]);
   const [jobWhatTypeaheadValue, setJobWhatTypeaheadValue] = useState("");
   const [jobWhereTypeaheadValue, setJobWhereTypeaheadValue] = useState("");
+  const [savedJob, setSavedJob] = useState({});
   const [cardColor, setCardColor] = useState({ 0: "blue" });
   const val = " days ago";
   var today = new Date();
@@ -70,6 +70,7 @@ const FindJobs = (props) => {
     if (data && data.length > 0) {
       setJobCards(data);
       setJobDetails(data[0]);
+      getSaveJob(data[0].id);
     }
   };
 
@@ -80,12 +81,38 @@ const FindJobs = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        jobId: jobId,
-        applicantId: 1, //jobseeker Id from redux
+        jobId: savedJob.jobId,
+        applicantId: savedJob.applicantId,
+        saved: !savedJob.saved,
       }),
     });
 
     const data = await response.json();
+    if (data) {
+      setSavedJob((prevState) => {
+        return { ...prevState, saved: !prevState.saved };
+      });
+    }
+  };
+
+  const getSaveJob = async (jobId) => {
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/getSaveJob`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          jobId: jobId,
+          applicantId: 1, //jobseeker Id from redux
+        }),
+      }
+    );
+
+    const data = await response.json();
+    console.log("get save job data", data);
+    setSavedJob(data);
   };
 
   const getWhatTypeAheadList = async () => {
@@ -235,6 +262,7 @@ const FindJobs = (props) => {
                   onClick={() => {
                     setCardColor({ [index]: "blue" });
                     setJobDetails(jobs);
+                    getSaveJob(jobs.id);
                   }}
                 >
                   <CardActionArea>
@@ -260,7 +288,7 @@ const FindJobs = (props) => {
                       </Typography>
                       <p></p>
                       <Typography style={{ fontSize: 13 }} sx={{ mb: 2 }}>
-                        {jobs.fulldescription.substring(0, 200) + "..."}
+                        {jobs.fulldescription?.substring(0, 200) + "..."}
                       </Typography>
                       <p></p>
                       <Typography style={{ fontSize: 13 }} sx={{ mb: 2 }}>
@@ -334,7 +362,11 @@ const FindJobs = (props) => {
                 </Button>
 
                 <Button onClick={() => saveJob(jobDetails.id)}>
-                  <FavoriteBorderIcon style={{ color: "grey" }} />
+                  {savedJob.saved ? (
+                    <FavoriteIcon style={{ color: "grey" }} />
+                  ) : (
+                    <FavoriteBorderIcon style={{ color: "grey" }} />
+                  )}
                 </Button>
                 <Divider></Divider>
 
