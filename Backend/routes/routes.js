@@ -47,9 +47,10 @@ router.get("/reviews/company/:companyid", async (req, res, next) => {
   //       });
   //     }
   //   });
+  console.log("Request is : ", req);
   kafka.make_request(
     "get_reviews_by_company_id0",
-    req.params.companyid,
+    req.query.companyid,
     function (err, results) {
       if (err) {
         res.writeHead(500, {

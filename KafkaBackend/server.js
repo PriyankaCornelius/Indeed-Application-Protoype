@@ -60,7 +60,7 @@ function handleTopicRequest(topic_name, fname) {
 // Add your TOPICs here
 //first argument is topic name
 //second argument is a function that will handle this topic request
-//handleTopicRequest("get_reviews_by_company_id0", CompanyReviews);
+handleTopicRequest("get_reviews_by_company_id0", CompanyReviews);
 //handleTopicRequest("post_company_review", AddCompanyReview);
 handleTopicRequest("get_company_profile_by_company_id", GetEmployerProfile);
 handleTopicRequest("put_company_profile_by_company_id", UpdateEmployerProfile);
