@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import CompanyReviews from "../JobSeeker/companyReviews";
 import FindJobs from "../JobSeeker/findJobs";
+
 import FindSalaries from "../JobSeeker/findSalaries";
 import MainHeader from "../JobSeeker/mainHeader";
 import EmployersHeader from "../Employer/EmployersHeader";
@@ -31,7 +32,8 @@ const Routes = () => {
   return (
     <Router history={history}>
       <Switch>
-        <Route exact path="/" component={FindJobs} />
+        {/* <Route exact path="/" component={FindJobsTwo} /> */}
+        <Route path="/" component={FindJobs} />
         <Route path="/login" component={SignIn} />
         <Route path="/register" component={Register} />
         <Route path="/companyReviews" component={CompanyReviews} />

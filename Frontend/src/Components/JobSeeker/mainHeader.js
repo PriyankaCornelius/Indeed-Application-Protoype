@@ -33,7 +33,7 @@ const MainHeader = (props) => {
     },
     {
       label: "Find Jobs",
-      to: "/",
+      to: "/findJobs",
       value: "findJobs",
     },
 
@@ -64,7 +64,7 @@ const MainHeader = (props) => {
         to: "/Messaging",
       },
       {
-        value: "find",
+        value: "findJobs",
         icon: <NotificationsIcon width={20} height={20} />,
         style: {
           textTransform: "none",

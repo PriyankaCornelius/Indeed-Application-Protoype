@@ -7,7 +7,14 @@ var CompanyReviews = require("./services/CompanyReviews.js");
 var GetEmployerProfile = require("./services/GetEmployerProfile");
 var UpdateEmployerProfile = require("./services/PutEmployerProfile");
 var AddCompanyReview = require("./services/jobSeeker/AddCompanyReview.js");
-
+var JobList = require("./services/jobSeeker/getJobList.js");
+var JobSeekerDetails = require("./services/jobSeeker/getJobSeekerDetails.js");
+var UpdateJobSeekerDetails = require("./services/jobSeeker/updateJobSeekerDetails.js");
+var ListOfJobSeekersReviews = require("./services/jobSeeker/listOfJobSeekersReviews");
+var SaveJob = require("./services/jobSeeker/saveJob.js");
+var GetSaveJobs = require("./services/jobSeeker/getSaveJobs.js");
+var WhatTypeAheadList = require("./services/jobSeeker/getwhatTypeAheadList.js");
+var WhereTypeAheadList = require("./services/jobSeeker/getwhereTypeAheadList.js");
 var connection = new require("./Connection");
 
 var options = {
@@ -64,3 +71,14 @@ function handleTopicRequest(topic_name, fname) {
 //handleTopicRequest("post_company_review", AddCompanyReview);
 handleTopicRequest("get_company_profile_by_company_id", GetEmployerProfile);
 handleTopicRequest("put_company_profile_by_company_id", UpdateEmployerProfile);
+// handleTopicRequest("get_reviews_by_company_id0", CompanyReviews);
+// handleTopicRequest("post_company_review", AddCompanyReview);
+handleTopicRequest("getJobsList", JobList);
+handleTopicRequest("getJobSeekerDetails", JobSeekerDetails);
+handleTopicRequest("updateJobSeekerDetails", UpdateJobSeekerDetails);
+handleTopicRequest("listOfJobSeekersReviews", ListOfJobSeekersReviews);
+
+handleTopicRequest("whatTypeAheadList", WhatTypeAheadList);
+handleTopicRequest("whereTypeAheadList", WhereTypeAheadList);
+handleTopicRequest("saveJob", SaveJob);
+handleTopicRequest("getSaveJob", GetSaveJobs);
