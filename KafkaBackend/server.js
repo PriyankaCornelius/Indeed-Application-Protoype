@@ -5,7 +5,13 @@ const con = require("./sqlDbConfig");
 //topics files
 var CompanyReviews = require("./services/CompanyReviews.js");
 var AddCompanyReview = require("./services/jobSeeker/AddCompanyReview.js");
-
+var JobList = require("./services/jobSeeker/getJobList.js");
+var JobSeekerDetails = require("./services/jobSeeker/getJobSeekerDetails.js");
+var UpdateJobSeekerDetails = require("./services/jobSeeker/updateJobSeekerDetails.js");
+var ListOfJobSeekersReviews = require("./services/jobSeeker/listOfJobSeekersReviews");
+var SaveJob = require("./services/jobSeeker/saveJob");
+var WhatTypeAheadList = require("./services/jobSeeker/getwhatTypeAheadList.js");
+var WhereTypeAheadList = require("./services/jobSeeker/getwhereTypeAheadList.js");
 var connection = new require("./Connection");
 
 var options = {
@@ -58,5 +64,13 @@ function handleTopicRequest(topic_name, fname) {
 // Add your TOPICs here
 //first argument is topic name
 //second argument is a function that will handle this topic request
-handleTopicRequest("get_reviews_by_company_id0", CompanyReviews);
-handleTopicRequest("post_company_review", AddCompanyReview);
+// handleTopicRequest("get_reviews_by_company_id0", CompanyReviews);
+// handleTopicRequest("post_company_review", AddCompanyReview);
+handleTopicRequest("getJobsList", JobList);
+handleTopicRequest("getJobSeekerDetails", JobSeekerDetails);
+handleTopicRequest("updateJobSeekerDetails", UpdateJobSeekerDetails);
+handleTopicRequest("listOfJobSeekersReviews", ListOfJobSeekersReviews);
+
+handleTopicRequest("whatTypeAheadList", WhatTypeAheadList);
+handleTopicRequest("whereTypeAheadList", WhereTypeAheadList);
+handleTopicRequest("saveJob", SaveJob);
