@@ -4,7 +4,7 @@ function handle_request(msg, callback) {
   let query =
     "select s.id, e.id as companyId, j.id as jobId, j.jobTitle, e.companyName, e.address " +
     "from savedjobs s, jobs j, employers e " +
-    "where s.jobId = j.id and j.companyId = e.id and s.applicantId = " +
+    "where s.active = 1 and s.jobId = j.id and j.companyId = e.id and s.applicantId = " +
     msg +
     " order by s.createdAt desc";
   con.query(query, (err, results) => {

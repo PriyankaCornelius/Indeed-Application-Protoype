@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import {
   getSavedJobsByJobseekerId,
   getAppliedJobsByJobseekerId,
+  deleteSavedJob,
 } from "../../controllers/jobs";
 
 const MyJobs = ({ user }) => {
@@ -18,6 +19,15 @@ const MyJobs = ({ user }) => {
   const [savedListData, setSavedListData] = useState(null);
   const [appliedList, setAppliedList] = useState(false);
   const [appliedListData, setAppliedListData] = useState(null);
+
+  const handleDelete = (e, jobId) => {
+    e.preventDefault();
+    deleteSavedJob(jobId, { active: 0 })
+      .then((res) => {
+        if (res.data === "Success") getData();
+      })
+      .catch((err) => console.log(err));
+  };
 
   const ReturnJobList = () => {
     if (savedList) {
@@ -111,7 +121,10 @@ const MyJobs = ({ user }) => {
                       xs={1}
                       style={{ marginTop: "10px", cursor: "pointer" }}
                     >
-                      <img src={crossIcon} />
+                      <img
+                        src={crossIcon}
+                        onClick={(e) => handleDelete(e, job.id)}
+                      />
                     </Grid>
                   </Grid>
                   <Grid item style={{ marginTop: "15px" }}>
@@ -259,13 +272,6 @@ const MyJobs = ({ user }) => {
                         Update status
                       </Button>
                     </Grid>
-                    <Grid
-                      item
-                      xs={1}
-                      style={{ marginTop: "10px", cursor: "pointer" }}
-                    >
-                      <img src={crossIcon} />
-                    </Grid>
                   </Grid>
                   <Grid item style={{ marginTop: "15px" }}>
                     <Divider />
@@ -351,20 +357,22 @@ const MyJobs = ({ user }) => {
     } else setSavedList(true);
   }, [new URLSearchParams(search).get("tab")]);
 
+  const getData = () => {
+    getSavedJobsByJobseekerId(user.id)
+      .then((res) => {
+        setSavedListData(res.data);
+        return getAppliedJobsByJobseekerId(user.id);
+      })
+      .then((res) => setAppliedListData(res.data))
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     if (user) {
-      getSavedJobsByJobseekerId(user.id)
-        .then((res) => {
-          setSavedListData(res.data);
-          return getAppliedJobsByJobseekerId(user.id);
-        })
-        .then((res) => setAppliedListData(res.data))
-        .catch((err) => console.log(err));
+      getData();
     }
   }, []);
 
-  console.log("savedListData", savedListData);
-  console.log("appliedListData", appliedListData);
   return (
     <div>
       <MainHeader currentTab="profile"></MainHeader>

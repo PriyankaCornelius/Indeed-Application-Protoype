@@ -8,3 +8,7 @@ export function getSavedJobsByJobseekerId(userId) {
 export function getAppliedJobsByJobseekerId(userId) {
   return axios.get(semiEndpoint + "/appliedJobs/get/" + userId);
 }
+
+export function deleteSavedJob(jobId, dataJson) {
+  return axios.post(semiEndpoint + "/savedJobs/delete/" + jobId, dataJson);
+}
