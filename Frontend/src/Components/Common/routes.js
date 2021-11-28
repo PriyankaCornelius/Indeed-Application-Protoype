@@ -24,6 +24,7 @@ import Analytics from "../Employer/analytics";
 import Applicants from "../Employer/applicants";
 import ApplyJob from "../JobSeeker/apply/applyJob";
 import CompanyLandingPage from "../JobSeeker/companyPage/companyLandingPage";
+import MyJobs from "../JobSeeker/myJobs";
 import MyReviews from "../JobSeeker/myReviews";
 
 const Routes = () => {
@@ -33,10 +34,10 @@ const Routes = () => {
     <Router history={history}>
       <Switch>
         {/* <Route exact path="/" component={FindJobsTwo} /> */}
-        <Route path="/" component={FindJobs} />
         <Route path="/login" component={SignIn} />
         <Route path="/register" component={Register} />
         <Route path="/companyReviews" component={CompanyReviews} />
+        <Route path="/myjobs" component={MyJobs} />
         <Route path="/company" component={CompanyLandingPage} />
         <Route path="/findSalaries" component={FindSalaries} />
         <Route path="/employersPostJobs" component={EmployersJobPost} />
@@ -51,6 +52,7 @@ const Routes = () => {
         <Route path="/employerAnalytics" component={Analytics} />
         <Route path="/apply" component={ApplyJob} />
         <Route path="/myReviews" component={MyReviews} />
+        <Route path="/" component={FindJobs} />
       </Switch>
     </Router>
   );
