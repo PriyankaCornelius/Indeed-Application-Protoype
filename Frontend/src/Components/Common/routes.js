@@ -34,7 +34,6 @@ const Routes = () => {
     <Router history={history}>
       <Switch>
         {/* <Route exact path="/" component={FindJobsTwo} /> */}
-        <Route path="/" component={FindJobs} />
         <Route path="/login" component={SignIn} />
         <Route path="/register" component={Register} />
         <Route path="/companyReviews" component={CompanyReviews} />
@@ -53,6 +52,7 @@ const Routes = () => {
         <Route path="/employerAnalytics" component={Analytics} />
         <Route path="/apply" component={ApplyJob} />
         <Route path="/myReviews" component={MyReviews} />
+        <Route path="/" component={FindJobs} />
       </Switch>
     </Router>
   );
