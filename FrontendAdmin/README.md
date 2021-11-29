@@ -1,1 +1,1 @@
-Analytics Dashboard and Admin
+Indeed Admin Frontend
