@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
+import Axios from 'axios';
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import Store from "@material-ui/icons/Store";
@@ -33,7 +34,7 @@ import { bugs, website, server } from "variables/general.js";
 
 import {
   noOfReviews,
-  topReviewedCompanies,
+  mostRev,
   avgRatingsChart,
   jobSeekersReviews,
   topCEO,
@@ -43,27 +44,257 @@ import {
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
 
-const useStyles = makeStyles(styles);
+// const useStyles = makeStyles(styles);
 
-export default function Dashboard() {
-  const classes = useStyles();
-  return (
-    <div>
+class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      noOfReviews: [],
+      data1: {},
+      mostRevComp: [],
+      data2: {},
+      avgRating: [],
+      data3: {},
+      topJobS: [],
+      data4: {},
+      topCeoR: [],
+      data5: {},
+      dViews: [],
+      data6: {},
+    };
+  }
+
+  componentDidMount() {
+    const noOfRev = [];
+    const mostRevCom = [];
+    const avgR = [];
+    const topJob = [];
+    const topCEO = [];
+    const views = [];
+    Axios.defaults.withCredentials = true;
+    Axios.get('http://localhost:3001/reviewsperday')
+      .then((res) => {
+        if (res) {
+          console.log(res.data);
+          if (res.data.length >= 0) {
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < res.data.length; i++) {
+              noOfRev.push(res.data[i]);
+            }
+          }
+          this.setState({ noOfReviews: noOfRev });
+          this.noOfReviews();
+        }
+      }).catch((err) => {
+        throw err;
+      });
+
+    Axios.defaults.withCredentials = true;
+    Axios.get('http://localhost:3001/mostreviewedcompanies')
+      .then((res) => {
+        if (res) {
+          console.log(res.data);
+          if (res.data.length >= 0) {
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < res.data.length; i++) {
+              mostRevCom.push(res.data[i]);
+            }
+          }
+          this.setState({ mostRevComp: mostRevCom });
+          this.mostRevCompanies();
+        }
+      }).catch((err) => {
+        throw err;
+      });
+
+    Axios.defaults.withCredentials = true;
+    Axios.get('http://localhost:3001/avgratings')
+      .then((res) => {
+        if (res) {
+          console.log(res.data);
+          if (res.data.length >= 0) {
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < res.data.length; i++) {
+              avgR.push(res.data[i]);
+            }
+          }
+          this.setState({ avgRating: avgR });
+          this.avgRatings();
+          }
+      }).catch((err) => {
+        throw err;
+      });
+
+    Axios.defaults.withCredentials = true;
+    Axios.get('http://localhost:3001/jobseekerreviews')
+      .then((res) => {
+        if (res) {
+          console.log(res.data);
+          if (res.data.length >= 0) {
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < res.data.length; i++) {
+              topJob.push(res.data[i]);
+            }
+          }
+          this.setState({ topJobS: topJob });
+          this.topJobSeek();
+        }
+      }).catch((err) => {
+        throw err;
+      });
+
+    Axios.defaults.withCredentials = true;
+    Axios.get('http://localhost:3001/topceos')
+      .then((res) => {
+        if (res) {
+          console.log(res.data);
+          if (res.data.length >= 0) {
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < res.data.length; i++) {
+              topCEO.push(res.data[i]);
+            }
+          }
+          this.setState({ topCeoR: topCEO });
+          this.topCeoRev();
+        }
+      }).catch((err) => {
+        throw err;
+      });
+
+    Axios.defaults.withCredentials = true;
+    Axios.get('http://localhost:3001/dailyviews')
+      .then((res) => {
+        if (res) {
+          console.log(res.data);
+          if (res.data.length >= 0) {
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < res.data.length; i++) {
+              views.push(res.data[i]);
+            }
+          }
+          this.setState({ dViews: views });
+          this.dailyViews();
+        }
+      }).catch((err) => {
+        throw err;
+      });
+  }
+
+
+  noOfReviews = () =>{
+    const labels= [];
+    const seriesTemp= [];
+    // console.log(labels);
+    console.log(seriesTemp);
+    const series = [seriesTemp];
+    console.log(series);
+    for(var i=0;i<this.state.noOfReviews.length;i++){
+      labels.push(this.state.noOfReviews[i].createdAt);
+      seriesTemp.push(this.state.noOfReviews[i].count);
+    }
+    const data1 = { labels: labels, series: series};
+    this.setState({ data1: data1});
+    
+  }
+
+   mostRevCompanies = () =>{
+    const labels= [];
+    const seriesTemp= [];
+    // console.log(labels);
+    console.log(seriesTemp);
+    const series = [seriesTemp];
+    console.log(series);
+    for(var i=0;i<this.state.mostRevComp.length;i++){
+      labels.push(this.state.mostRevComp[i].companyName);
+      seriesTemp.push(this.state.mostRevComp[i].count);
+    }
+    const data2 = { labels: labels, series: series};
+    this.setState({ data2: data2});
+    
+  }
+
+  avgRatings = () =>{
+    const labels= [];
+    const seriesTemp= [];
+    // console.log(labels);
+    console.log(seriesTemp);
+    const series = [seriesTemp];
+    console.log(series);
+    for(var i=0;i<this.state.avgRating.length;i++){
+      labels.push(this.state.avgRating[i].companyName);
+      seriesTemp.push(this.state.avgRating[i].avgrating);
+    }
+    const data3 = { labels: labels, series: series};
+    this.setState({ data3: data3});
+    
+  }
+
+  topJobSeek = () =>{
+    const labels= [];
+    const seriesTemp= [];
+    // console.log(labels);
+    console.log(seriesTemp);
+    const series = [seriesTemp];
+    console.log(series);
+    for(var i=0;i<this.state.topJobS.length;i++){
+      labels.push(this.state.topJobS[i].applicantName);
+      seriesTemp.push(this.state.topJobS[i].count);
+    }
+    const data4 = { labels: labels, series: series};
+    this.setState({ data4: data4});
+    
+  }
+
+  topCeoRev = () => {
+    const labels= [];
+    const seriesTemp= [];
+    // console.log(labels);
+    console.log(seriesTemp);
+    const series = [seriesTemp];
+    console.log(series);
+    for(var i=0;i<this.state.topCeoR.length;i++){
+      labels.push(this.state.topCeoR[i].ceoName);
+      seriesTemp.push(this.state.topCeoR[i].ceoRating);
+    }
+    const data5 = { labels: labels, series: series};
+    this.setState({ data5: data5 });  
+  }
+
+  dailyViews = () => {
+    const labels= [];
+    const seriesTemp= [];
+    // console.log(labels);
+    console.log(seriesTemp);
+    const series = [seriesTemp];
+    console.log(series);
+    for(var i=0;i<this.state.dViews.length;i++){
+      labels.push(this.state.dViews[i].employerName);
+      seriesTemp.push(this.state.dViews[i].dailyViews);
+    }
+    const data6 = { labels: labels, series: series};
+    this.setState({ data6: data6 });  
+  }
+
+  render() {
+    let useStyles = makeStyles(styles);
+    return (
+      <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
             <CardHeader color="primary">
               <ChartistGraph
                 className="ct-chart"
-                data={noOfReviews.data}
+                data={this.state.data1}
                 type="Line"
                 options={noOfReviews.options}
                 listener={noOfReviews.animation}
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Number of Reviews Per Day</h4>
-              <p className={classes.cardCategory}>
+              <h4 className={useStyles.cardTitle}>Number of Reviews Per Day</h4>
+              <p className={useStyles.cardCategory}>
                 {/* <span className={classes.successText}>
                   <ArrowUpward className={classes.upArrowCardCategory} /> 55%
                 </span>{" "} */}
@@ -71,7 +302,7 @@ export default function Dashboard() {
               </p>
             </CardBody>
             <CardFooter chart>
-              <div className={classes.stats}>
+              <div className={useStyles.stats}>
                 <AccessTime /> updated right now
               </div>
             </CardFooter>
@@ -82,19 +313,19 @@ export default function Dashboard() {
             <CardHeader color="success">
               <ChartistGraph
                 className="ct-chart"
-                data={topReviewedCompanies.data}
+                data={this.state.data2}
                 type="Bar"
-                options={topReviewedCompanies.options}
-                responsiveOptions={topReviewedCompanies.responsiveOptions}
-                listener={topReviewedCompanies.animation}
+                options={mostRev.options}
+                responsiveOptions={mostRev.responsiveOptions}
+                listener={mostRev.animation}
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Most Reviewed Companies</h4>
-              <p className={classes.cardCategory}>Top 5 Companies Based on Most Reviews.</p>
+              <h4 className={useStyles.cardTitle}>Most Reviewed Companies</h4>
+              <p className={useStyles.cardCategory}>Top 5 Companies Based on Most Reviews.</p>
             </CardBody>
             <CardFooter chart>
-              <div className={classes.stats}>
+              <div className={useStyles.stats}>
                 <AccessTime /> Based on all reviews
               </div>
             </CardFooter>
@@ -105,18 +336,18 @@ export default function Dashboard() {
             <CardHeader color="warning">
               <ChartistGraph
                 className="ct-chart"
-                data={avgRatingsChart.data}
-                type="Pie"
+                data={this.state.data3}
+                type="Line"
                 options={avgRatingsChart.options}
                 listener={avgRatingsChart.animation}
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Average Ratings</h4>
-              <p className={classes.cardCategory}>Top 5 Companies based on Avg Ratings.</p>
+              <h4 className={useStyles.cardTitle}>Average Ratings</h4>
+              <p className={useStyles.cardCategory}>Top 5 Companies based on Avg Ratings.</p>
             </CardBody>
             <CardFooter chart>
-              <div className={classes.stats}>
+              <div className={useStyles.stats}>
                 <AccessTime /> refreshed now
               </div>
             </CardFooter>
@@ -129,18 +360,18 @@ export default function Dashboard() {
             <CardHeader color="info">
               <ChartistGraph
                 className="ct-chart"
-                data={jobSeekersReviews.data}
-                type="Pie"
+                data={this.state.data4}
+                type="Bar"
                 options={jobSeekersReviews.options}
                 listener={jobSeekersReviews.animation}
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Top Job Seeker Reviewers</h4>
-              <p className={classes.cardCategory}>Top 5 Job Seekers based on Accepted Reviews.</p>
+              <h4 className={useStyles.cardTitle}>Top Job Seeker Reviewers</h4>
+              <p className={useStyles.cardCategory}>Top 5 Job Seekers based on Accepted Reviews.</p>
             </CardBody>
             <CardFooter chart>
-              <div className={classes.stats}>
+              <div className={useStyles.stats}>
                 <AccessTime /> refreshed now
               </div>
             </CardFooter>
@@ -151,18 +382,18 @@ export default function Dashboard() {
             <CardHeader color="danger">
               <ChartistGraph
                 className="ct-chart"
-                data={topCEO.data}
+                data={this.state.data5}
                 type="Bar"
                 options={topCEO.options}
                 listener={topCEO.animation}
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Top CEOs</h4>
-              <p className={classes.cardCategory}>Top 10 CEOs based on ratings. </p>
+              <h4 className={useStyles.cardTitle}>Top CEOs</h4>
+              <p className={useStyles.cardCategory}>Top 10 CEOs based on ratings. </p>
             </CardBody>
             <CardFooter chart>
-              <div className={classes.stats}>
+              <div className={useStyles.stats}>
                 <AccessTime /> refreshed just now
               </div>
             </CardFooter>
@@ -175,23 +406,23 @@ export default function Dashboard() {
             <CardHeader color="primary">
               <ChartistGraph
                 className="ct-chart"
-                data={topCompanies.data}
+                data={this.state.data6}
                 type="Line"
                 options={topCompanies.options}
                 listener={topCompanies.animation}
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Top Company Views</h4>
-              <p className={classes.cardCategory}>
+              <h4 className={useStyles.cardTitle}>Top Company Views</h4>
+              <p className={useStyles.cardCategory}>
                 {/* <span className={classes.successText}>
                   <ArrowUpward className={classes.upArrowCardCategory} /> 55%
                 </span>{" "} */}
-                Top Companies based on Views per day.
+                Top 10 Companies based on Views per day.
               </p>
             </CardBody>
             <CardFooter chart>
-              <div className={classes.stats}>
+              <div className={useStyles.stats}>
                 <AccessTime /> updated right now
               </div>
             </CardFooter>
@@ -199,5 +430,10 @@ export default function Dashboard() {
         </GridItem>
       </GridContainer>
     </div>
-  );
+    );
+  }
 }
+
+
+export default Dashboard;
+

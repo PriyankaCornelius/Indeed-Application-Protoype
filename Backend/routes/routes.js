@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-var kafka = require("../kafka/client");
+// var kafka = require("../kafka/client");
+const con = require("../sqlDbConfig");
 
 const { mongoDB } = require("../mongoDBconfig");
 const mongoose = require("mongoose");
@@ -123,5 +124,10 @@ router.put("/updateprofile/company/:companyid", async (req, res, next) => {
     }
   );
 });
+
+
+
+
+
 
 module.exports = router;

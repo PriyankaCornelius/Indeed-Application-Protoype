@@ -29,6 +29,7 @@ import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
 import TableList from "views/TableList/TableList.js";
 import Reviews from "views/Reviews/Reviews";
+import CompanyProfile from "views/CompanyProfile/CompanyProfile";
 import Typography from "views/Typography/Typography.js";
 import Icons from "views/Icons/Icons.js";
 import Maps from "views/Maps/Maps.js";
@@ -55,11 +56,11 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/profile",
+    path: "/companyprofile",
     name: "Company Profile",
     rtlName: "قائمة الجدول",
     icon: Person,
-    component: TableList,
+    component: CompanyProfile,
     layout: "/admin",
   },
   // {

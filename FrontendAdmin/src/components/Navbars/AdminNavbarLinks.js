@@ -18,6 +18,7 @@ import Search from "@material-ui/icons/Search";
 // core components
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
+import { Link } from 'react-router-dom'
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 
@@ -45,7 +46,10 @@ export default function AdminNavbarLinks() {
     }
   };
   const handleCloseProfile = () => {
+    // localStorage.removeItem('token');
+    // cookie.remove('cookie', { path: '/' });
     setOpenProfile(null);
+    <Link to="/x" />
   };
   return (
     // <div>
