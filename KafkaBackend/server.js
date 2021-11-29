@@ -23,6 +23,8 @@ var WhatTypeAheadList = require("./services/jobSeeker/getwhatTypeAheadList.js");
 var WhereTypeAheadList = require("./services/jobSeeker/getwhereTypeAheadList.js");
 
 var admin = require("./services/admin.js");
+var adminReview = require("./services/adminReview.js");
+var adminCompany = require("./services/adminCompany.js");
 var connection = new require("./Connection");
 
 var options = {
@@ -100,3 +102,5 @@ handleTopicRequest("saveJob", SaveJob);
 handleTopicRequest("getSaveJob", GetSaveJobs);
 
 handleTopicRequest("admin", admin);
+handleTopicRequest("adminReview", adminReview);
+handleTopicRequest("adminCompany", adminCompany);

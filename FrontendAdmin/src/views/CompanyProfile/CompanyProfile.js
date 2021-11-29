@@ -136,7 +136,7 @@ import {
                     <p><b>Industry</b>: {companies.industry}</p>
                     </CardBody>
                     <CardFooter>
-                    <Button color="primary" id={companies.companyName} onClick={this.handleActions} >View Reviews</Button>
+                    <Button color="success" id={companies.companyName} onClick={this.handleActions} >View Reviews</Button>
                     </CardFooter>
                   </CardBody>
                 </Card>
@@ -206,7 +206,7 @@ import {
                       <p><b>Industry</b>: {companies.industry}</p>
                       </CardBody>
                       <CardFooter>
-                      <Button color="primary" id={companies.companyName} onClick={this.handleActions} >View Reviews</Button>
+                      <Button color="success" id={companies.companyName} onClick={this.handleActions} >View Reviews</Button>
                       </CardFooter>
                     </CardBody>
                   </Card>
