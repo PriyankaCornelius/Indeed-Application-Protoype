@@ -2,7 +2,6 @@ const con = require("../../sqldbConfig.js");
 
 const handle_request = async (msg, callback) => {
   try {
-    console.log("incoming message", msg);
     let selectSQL = `SELECT * from  savedjobs  where applicantId = ? and  jobId =? `;
     if (msg.applicantId) {
       con.query(selectSQL, [msg.applicantId, msg.jobId], (err, result) => {

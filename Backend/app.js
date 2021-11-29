@@ -3,8 +3,9 @@
 const express = require("express");
 const cors = require("cors");
 const con = require("./sqlDbConfig");
-
 const { mongoDB } = require("./mongoDBconfig");
+
+// const { mongoDB } = require("./mongoDBconfig");
 const mongoose = require("mongoose");
 
 const kafka = require("./kafka/client");
@@ -13,14 +14,21 @@ const kafka = require("./kafka/client");
 const path = require("path");
 var bodyParser = require("body-parser");
 
+const jwt = require("jsonwebtoken");
+const { secret } = require("./mongoDBconfig");
 // const passport = require("passport");
 // const { checkAuth } = require("./Controller/Common/passport");
 // const { auth } = require("./Controller/Common/passport");
 
 const app = express();
-// const multer = require("multer");
-// const multerS3 = require("multer-s3");
-// const AWS = require("aws-sdk");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+const AWS = require("aws-sdk");
+
+const s3 = new AWS.S3({
+  accessKeyId: "AKIAZJZS76WTOJJJGHU3",
+  secretAccessKey: "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",
+});
 
 app.use(express.json());
 app.use(cors());
@@ -42,19 +50,19 @@ mongoose.connect(mongoDB, options, (err, res) => {
   }
 });
 
-// const uploadS3 = multer({
-//   storage: multerS3({
-//     s3: s3,
-//     acl: "public-read",
-//     bucket: "ubereatsimages-273",
-//     metadata: (req, file, cb) => {
-//       cb(null, { fieldName: file.fieldname });
-//     },
-//     key: (req, file, cb) => {
-//       cb(null, Date.now().toString() + "-" + file.originalname);
-//     },
-//   }),
-// });
+const uploadS3 = multer({
+  storage: multerS3({
+    s3: s3,
+    acl: "public-read",
+    bucket: "ubereatsimages-273",
+    metadata: (req, file, cb) => {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: (req, file, cb) => {
+      cb(null, Date.now().toString() + "-" + file.originalname);
+    },
+  }),
+});
 
 app.use(
   bodyParser.urlencoded({
@@ -137,25 +145,21 @@ app.post("/updateJobSeekerDetails", function (req, res) {
 });
 
 app.get("/getJobSeekerReviews", function (req, res) {
-  kafka.make_request(
-    "listOfJobSeekersReviews",
-    req.query,
-    function (err, results) {
-      console.log("in result");
-      console.log(results);
-      if (err) {
-        console.log("Inside err");
-        res.json({
-          status: "error",
-          msg: "System Error, Try Again.",
-        });
-      } else {
-        console.log("Inside else");
-        res.status(200).json(results);
-        res.end();
-      }
+  kafka.make_request("getJobSeekerReviews", req.query, function (err, results) {
+    console.log("in result");
+    console.log(results);
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else");
+      res.status(200).json(results);
+      res.end();
     }
-  );
+  });
 });
 
 app.get("/getWhatTypeAheadList", function (req, res) {
@@ -226,6 +230,194 @@ app.post("/getSaveJob", function (req, res) {
       console.log("Inside else");
       res.status(200).json(results);
       res.end();
+    }
+  });
+});
+
+app.post("/updateResume", uploadS3.single("file"), function (req, res) {
+  console.log("req.body", req.body);
+  req.body.file = req.file?.location;
+  req.body.originalname = req.file?.originalname;
+  console.log("req.file", req.file);
+  kafka.make_request("updateResume", req.body, function (err, results) {
+    console.log("in result");
+    console.log(results);
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else");
+      res.status(200).json(results);
+      res.end();
+    }
+  });
+});
+
+app.post("/deleteResume", function (req, res) {
+  // console.log("req.body", req.body);
+  // req.body.file = req.file?.location;
+  // req.body.originalname = req.file?.originalname;
+  // console.log("req.file", req.file);
+  var params = { Bucket: "ubereatsimages-273", Key: req.bodyresumeURI };
+
+  s3.deleteObject(params, function (err, data) {
+    if (err) console.log(err, err.stack);
+    // error
+    else console.log(data); // deleted
+  });
+  kafka.make_request("deleteResume", req.body, function (err, results) {
+    console.log("in result");
+    console.log(results);
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else");
+      res.status(200).json(results);
+      res.end();
+    }
+  });
+});
+
+app.post("/deleteReview", function (req, res) {
+  kafka.make_request("deleteReview", req.body, function (err, results) {
+    console.log("in result");
+    console.log(results);
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else");
+      res.status(200).json(results);
+      res.end();
+    }
+  });
+});
+
+// anay's
+
+app.post("/commonLogin", async (req, res) => {
+  kafka.make_request("login_common", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      let finalData = [];
+      finalData.push(results);
+      const payload = { _id: results.id, email: results.email };
+      const token = jwt.sign(payload, secret, {
+        expiresIn: 1008000,
+      });
+      finalData.push(token);
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify(finalData));
+    }
+  });
+});
+
+// Common Register
+app.post("/commonRegister", async (req, res) => {
+  kafka.make_request("register_common", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(results);
+    }
+  });
+});
+
+// Get Saved Jobs by Jobseeker Id
+app.get("/savedJobs/get/:jobseekerid", async (req, res) => {
+  kafka.make_request(
+    "get_saved_jobs_by_jobseeker_id",
+    req.params.jobseekerid,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
+// Delete saved job
+app.post("/savedJobs/delete/:savedjobid", async (req, res) => {
+  req.body.savedjobid = req.params.savedjobid;
+  kafka.make_request("delete_saved_job", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify(results));
+    }
+  });
+});
+
+// Get Applied Jobs by Jobseeker Id
+app.get("/appliedJobs/get/:jobseekerid", async (req, res) => {
+  kafka.make_request(
+    "get_applied_jobs_by_jobseeker_id",
+    req.params.jobseekerid,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
+// Apply for a job
+app.post("/applyJob", async (req, res) => {
+  kafka.make_request("apply_job", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(results);
     }
   });
 });

@@ -62,8 +62,7 @@ KafkaRPC.prototype.makeRequest = function (topic_name, content, callback) {
     console.log(self.producer.ready);
     self.producer.send(payloads, function (err, data) {
       console.log("in response2");
-      if (err) console.log("which error", err);
-      console.log("which data", data);
+      if (err) console.log("which data", data);
     });
   });
 };

@@ -52,7 +52,7 @@ const Routes = () => {
         <Route path="/employerAnalytics" component={Analytics} />
         <Route path="/apply" component={ApplyJob} />
         <Route path="/myReviews" component={MyReviews} />
-        <Route path="/" component={FindJobs} />
+        <Route exact path="/" component={FindJobs} />
       </Switch>
     </Router>
   );
