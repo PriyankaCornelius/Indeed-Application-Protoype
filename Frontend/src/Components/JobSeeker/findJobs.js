@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MainHeader from "./mainHeader";
+import { NODE_HOST, NODE_PORT } from "../../envConfig";
 import { Grid, Divider, Typography } from "@material-ui/core";
+import StarIcon from "@mui/icons-material/Star";
+import { Route, Link } from "react-router-dom";
+import CompanyRating from "./companyRating";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   Autocomplete,
   TextField,
@@ -9,19 +15,144 @@ import {
   Card,
   CardActions,
   CardContent,
+  CardActionArea,
 } from "@mui/material";
 
 const FindJobs = (props) => {
   const [showJobs, setShowJobs] = useState(false);
-  const jobTittles = [
-    { title: "Software development" },
-    { title: "Data Analyst" },
-    { title: "Business Analyst" },
-  ];
+  const [jobCards, setJobCards] = useState([]);
+  const [jobDetails, setJobDetails] = useState({});
+  const [jobFilterWhat, setJobFilterWhat] = useState("");
+  const [jobFilterWhere, setJobFilterWhere] = useState("");
+  const [jobWhatTypeaheadList, setWhatTypeaheadList] = useState([]);
+  const [jobWhereTypeaheadList, setWhereTypeaheadList] = useState([]);
+  const [jobWhatTypeaheadValue, setJobWhatTypeaheadValue] = useState("");
+  const [jobWhereTypeaheadValue, setJobWhereTypeaheadValue] = useState("");
+  const [savedJob, setSavedJob] = useState({});
+  const [cardColor, setCardColor] = useState({ 0: "blue" });
+  const val = " days ago";
+  var today = new Date();
+  const oneDay = 24 * 60 * 60 * 1000;
+
+  const renderBulletList = (text) => {
+    let textList = text?.split("· ");
+    console.log("Hello", textList);
+    return textList?.map((detail) => {
+      if (detail.length > 0) {
+        return <li>{detail}</li>;
+      } else return null;
+    });
+  };
 
   const onClickHandler = () => {
     setShowJobs(true);
+    getJobsList();
   };
+
+  const getJobsList = async () => {
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/getJobsList`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          what: jobWhatTypeaheadValue,
+          where: jobFilterWhere,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    setCardColor({ 0: "blue" });
+    if (data && data.length > 0) {
+      setJobCards(data);
+      setJobDetails(data[0]);
+      getSaveJob(data[0].id);
+    }
+  };
+
+  const saveJob = async (jobId) => {
+    const response = await fetch(`http://${NODE_HOST}:${NODE_PORT}/saveJob`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        jobId: savedJob.jobId,
+        applicantId: savedJob.applicantId,
+        saved: !savedJob.saved,
+      }),
+    });
+
+    const data = await response.json();
+    if (data) {
+      setSavedJob((prevState) => {
+        return { ...prevState, saved: !prevState.saved };
+      });
+    }
+  };
+
+  const getSaveJob = async (jobId) => {
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/getSaveJob`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          jobId: jobId,
+          applicantId: 1, //jobseeker Id from redux
+        }),
+      }
+    );
+
+    const data = await response.json();
+    console.log("get save job data", data);
+    setSavedJob(data);
+  };
+
+  const getWhatTypeAheadList = async () => {
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/getWhatTypeAheadList?what=${jobFilterWhat}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log("list of typeahead what received", data);
+    setWhatTypeaheadList(data);
+  };
+
+  const getWhereTypeAheadList = async () => {
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/getWhereTypeAheadList?where=${jobFilterWhere}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log("list of typeahead where received", data);
+    setWhereTypeaheadList(data);
+  };
+
+  useEffect(() => {
+    getWhatTypeAheadList();
+  }, [jobFilterWhat]);
+
+  useEffect(() => {
+    getWhereTypeAheadList();
+  }, [jobFilterWhere]);
+
   return (
     <div>
       <MainHeader currentTab="findJobs"></MainHeader>
@@ -35,7 +166,15 @@ const FindJobs = (props) => {
             size="small"
             id="free-solo-2-demo"
             disableClearable
-            options={jobTittles.map((option) => option.title)}
+            options={jobWhatTypeaheadList}
+            value={jobWhatTypeaheadValue}
+            onChange={(event, newValue) => {
+              setJobWhatTypeaheadValue(newValue);
+            }}
+            inputValue={jobFilterWhat}
+            onInputChange={(event, newInputValue) => {
+              setJobFilterWhat(newInputValue);
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -56,7 +195,15 @@ const FindJobs = (props) => {
             id="free-solo-2-demo"
             disableClearable
             size="small"
-            options={jobTittles.map((option) => option.title)}
+            options={jobWhereTypeaheadList}
+            value={jobWhereTypeaheadValue}
+            onChange={(event, newValue) => {
+              setJobWhereTypeaheadValue(newValue);
+            }}
+            inputValue={jobFilterWhere}
+            onInputChange={(event, newInputValue) => {
+              setJobFilterWhere(newInputValue);
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -98,37 +245,62 @@ const FindJobs = (props) => {
         <Grid container>
           <Grid item md={1}></Grid>
           <Grid item>
-            <Card
-              variant="outlined"
-              style={{
-                display: "block",
-                width: "30vw",
-                margin: 15,
-                height: "17vw",
-                textAlign: "left",
-              }}
-            >
-              <CardContent>
-                <Typography
-                  sx={{ fontSize: 14 }}
-                  color="text.secondary"
-                  gutterBottom
+            {jobCards?.map((jobs, index) => {
+              let secondDate = new Date(jobs.createdAt);
+              let numDays = Math.round(Math.abs((today - secondDate) / oneDay));
+              return (
+                <Card
+                  variant="outlined"
+                  style={{
+                    borderColor: cardColor[index],
+                    display: "block",
+                    width: "30vw",
+                    margin: 15,
+                    height: "17vw",
+                    textAlign: "left",
+                  }}
+                  onClick={() => {
+                    setCardColor({ [index]: "blue" });
+                    setJobDetails(jobs);
+                    getSaveJob(jobs.id);
+                  }}
                 >
-                  Software Development Engineer
-                </Typography>
-                <Typography variant="h5" component="div"></Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  Amazon.com Services LLC
-                </Typography>
-                <Typography variant="body2">
-                  Cupertino, CA
-                  <br />
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions>
-            </Card>
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography style={{ fontSize: 16, fontWeight: 600 }}>
+                        {jobs.jobTitle}
+                      </Typography>
+                      <Stack direction="row">
+                        <Typography style={{ marginRight: 10, fontSize: 14 }}>
+                          {jobs.companyName}
+                        </Typography>
+                        <Typography style={{ marginRight: 10, fontSize: 14 }}>
+                          {jobs.averageRating ? jobs.averageRating : 0}
+                          <StarIcon
+                            style={{ fontSize: "small", color: "grey" }}
+                          />
+                        </Typography>
+                      </Stack>
+                      <Typography style={{ marginRight: 10, fontSize: 14 }}>
+                        {jobs.address}
+
+                        <br />
+                      </Typography>
+                      <p></p>
+                      <Typography style={{ fontSize: 13 }} sx={{ mb: 2 }}>
+                        {jobs.fulldescription?.substring(0, 200) + "..."}
+                      </Typography>
+                      <p></p>
+                      <Typography style={{ fontSize: 13 }} sx={{ mb: 2 }}>
+                        {numDays + val}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+
+                  <CardActions></CardActions>
+                </Card>
+              );
+            })}{" "}
           </Grid>
 
           {/* display of main job card */}
@@ -137,6 +309,7 @@ const FindJobs = (props) => {
             <Card
               variant="outlined"
               style={{
+                overflow: "auto",
                 display: "block",
                 width: "45vw",
                 margin: 15,
@@ -145,25 +318,226 @@ const FindJobs = (props) => {
               }}
             >
               <CardContent>
+                <Typography style={{ fontSize: 16, fontWeight: 600 }}>
+                  {jobDetails.jobTitle}
+                </Typography>
+
+                <Stack direction="row">
+                  <Link to="/company" style={{ marginRight: 10 }}>
+                    {jobDetails.companyName}
+                  </Link>
+                  <CompanyRating rating={jobDetails.averageRating} />
+                  <Link to="/company" style={{ marginRight: 10 }}>
+                    {jobDetails.totalReviews + " reviews"}
+                  </Link>
+                </Stack>
                 <Typography
-                  sx={{ fontSize: 14 }}
-                  color="text.secondary"
-                  gutterBottom
+                  style={{ marginRight: 10, marginTop: 5, fontSize: 14 }}
                 >
-                  Software Development Engineer
-                </Typography>
-                <Typography variant="h5" component="div"></Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  Amazon.com Services LLC
-                </Typography>
-                <Typography variant="body2">
-                  Cupertino, CA
+                  {jobDetails.address}
+
                   <br />
                 </Typography>
+                <Typography style={{ marginRight: 10, fontSize: 14 }}>
+                  {jobDetails.type}
+                </Typography>
+                <Typography
+                  style={{ marginRight: 10, marginBottom: 10, fontSize: 12 }}
+                >
+                  Employer actively reviewed job 3 days ago
+                </Typography>
+
+                <Button
+                  variant="contained"
+                  style={{
+                    textTransform: "none",
+                    marginBottom: 10,
+                    marginRight: 10,
+                  }}
+                >
+                  <a href={jobDetails.jobWebsite} style={{ color: "white" }}>
+                    {" "}
+                    Apply on company site
+                  </a>
+                </Button>
+
+                <Button onClick={() => saveJob(jobDetails.id)}>
+                  {savedJob.saved ? (
+                    <FavoriteIcon style={{ color: "grey" }} />
+                  ) : (
+                    <FavoriteBorderIcon style={{ color: "grey" }} />
+                  )}
+                </Button>
+                <Divider></Divider>
+
+                <Stack>
+                  <Typography
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 600,
+                      marginTop: 10,
+                      marginBottom: 5,
+                    }}
+                  >
+                    Job details
+                  </Typography>
+                  <Typography
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 600,
+                      marginBottom: 5,
+                    }}
+                  >
+                    Salary
+                  </Typography>
+                  <Typography
+                    style={{
+                      fontSize: 13,
+                      marginBottom: 5,
+                    }}
+                  >
+                    {jobDetails.salaryDetails}
+                  </Typography>
+                  <Typography
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 600,
+                      marginBottom: 5,
+                    }}
+                  >
+                    Job Type
+                  </Typography>
+
+                  <Typography
+                    style={{
+                      fontSize: 13,
+                      marginBottom: 10,
+                    }}
+                  >
+                    {jobDetails.type}
+                  </Typography>
+                </Stack>
+
+                <Divider></Divider>
+
+                <Stack>
+                  <Typography
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 600,
+                      marginTop: 10,
+                      marginBottom: 5,
+                    }}
+                  >
+                    Full Job Description
+                  </Typography>
+                  <Typography
+                    style={{
+                      fontSize: 13,
+                      marginBottom: 10,
+                      marginTop: 10,
+                    }}
+                  >
+                    {jobDetails.fulldescription}
+                  </Typography>
+                  <Typography
+                    style={{
+                      fontSize: 13,
+                      marginBottom: 10,
+                    }}
+                  >
+                    <b size="3">Location :</b>{" "}
+                    {jobDetails.streetAddress +
+                      ", " +
+                      jobDetails.city +
+                      ", " +
+                      jobDetails.state +
+                      ", " +
+                      jobDetails.zip}
+                  </Typography>
+                  <Typography
+                    style={{
+                      fontSize: 13,
+                      marginBottom: 10,
+                    }}
+                  >
+                    <b size="3">Compenstaion :</b> {jobDetails.compensation}
+                  </Typography>
+
+                  <Typography
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 600,
+                      marginTop: 10,
+                      marginBottom: 5,
+                    }}
+                  >
+                    What You’ll Do{" "}
+                  </Typography>
+
+                  <Typography
+                    style={{
+                      fontSize: 13,
+                      marginBottom: 10,
+                      marginTop: 10,
+                    }}
+                  >
+                    {renderBulletList(jobDetails.whatYouWillDo)}
+                  </Typography>
+
+                  <Typography
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 600,
+                      marginTop: 10,
+                      marginBottom: 5,
+                    }}
+                  >
+                    What You’ll Need{" "}
+                  </Typography>
+
+                  <Typography
+                    style={{
+                      fontSize: 13,
+                      marginBottom: 10,
+                      marginTop: 10,
+                    }}
+                  >
+                    {renderBulletList(jobDetails.whatYouWillNeed)}
+                  </Typography>
+
+                  <Typography
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 600,
+                      marginTop: 10,
+                      marginBottom: 5,
+                    }}
+                  >
+                    {"Why You'll Love Working for a " + jobDetails.jobTitle}
+                  </Typography>
+
+                  <Typography
+                    style={{
+                      fontSize: 13,
+                      marginBottom: 10,
+                      marginTop: 10,
+                    }}
+                  >
+                    {renderBulletList(jobDetails.whatYouWillLoveWorkingFor)}
+                  </Typography>
+
+                  <Typography
+                    style={{
+                      fontSize: 13,
+                      marginBottom: 10,
+                      marginTop: 10,
+                    }}
+                  >
+                    {jobDetails.website}
+                  </Typography>
+                </Stack>
               </CardContent>
-              <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions>
             </Card>
           </Grid>
         </Grid>

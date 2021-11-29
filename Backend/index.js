@@ -6,11 +6,11 @@ var app = express();
 app.use(express.json());
 
 const cors = require("cors");
-const corsConfig = {
-  credentials: true,
-  origin: true,
-};
-app.use(cors(corsConfig));
+// const corsConfig = {
+//   credentials: true,
+//   origin: true,
+// };
+app.use(cors());
 
 const apiRouter = require("./routes/routes");
 app.use("/", apiRouter);
