@@ -196,12 +196,6 @@ router.get("/savedJobs/get/:jobseekerid", async (req, res, next) => {
   );
 });
 
-<<<<<<< HEAD
-
-
-
-
-=======
 // Delete saved job
 router.post("/savedJobs/delete/:savedjobid", async (req, res, next) => {
   req.body.savedjobid = req.params.savedjobid;
@@ -257,6 +251,5 @@ router.post("/applyJob", async (req, res, next) => {
     }
   });
 });
->>>>>>> f635d99c5fa701953251c5635b18237d7009bbce
 
 module.exports = router;
