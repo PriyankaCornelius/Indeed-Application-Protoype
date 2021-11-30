@@ -6,8 +6,17 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { Menu, MenuItem, Typography } from "@mui/material";
 import { ListItemIcon } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { commonLogoutFunc } from "../../redux/actions/loginActions";
+import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 const ProfileIconData = (props) => {
+  const handleLogout = (e) => {
+    e.preventDefault();
+    props.commonLogoutFunc();
+  };
+
+  const userEmailId = useSelector((state) => state.login.user.email);
   return (
     <React.Fragment>
       <Menu
@@ -43,8 +52,9 @@ const ProfileIconData = (props) => {
         <Typography
           sx={{ textAlign: "center", lineHeight: 4, fontWeight: 600 }}
         >
-          archita22@gmail.com
+          {userEmailId}
         </Typography>
+
         <Link to="/jobSeekerProfile" style={{ textDecoration: "none" }}>
           <MenuItem>
             <ListItemIcon>
@@ -53,29 +63,36 @@ const ProfileIconData = (props) => {
             Profile
           </MenuItem>
         </Link>
-        <MenuItem>
-          <ListItemIcon>
-            <FavoriteIcon fontSize="small" />
-          </ListItemIcon>
-          My jobs
-        </MenuItem>
 
-        <MenuItem>
-          <ListItemIcon>
-            <ReviewsIcon fontSize="small" />
-          </ListItemIcon>
-          My reviews
-        </MenuItem>
+        <Link to="/myjobs" style={{ textDecoration: "none" }}>
+          <MenuItem>
+            <ListItemIcon>
+              <FavoriteIcon fontSize="small" />
+            </ListItemIcon>
+            My jobs
+          </MenuItem>
+        </Link>
 
-        <MenuItem>
-          <ListItemIcon>
-            <LogoutIcon fontSize="small" />
-          </ListItemIcon>
-          Sign out
-        </MenuItem>
+        <Link to="/myReviews" style={{ textDecoration: "none" }}>
+          <MenuItem>
+            <ListItemIcon>
+              <ReviewsIcon fontSize="small" />
+            </ListItemIcon>
+            My reviews
+          </MenuItem>
+        </Link>
+
+        <Link to="#" onClick={handleLogout} style={{ textDecoration: "none" }}>
+          <MenuItem>
+            <ListItemIcon>
+              <LogoutIcon fontSize="small" />
+            </ListItemIcon>
+            Sign out
+          </MenuItem>
+        </Link>
       </Menu>
     </React.Fragment>
   );
 };
 
-export default ProfileIconData;
+export default connect(null, { commonLogoutFunc })(ProfileIconData);

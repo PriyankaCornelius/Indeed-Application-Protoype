@@ -1,10 +1,31 @@
-const { mongoDB } = require("./config");
+const { mongoDB } = require("./mongoDBConfig");
 const mongoose = require("mongoose");
 
 //topics files
 var CompanyReviews = require("./services/CompanyReviews.js");
-var AddCompanyReview = require("./services/AddCompanyReview.js");
+var GetEmployerProfile = require("./services/GetEmployerProfile");
+var UpdateEmployerProfile = require("./services/PutEmployerProfile");
+var AddCompanyReview = require("./services/jobSeeker/AddCompanyReview.js");
+var LoginCommon = require("./services/LoginCommon.js");
+var RegisterCommon = require("./services/RegisterCommon.js");
+var SavedJobsByJobseeker = require("./services/SavedJobsByJobseeker.js");
+var DeleteSavedJob = require("./services/DeleteSavedJob.js");
+var AppliedJobsByJobseeker = require("./services/AppliedJobsByJobseeker.js");
+var ApplyJob = require("./services/ApplyJob.js");
 
+var JobList = require("./services/jobSeeker/getJobList.js");
+var JobSeekerDetails = require("./services/jobSeeker/getJobSeekerDetails.js");
+var UpdateJobSeekerDetails = require("./services/jobSeeker/updateJobSeekerDetails.js");
+var GetJobSeekerReviews = require("./services/jobSeeker/getJobSeekerReviews");
+var SaveJob = require("./services/jobSeeker/saveJob.js");
+var GetSaveJobs = require("./services/jobSeeker/getSaveJobs.js");
+var WhatTypeAheadList = require("./services/jobSeeker/getwhatTypeAheadList.js");
+var WhereTypeAheadList = require("./services/jobSeeker/getwhereTypeAheadList.js");
+
+var admin = require("./services/admin.js");
+var UpdateResume = require("./services/jobSeeker/updateResume.js");
+var DeleteResume = require("./services/jobSeeker/deleteResume");
+var DeleteReview = require("./services/jobSeeker/deleteReview");
 var connection = new require("./Connection");
 
 var options = {
@@ -57,5 +78,30 @@ function handleTopicRequest(topic_name, fname) {
 // Add your TOPICs here
 //first argument is topic name
 //second argument is a function that will handle this topic request
-handleTopicRequest("get_reviews_by_company_id0", CompanyReviews);
+handleTopicRequest("get_reviews_by_company_id", CompanyReviews);
 handleTopicRequest("post_company_review", AddCompanyReview);
+handleTopicRequest("login_common", LoginCommon);
+handleTopicRequest("register_common", RegisterCommon);
+handleTopicRequest("get_saved_jobs_by_jobseeker_id", SavedJobsByJobseeker);
+handleTopicRequest("delete_saved_job", DeleteSavedJob);
+handleTopicRequest("get_applied_jobs_by_jobseeker_id", AppliedJobsByJobseeker);
+handleTopicRequest("apply_job", ApplyJob);
+//handleTopicRequest("get_reviews_by_company_id0", CompanyReviews);
+//handleTopicRequest("post_company_review", AddCompanyReview);
+handleTopicRequest("get_company_profile_by_company_id", GetEmployerProfile);
+handleTopicRequest("put_company_profile_by_company_id", UpdateEmployerProfile);
+// handleTopicRequest("get_reviews_by_company_id0", CompanyReviews);
+// handleTopicRequest("post_company_review", AddCompanyReview);
+handleTopicRequest("getJobsList", JobList);
+handleTopicRequest("getJobSeekerDetails", JobSeekerDetails);
+handleTopicRequest("updateJobSeekerDetails", UpdateJobSeekerDetails);
+handleTopicRequest("getJobSeekerReviews", GetJobSeekerReviews);
+handleTopicRequest("whatTypeAheadList", WhatTypeAheadList);
+handleTopicRequest("whereTypeAheadList", WhereTypeAheadList);
+handleTopicRequest("saveJob", SaveJob);
+handleTopicRequest("getSaveJob", GetSaveJobs);
+
+handleTopicRequest("admin", admin);
+handleTopicRequest("updateResume", UpdateResume);
+handleTopicRequest("deleteResume", DeleteResume);
+handleTopicRequest("deleteReview", DeleteReview);

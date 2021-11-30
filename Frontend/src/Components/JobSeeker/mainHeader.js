@@ -1,6 +1,7 @@
 import React from "react";
 import { Tabs, Tab, Divider, Grid } from "@material-ui/core";
 import SignIn from "./signIn";
+import EmployersHeader from "../Employer/EmployersHeader";
 import PersonIcon from "@mui/icons-material/Person";
 import MessageIcon from "@mui/icons-material/Message";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -9,12 +10,14 @@ import indeedLogo from "../../Images/IndeedIcon.png";
 import { Link } from "react-router-dom";
 import UploadResume from "./uploadResume";
 import ProfileIconData from "./profileIconData";
+import { useSelector } from "react-redux";
 
 const MainHeader = (props) => {
   let RIGHT_PROFILE_TABS;
-  let user = "Signed In";
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const userId = useSelector((state) => state.login.user.id);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,28 +30,29 @@ const MainHeader = (props) => {
   const LEFT_PROFILE_TABS = [
     {
       icon: <img alt={"logo"} width="115" height="40" src={indeedLogo} />,
-      to: "/",
+      // to: "/",
+      href: "/",
       value: "",
     },
     {
       label: "Find Jobs",
-      to: "/",
+      href: "/",
       value: "findJobs",
     },
 
     {
       label: "Company Reviews",
-      to: "/companyReviews",
+      href: "/companyReviews",
       value: "companyReviews",
     },
     {
       label: "Find Salaries",
-      to: "/findSalaries",
+      href: "/findSalaries",
       value: "findSalaries",
     },
   ];
 
-  if (user === "Signed In") {
+  if (userId) {
     RIGHT_PROFILE_TABS = [
       {
         value: "message",
@@ -59,8 +63,8 @@ const MainHeader = (props) => {
           padding: 0,
           margin: 10,
           minWidth: "30px",
+          marginLeft: 95,
         },
-        to: "/Messaging",
       },
       {
         value: "find",
@@ -87,7 +91,7 @@ const MainHeader = (props) => {
 
       {
         label: "Employers / Post Job",
-        href: "/employersPostJobs",
+        href: "/employerHeader",
         value: "employersPostJobs",
         style: {
           textTransform: "none",
@@ -115,7 +119,7 @@ const MainHeader = (props) => {
       },
       {
         label: "Sign in",
-        href: "/signIn",
+        href: "/login",
         component: <SignIn />,
         value: "signIn",
         style: {
@@ -151,25 +155,26 @@ const MainHeader = (props) => {
             scrollButtons="false"
             indicatorColor="primary"
           >
-            {LEFT_PROFILE_TABS.map((tab) => (
-              <Tab
-                key={tab.value}
-                value={tab.value}
-                component={Link}
-                to={tab.to}
-                label={tab.label}
-                color={tab.color}
-                style={{
-                  textTransform: "none",
-                  padding: 0,
-                  margin: 10,
-                  minWidth: "20px",
-                }}
-                icon={tab.icon}
-                indicatorColor="primary"
-                textColor="primary"
-              />
-            ))}
+            {LEFT_PROFILE_TABS.map((tab) => {
+              return (
+                <Tab
+                  key={tab.value}
+                  value={tab.value}
+                  href={tab.href}
+                  label={tab.label}
+                  color={tab.color}
+                  style={{
+                    textTransform: "none",
+                    padding: 0,
+                    margin: 10,
+                    minWidth: "20px",
+                  }}
+                  icon={tab.icon}
+                  indicatorColor="primary"
+                  textColor="primary"
+                />
+              );
+            })}
           </Tabs>
         </Grid>
         <Grid item md={3}>

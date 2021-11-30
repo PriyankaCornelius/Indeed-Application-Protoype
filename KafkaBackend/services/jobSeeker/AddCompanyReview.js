@@ -1,4 +1,4 @@
-const CompanyReviews = require("../models/CompanyReviews");
+const CompanyReviews = require("../../models/CompanyReviews");
 
 function handle_request(msg, callback) {
   let newReview = new CompanyReviews({
