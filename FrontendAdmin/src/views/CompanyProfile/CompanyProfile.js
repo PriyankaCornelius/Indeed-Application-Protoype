@@ -16,6 +16,7 @@ import CardFooter from "components/Card/CardFooter.js";
 import withStyles from "@material-ui/core/styles/withStyles"
 import {
     Form,
+    Modal,
     // Card,
     // Container,
     // Row,
@@ -32,7 +33,9 @@ import {
         search: false,
         searchResult: [],
         companyReview: [],
+        companyName: '',
         reviewPage: false,
+        jobStats: [],
         // action: '',
       };
       this.handleChange = this.handleChange.bind(this);
@@ -70,6 +73,17 @@ import {
           if (res.status === 200) {
             // console.log(res.data);
             this.setState({ companyReview: res.data });
+            
+          } else {
+            console.log("Error!")
+          }
+        });
+      Axios.defaults.withCredentials = true;
+      Axios.post('http://localhost:3001/viewjobstats', action)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res.data);
+            this.setState({ jobStats: res.data });
             this.setState({ reviewPage: true });
           } else {
             console.log("Error!")
@@ -109,8 +123,9 @@ import {
           }
         });
     }
-  
+
     render() {
+      console.log(this.state.jobStats)
       if (!this.state.search && !this.state.reviewPage) {
         return (
         <div>
@@ -120,7 +135,7 @@ import {
                       <GridItem>
                       <input type="text" name="inSearch" placeholder=" Search Companies " style={{ width: '350px', height: '35px' }} onChange={this.handleChange}  required />
                           &nbsp; &nbsp; &nbsp;
-                          <Button color="primary" type="submit" onClick={this.handleSearch} >Search</Button>
+                          <Button color="primary" onClick={this.handleSearch} >Search</Button>
                       </GridItem>
                       </GridContainer>
                       </Form>
@@ -159,6 +174,7 @@ import {
                             <Button color="warning" type="submit" onClick={this.handleHome}>All Companies</Button>
                         </GridItem>
                         </GridContainer>
+                        <h6>Job Applications: {this.state.jobStats[0].applications} &nbsp;&nbsp;&nbsp; Hired: {this.state.jobStats[0].hired} &nbsp;&nbsp;&nbsp; Rejected: {this.state.jobStats[0].rejected}</h6>
                         </Form>
               <Form inline>
                 <GridContainer >

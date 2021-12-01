@@ -445,4 +445,20 @@ router.post("/viewcompanyreview", async (req, res, next) => {
 });
 });
 
+//View company reviews
+router.post("/viewjobstats", async (req, res, next) => {
+  console.log("POST Request on viewjobstats");
+  kafka.make_request('adminCompany',{"path": "viewjobstats", "body": req.body}, function(err,results){
+    console.log('GET Request on viewjobstats');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
 module.exports = router;
