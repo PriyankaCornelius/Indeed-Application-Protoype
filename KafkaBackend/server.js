@@ -23,14 +23,11 @@ var WhatTypeAheadList = require("./services/jobSeeker/getwhatTypeAheadList.js");
 var WhereTypeAheadList = require("./services/jobSeeker/getwhereTypeAheadList.js");
 
 var admin = require("./services/admin.js");
-<<<<<<< HEAD
 var adminReview = require("./services/adminReview.js");
 var adminCompany = require("./services/adminCompany.js");
-=======
 var UpdateResume = require("./services/jobSeeker/updateResume.js");
 var DeleteResume = require("./services/jobSeeker/deleteResume");
 var DeleteReview = require("./services/jobSeeker/deleteReview");
->>>>>>> 4ad1d26975195791d099b865dcdc6bf4d10ff5e2
 var connection = new require("./Connection");
 
 var options = {
@@ -107,11 +104,8 @@ handleTopicRequest("saveJob", SaveJob);
 handleTopicRequest("getSaveJob", GetSaveJobs);
 
 handleTopicRequest("admin", admin);
-<<<<<<< HEAD
 handleTopicRequest("adminReview", adminReview);
 handleTopicRequest("adminCompany", adminCompany);
-=======
 handleTopicRequest("updateResume", UpdateResume);
 handleTopicRequest("deleteResume", DeleteResume);
 handleTopicRequest("deleteReview", DeleteReview);
->>>>>>> 4ad1d26975195791d099b865dcdc6bf4d10ff5e2
