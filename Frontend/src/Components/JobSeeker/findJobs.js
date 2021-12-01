@@ -367,38 +367,23 @@ const FindJobs = (props) => {
                     Employer actively reviewed job 3 days ago
                   </Typography>
 
-                  {jobDetails.jobWebsite ? (
-                    <Button
-                      variant="contained"
-                      style={{
-                        textTransform: "none",
-                        marginBottom: 10,
-                        marginRight: 10,
-                      }}
+                  <Button
+                    variant="contained"
+                    style={{
+                      textTransform: "none",
+                      marginBottom: 10,
+                      marginRight: 10,
+                    }}
+                  >
+                    <Link
+                      to={"/apply?jobid=" + jobDetails.id}
+                      style={{ color: "white" }}
                     >
-                      <a
-                        href={jobDetails.jobWebsite}
-                        style={{ color: "white" }}
-                      >
-                        {" "}
-                        Apply on company site
-                      </a>
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      style={{
-                        textTransform: "none",
-                        marginBottom: 10,
-                        marginRight: 10,
-                      }}
-                    >
-                      <Link to="/apply" style={{ color: "white" }}>
-                        {" "}
-                        Apply now
-                      </Link>
-                    </Button>
-                  )}
+                      {" "}
+                      Apply now
+                    </Link>
+                  </Button>
+
                   {userId ? (
                     <Button onClick={() => saveJob(jobDetails.id)}>
                       {savedJob.saved ? (
@@ -415,7 +400,7 @@ const FindJobs = (props) => {
                     </Link>
                   )}
 
-                  <Divider></Divider>
+                  <Divider />
 
                   <Stack>
                     <Typography

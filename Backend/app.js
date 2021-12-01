@@ -406,7 +406,8 @@ app.get("/appliedJobs/get/:jobseekerid", async (req, res) => {
 });
 
 // Apply for a job
-app.post("/applyJob", async (req, res) => {
+app.post("/applyJob", uploadS3.single("resumeURI"), async (req, res) => {
+  req.body.resumeURI = req.file?.location;
   kafka.make_request("apply_job", req.body, function (err, results) {
     if (err) {
       res.writeHead(500, {

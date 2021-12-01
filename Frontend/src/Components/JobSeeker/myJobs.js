@@ -96,6 +96,9 @@ const MyJobs = ({ user }) => {
                           textTransform: "none",
                         }}
                         variant="contained"
+                        onClick={() => {
+                          window.location.href = "/apply?jobid=" + job.id;
+                        }}
                       >
                         Apply now
                       </Button>
