@@ -23,7 +23,8 @@ export const commonLoginFunc = (payload, setLoginError) => (dispatch) => {
         if (res.data[0][0].personaType === "js") window.location.href = "/";
         if (res.data[0][0].personaType === "a")
           window.location.href = "/admin/dashboard";
-        // to add - employer landing page
+        if (res.data[0][0].personaType === "e")
+          window.location.href = "/employerHeader";
       }
     })
     .catch((err) => {

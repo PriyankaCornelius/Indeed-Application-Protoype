@@ -135,7 +135,7 @@ const MyJobs = ({ user }) => {
             ))}
           </>
         );
-      else
+      else if (savedListData && savedListData.length === 0)
         return (
           <>
             <Grid item container direction="column" style={{}}>
@@ -188,6 +188,7 @@ const MyJobs = ({ user }) => {
             </Grid>
           </>
         );
+      else return null;
     } else if (appliedList) {
       if (appliedListData && appliedListData.length > 0)
         return (
@@ -281,7 +282,7 @@ const MyJobs = ({ user }) => {
             ))}
           </>
         );
-      else
+      else if (appliedListData && appliedListData.length === 0)
         return (
           <>
             <Grid item container direction="column">
@@ -338,6 +339,7 @@ const MyJobs = ({ user }) => {
             </Grid>
           </>
         );
+      else return null;
     } else return null;
   };
 

@@ -235,8 +235,8 @@ const FindJobs = (props) => {
       <Grid flex>
         <Stack sx={{ mt: 3, mb: 3 }}>
           <Typography sx={{ textAlign: "center", lineHeight: 10 }}>
-            <Link to="/jobSeekerProfile"> Post your resume</Link>– It only takes
-            a few seconds
+            <Link to="/jobSeekerProfile"> Post your resume</Link> – It only
+            takes a few seconds
           </Typography>
           <Typography sx={{ textAlign: "center", lineHeight: 10 }}>
             <Link to="/employerHeader">Employers: Post a job</Link>
