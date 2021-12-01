@@ -2,7 +2,6 @@ const con = require("../../sqldbConfig.js");
 
 const handle_request = async (msg, callback) => {
   try {
-    console.log("incoming message", msg);
     let sqlSelect1 = `SELECT  * FROM jobseekers where id = ? and email = ?`;
 
     // checking if email is changed or not

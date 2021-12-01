@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NODE_HOST, NODE_PORT } from "../../envConfig";
 import MainHeader from "./mainHeader";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
   Grid,
   Avatar,
@@ -12,10 +13,18 @@ import {
 } from "@mui/material";
 import { TextField, Typography, Box } from "@material-ui/core";
 import EditIcon from "@mui/icons-material/Edit";
+import ResumeActions from "./resumeActions";
+import { useSelector } from "react-redux";
 
 const JobSeekerProfile = (props) => {
-  let id = 1;
+  const userId = useSelector((state) => state.login.user.id);
   const [jobSeekerDetails, setJobSeekerDetails] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   function stringToColor(string) {
     let hash = 0;
     let i;
@@ -35,6 +44,10 @@ const JobSeekerProfile = (props) => {
     return color;
   }
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
   function stringAvatar(name) {
     return {
       sx: {
@@ -46,7 +59,7 @@ const JobSeekerProfile = (props) => {
 
   const getJobSeekerDetails = async () => {
     const response = await fetch(
-      `http://${NODE_HOST}:${NODE_PORT}/getJobSeekerDetails?id=${1}`,
+      `http://${NODE_HOST}:${NODE_PORT}/getJobSeekerDetails?id=${userId}`,
       {
         method: "GET",
         headers: {
@@ -57,13 +70,43 @@ const JobSeekerProfile = (props) => {
     );
 
     const data = await response.json();
-    console.log("jobseeker details", data);
+
     setJobSeekerDetails({
-      firstName: data.firstName ? data.firstName : " ",
-      lastName: data.lastName ? data.lastName : " ",
+      firstName: data.firstName ? data.firstName : "",
+      lastName: data.lastName ? data.lastName : "",
       email: data.email,
-      phoneNo: data.phoneNo ? data.phoneNo : " ",
+      phoneNo: data.phoneNo ? data.phoneNo : "",
+      resumeFilename: data.resumeFilename ? data.resumeFilename : "",
+      resumeURI: data.resumeURI ? data.resumeURI : "",
     });
+  };
+
+  const onFileChangeHandler = (event) => {
+    event.preventDefault();
+
+    if (event.target.files && event.target.files[0]) {
+      updateResume(event);
+    }
+  };
+  const updateResume = async (event) => {
+    const formData = new FormData();
+    formData.append("file", event.target.files[0]);
+    formData.append("id", userId);
+
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/updateResume`,
+      {
+        method: "POST",
+        body: formData,
+        headers: {
+          // Authorization: session.token,
+          id: userId,
+        },
+      }
+    );
+
+    const data = await response.json();
+    getJobSeekerDetails();
   };
 
   const updateJobSeekerDetails = async () => {
@@ -75,7 +118,7 @@ const JobSeekerProfile = (props) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: id,
+          id: userId,
           firstName: jobSeekerDetails.firstName,
           lastName: jobSeekerDetails.lastName,
           email: jobSeekerDetails.email,
@@ -85,7 +128,7 @@ const JobSeekerProfile = (props) => {
     );
 
     const data = await response.json();
-    console.log("Data received", data);
+
     // setJobSeekerDetails(data);
   };
 
@@ -99,9 +142,30 @@ const JobSeekerProfile = (props) => {
     });
   };
 
+  const showResume = () => {
+    if (jobSeekerDetails.resumeURI?.length > 0) {
+      return (
+        <Stack>
+          <Typography style={{ marginTop: 10, fontSize: 14 }}>
+            {" "}
+            {"Resume : " + jobSeekerDetails.resumeFilename}
+          </Typography>
+        </Stack>
+      );
+    } else {
+      return (
+        <Stack>
+          <Typography style={{ marginTop: 10, fontSize: 14 }}>
+            No resume added
+          </Typography>
+        </Stack>
+      );
+    }
+  };
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    console.log(jobSeekerDetails);
+
     updateJobSeekerDetails();
   };
 
@@ -143,25 +207,50 @@ const JobSeekerProfile = (props) => {
               <CardContent>
                 <Typography style={{ fontSize: 20, fontWeight: 600 }}>
                   Get started
+                  {jobSeekerDetails.resumeURI ? (
+                    <Button sx={{ ml: 43 }}>
+                      <MoreVertIcon onClick={handleClick} />
+                    </Button>
+                  ) : (
+                    <Button disabled sx={{ ml: 40 }}>
+                      <MoreVertIcon onClick={handleClick} />
+                    </Button>
+                  )}
                 </Typography>
-                <Stack justifyContent="center" direction="row">
+                {open ? (
+                  <ResumeActions
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    resumeURI={jobSeekerDetails.resumeURI}
+                    getJobSeekerDetails={getJobSeekerDetails}
+                  />
+                ) : null}
+
+                <Stack justifyContent="center">
+                  <input
+                    type="file"
+                    id="sampleFile"
+                    style={{ display: "none" }}
+                    onChange={onFileChangeHandler}
+                  />
                   <Button
                     variant="outlined"
-                    size="medium"
-                    style={{ margin: 10 }}
+                    htmlFor="sampleFile"
+                    component="label"
+                    type={"submit"}
+                    style={{ width: "40%", marginTop: 10 }}
                   >
                     Upload a resume
                   </Button>
-                  <Button
-                    variant="outlined"
-                    size="medium"
-                    style={{ margin: 10 }}
-                  >
-                    Build a resume
-                  </Button>
+                  {showResume()}
                 </Stack>
 
-                <Typography style={{ fontSize: 12 }} color="text.secondary">
+                <Typography
+                  style={{ fontSize: 12, marginTop: 10 }}
+                  color="text.secondary"
+                >
                   By continuing, you agree to create a public resume and agree
                   to receiving job opportunities from employers.
                 </Typography>

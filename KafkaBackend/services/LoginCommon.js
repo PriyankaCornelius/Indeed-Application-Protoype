@@ -17,6 +17,7 @@ function handle_request(msg, callback) {
     "'";
   con.query(query, (err, results) => {
     if (err) {
+      console.log("error kya h", err);
       callback(err, "Error");
     } else {
       if (results.length > 0) callback(null, results);

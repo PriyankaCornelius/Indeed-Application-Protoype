@@ -16,11 +16,16 @@ var ApplyJob = require("./services/ApplyJob.js");
 var JobList = require("./services/jobSeeker/getJobList.js");
 var JobSeekerDetails = require("./services/jobSeeker/getJobSeekerDetails.js");
 var UpdateJobSeekerDetails = require("./services/jobSeeker/updateJobSeekerDetails.js");
-var ListOfJobSeekersReviews = require("./services/jobSeeker/listOfJobSeekersReviews");
+var GetJobSeekerReviews = require("./services/jobSeeker/getJobSeekerReviews");
 var SaveJob = require("./services/jobSeeker/saveJob.js");
 var GetSaveJobs = require("./services/jobSeeker/getSaveJobs.js");
 var WhatTypeAheadList = require("./services/jobSeeker/getwhatTypeAheadList.js");
 var WhereTypeAheadList = require("./services/jobSeeker/getwhereTypeAheadList.js");
+
+var admin = require("./services/admin.js");
+var UpdateResume = require("./services/jobSeeker/updateResume.js");
+var DeleteResume = require("./services/jobSeeker/deleteResume");
+var DeleteReview = require("./services/jobSeeker/deleteReview");
 var connection = new require("./Connection");
 
 var options = {
@@ -90,9 +95,13 @@ handleTopicRequest("put_company_profile_by_company_id", UpdateEmployerProfile);
 handleTopicRequest("getJobsList", JobList);
 handleTopicRequest("getJobSeekerDetails", JobSeekerDetails);
 handleTopicRequest("updateJobSeekerDetails", UpdateJobSeekerDetails);
-handleTopicRequest("listOfJobSeekersReviews", ListOfJobSeekersReviews);
-
+handleTopicRequest("getJobSeekerReviews", GetJobSeekerReviews);
 handleTopicRequest("whatTypeAheadList", WhatTypeAheadList);
 handleTopicRequest("whereTypeAheadList", WhereTypeAheadList);
 handleTopicRequest("saveJob", SaveJob);
 handleTopicRequest("getSaveJob", GetSaveJobs);
+
+handleTopicRequest("admin", admin);
+handleTopicRequest("updateResume", UpdateResume);
+handleTopicRequest("deleteResume", DeleteResume);
+handleTopicRequest("deleteReview", DeleteReview);

@@ -2,7 +2,6 @@ const con = require("../../sqldbConfig.js");
 
 const handle_request = async (msg, callback) => {
   try {
-    console.log("incoming message", msg);
     if (msg.saved) {
       let insertSQL = `INSERT into savedjobs (applicantId, jobId) values (?,?) `;
       if (msg.applicantId) {

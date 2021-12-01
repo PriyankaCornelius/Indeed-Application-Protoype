@@ -8,6 +8,7 @@ import { ListItemIcon } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { commonLogoutFunc } from "../../redux/actions/loginActions";
 import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 const ProfileIconData = (props) => {
   const handleLogout = (e) => {
@@ -15,6 +16,7 @@ const ProfileIconData = (props) => {
     props.commonLogoutFunc();
   };
 
+  const userEmailId = useSelector((state) => state.login.user.email);
   return (
     <React.Fragment>
       <Menu
@@ -50,7 +52,7 @@ const ProfileIconData = (props) => {
         <Typography
           sx={{ textAlign: "center", lineHeight: 4, fontWeight: 600 }}
         >
-          archita22@gmail.com
+          {userEmailId}
         </Typography>
 
         <Link to="/jobSeekerProfile" style={{ textDecoration: "none" }}>
