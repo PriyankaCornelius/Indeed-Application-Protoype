@@ -1,7 +1,7 @@
 import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
-import { Menu, MenuItem, Typography } from "@mui/material";
+import { Menu, MenuItem, Typography, Button } from "@mui/material";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import { NODE_HOST, NODE_PORT } from "../../envConfig";
 import { ListItemIcon } from "@material-ui/core";
@@ -60,12 +60,6 @@ const ResumeActions = (props) => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem>
-          <ListItemIcon>
-            <FileCopyIcon fontSize="small" />
-          </ListItemIcon>
-          Replace
-        </MenuItem>
         <MenuItem>
           <ListItemIcon>
             <a href={props.resumeURI} download style={{ color: "grey" }}>
