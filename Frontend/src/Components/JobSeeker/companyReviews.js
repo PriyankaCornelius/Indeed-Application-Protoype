@@ -4,7 +4,7 @@ import { Grid, Autocomplete, TextField, Button, Divider } from "@mui/material";
 
 const CompanyReviews = (props) => {
   const [searchFlag, setSearchFlag] = useState(false);
-  const [companies, setCompanies] = useState(null);
+  const [companies, setCompanies] = useState([1, 2, 3]);
 
   const onSubmit = (e) => {
     e.preventDefault();
