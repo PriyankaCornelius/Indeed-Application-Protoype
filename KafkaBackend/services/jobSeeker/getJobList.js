@@ -3,36 +3,51 @@ const con = require("../../sqldbConfig.js");
 
 const handle_request = async (msg, callback) => {
   try {
-    console.log("incoming message", msg);
-    let sqlSelect1 = `SELECT  id FROM employers where companyName  = ?`;
-
+    let sqlSelect1;
     let sqlSelect2;
-
     let companyId;
-    // console.log("where printing", msg.where);
+    let arrayValue = [];
+    if (msg.what.length > 0) {
+      sqlSelect1 = `SELECT  id FROM employers where companyName  = ?`;
 
-    con.query(sqlSelect1, [msg.what], (err, result1) => {
-      console.log("first selec...", result1);
-      if (result1.length > 0) {
-        companyId = result1[0].id;
-        console.log("first selec result1", result1);
-        sqlSelect2 = `SELECT  e.companyName, e.website, e.averageRating, e.totalReviews ,e.address, j.*  FROM jobs j , employers e where  j.companyId= e.id and city = ? and  companyId = ?`;
-        con.query(sqlSelect2, [msg.where, companyId], (err, result2) => {
-          if (result2.length > 0) {
-            console.log("first selec result2", result2);
+      con.query(sqlSelect1, [msg.what], (err, result1) => {
+        if (result1.length > 0) {
+          companyId = result1[0].id;
+          arrayValue.push(companyId);
+          sqlSelect2 = `SELECT  e.companyName, e.website, e.averageRating, e.totalReviews ,e.address, j.*  FROM jobs j , employers e where  j.companyId= e.id and j.companyId = ?`;
+          if (msg.where.length > 0) {
+            sqlSelect2 = `SELECT  e.companyName, e.website, e.averageRating, e.totalReviews ,e.address, j.*  FROM jobs j , employers e where  j.companyId= e.id and j.companyId = ? and j.city = ?`;
 
-            callback(null, result2);
+            arrayValue.push(msg.where);
           }
-        });
-      } else {
-        sqlSelect2 = `SELECT  e.companyName, e.website, e.averageRating ,e.totalReviews,e.address, j.* FROM jobs j , employers e where j.companyId= e.id and  city = ? and jobTitle = ? `;
-        con.query(sqlSelect2, [msg.where, msg.what], (err, result2) => {
-          if (result2) {
-            callback(null, result2);
+          con.query(sqlSelect2, arrayValue, (err, result2) => {
+            if (result2.length > 0) {
+              callback(null, result2);
+            }
+          });
+        } else {
+          sqlSelect2 = `SELECT  e.companyName, e.website, e.averageRating ,e.totalReviews,e.address, j.* FROM jobs j , employers e where j.companyId= e.id and j.jobTitle = ?`;
+          arrayValue.push(msg.what);
+          if (msg.where.length > 0) {
+            sqlSelect2 = `SELECT  e.companyName, e.website, e.averageRating ,e.totalReviews,e.address, j.* FROM jobs j , employers e where j.companyId= e.id and j.jobTitle = ? and j.city = ?`;
+            arrayValue.push(msg.where);
           }
-        });
-      }
-    });
+          con.query(sqlSelect2, arrayValue, (err, result2) => {
+            if (result2) {
+              callback(null, result2);
+            }
+          });
+        }
+      });
+    } else if (msg.where.length > 0) {
+      sqlSelect2 = `SELECT  e.companyName, e.website, e.averageRating, e.totalReviews ,e.address, j.*  FROM jobs j , employers e where  j.companyId= e.id and j.city = ? `;
+
+      con.query(sqlSelect2, [msg.where], (err, result2) => {
+        if (result2.length > 0) {
+          callback(null, result2);
+        } else throw err;
+      });
+    }
   } catch (exception) {
     callback({ message: exception }, null);
   }
