@@ -476,6 +476,215 @@ app.post("/applyJob", async (req, res) => {
   });
 });
 
+//Reviews Per Day
+app.get("/reviewsperday", async (req, res, next) => {
+  console.log("GET Request on reviews");
+  kafka.make_request('admin',{"path": "reviewsperday", "body": req.body}, function(err,results){
+    console.log('GET Request on reviews');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//Top 5 Reviewed Companies
+app.get("/mostreviewedcompanies", async (req, res, next) => {
+  console.log("GET Request on mostreviews");
+  kafka.make_request('admin',{"path": "mostreviewedcompanies", "body": req.body}, function(err,results){
+    console.log('GET Request on mostreviews');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//Top 5 companies based on ratings
+app.get("/avgratings", async (req, res, next) => {
+  console.log("GET Request on avgRatings");
+  kafka.make_request('admin',{"path": "avgratings", "body": req.body}, function(err,results){
+    console.log('GET Request on avgratings');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//Top 5 Job Seekers (reviews)
+app.get("/jobseekerreviews", async (req, res, next) => {
+  console.log("GET Request on jobseekerreviews");
+  kafka.make_request('admin',{"path": "jobseekerreviews", "body": req.body}, function(err,results){
+    console.log('GET Request on jobseekerreviews');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//Top 10 CEOs (ceoRating)
+app.get("/topceos", async (req, res, next) => {
+  console.log("GET Request on topceos");
+  kafka.make_request('admin',{"path": "topceos", "body": req.body}, function(err,results){
+    console.log('GET Request on topceos');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//DailyViews
+app.get("/dailyviews", async (req, res, next) => {
+  console.log("GET Request on dailyviews");
+  kafka.make_request('admin',{"path": "dailyviews", "body": req.body}, function(err,results){
+    console.log('GET Request on dailyviews');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//All Job Seeker Reviews
+app.get("/allreviews", async (req, res, next) => {
+  console.log("GET Request on allreviews");
+  kafka.make_request('adminReview',{"path": "allreviews", "body": req.body}, function(err,results){
+    console.log('GET Request on allreviews');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//Filter Reviews
+app.post("/filterreviews", async (req, res, next) => {
+  console.log("GET Request on filterreviews");
+  kafka.make_request('adminReview',{"path": "filterreviews", "body": req.body}, function(err,results){
+    console.log('GET Request on filterreviews');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//Approve Reject review
+app.post("/reviewactions", async (req, res, next) => {
+  console.log("Post Request on reviewactions");
+  // console.log(req.body);
+  kafka.make_request('adminReview',{"path": "reviewactions", "body": req.body}, function(err,results){
+    console.log('GET Request on reviewactions');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//All companies in the system
+app.get("/allcompanies", async (req, res, next) => {
+  console.log("GET Request on allcompanies");
+  kafka.make_request('adminCompany',{"path": "allcompanies", "body": req.body}, function(err,results){
+    console.log('GET Request on allcompanies');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//Search a company
+app.post("/companysearch", async (req, res, next) => {
+  console.log("POST Request on companysearch");
+  kafka.make_request('adminCompany',{"path": "companysearch", "body": req.body}, function(err,results){
+    console.log('GET Request on companysearch');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//View company reviews
+app.post("/viewcompanyreview", async (req, res, next) => {
+  console.log("POST Request on viewcompanyreview");
+  kafka.make_request('adminCompany',{"path": "viewcompanyreview", "body": req.body}, function(err,results){
+    console.log('GET Request on viewcompanyreview');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//View company reviews
+app.post("/viewjobstats", async (req, res, next) => {
+  console.log("POST Request on viewjobstats");
+  kafka.make_request('adminCompany',{"path": "viewjobstats", "body": req.body}, function(err,results){
+    console.log('GET Request on viewjobstats');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
 

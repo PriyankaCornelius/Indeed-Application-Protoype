@@ -45,8 +45,8 @@ import {
   
     componentDidMount() {
       const compList = [];
-      Axios.defaults.withCredentials = true;
-      Axios.get('http://localhost:3001/allcompanies')
+      // Axios.defaults.withCredentials = true;
+      Axios.get('http://localhost:8080/allcompanies')
         .then((res) => {
           if (res) {
             console.log(res.data);
@@ -67,8 +67,8 @@ import {
     handleActions = (e) => {
       console.log(e.currentTarget.id);
       const action = {companyName: e.currentTarget.id};
-      Axios.defaults.withCredentials = true;
-      Axios.post('http://localhost:3001/viewcompanyreview', action)
+      // Axios.defaults.withCredentials = true;
+      Axios.post('http://localhost:8080/viewcompanyreview', action)
         .then((res) => {
           if (res.status === 200) {
             // console.log(res.data);
@@ -78,8 +78,8 @@ import {
             console.log("Error!")
           }
         });
-      Axios.defaults.withCredentials = true;
-      Axios.post('http://localhost:3001/viewjobstats', action)
+      // Axios.defaults.withCredentials = true;
+      Axios.post('http://localhost:8080/viewjobstats', action)
         .then((res) => {
           if (res.status === 200) {
             console.log(res.data);
@@ -110,8 +110,8 @@ import {
       e.preventDefault();
       console.log(this.state.inSearch);
       const search = {search: this.state.inSearch}
-      Axios.defaults.withCredentials = true;
-      Axios.post('http://localhost:3001/companysearch', search)
+      // Axios.defaults.withCredentials = true;
+      Axios.post('http://localhost:8080/companysearch', search)
         .then((res) => {
           if (res.status === 200) {
             // console.log(res.data);
