@@ -10,7 +10,8 @@ const cors = require("cors");
 //   credentials: true,
 //   origin: true,
 // };
-app.use(cors());
+// app.use(cors());
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
 const apiRouter = require("./routes/routes");
 app.use("/", apiRouter);

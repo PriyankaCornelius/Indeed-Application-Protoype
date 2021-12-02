@@ -252,7 +252,7 @@ router.post("/applyJob", async (req, res, next) => {
   });
 });
 
-
+//Reviews Per Day
 router.get("/reviewsperday", async (req, res, next) => {
   console.log("GET Request on reviews");
   kafka.make_request('admin',{"path": "reviewsperday", "body": req.body}, function(err,results){
@@ -268,244 +268,197 @@ router.get("/reviewsperday", async (req, res, next) => {
 });
 });
 
-
+//Top 5 Reviewed Companies
 router.get("/mostreviewedcompanies", async (req, res, next) => {
   console.log("GET Request on mostreviews");
-  CompanyReviews.aggregate([
-    
-    { "$group": { _id: { companyName: "$companyName"} , count: { $sum: 1 }}},
-    { "$addFields": { companyName: "$_id.companyName" }},
-    { "$sort" : {count: -1}},
-    { "$limit" : 5},
-    { "$project": {companyName: "$companyName", count: 1, _id: 0}},
-  ],async (error, results) => {
-    console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    res.send(results);
-  }
-})
+  kafka.make_request('admin',{"path": "mostreviewedcompanies", "body": req.body}, function(err,results){
+    console.log('GET Request on mostreviews');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
 });
 
-
+//Top 5 companies based on ratings
 router.get("/avgratings", async (req, res, next) => {
   console.log("GET Request on avgRatings");
-  CompanyReviews.aggregate([
-    { "$match": {status: "Approved"}},
-    { "$group": { _id: { companyName: "$companyName"}, avgrating: {$avg: "$rating"}, count: { $sum: 1 }}},
-    { "$addFields": { companyName: "$_id.companyName" }},
-    { "$sort" : {avgrating: -1}},
-    { "$limit" : 5},
-    { "$project": {companyName: "$companyName", count: 1, avgrating: 1, _id: 0}},
-  ],async (error, results) => {
-    console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    res.send(results);
-  }
-})
+  kafka.make_request('admin',{"path": "avgratings", "body": req.body}, function(err,results){
+    console.log('GET Request on avgratings');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
 });
 
-
+//Top 5 Job Seekers (reviews)
 router.get("/jobseekerreviews", async (req, res, next) => {
   console.log("GET Request on jobseekerreviews");
-  CompanyReviews.aggregate([
-    { "$match": {status: "Approved"}},
-    { "$group": { _id: { applicantName: "$applicantName"},  count: { $sum: 1 }}},
-    { "$addFields": { applicantName: "$_id.applicantName" }},
-    { "$sort" : {count: -1}},
-    { "$limit" : 5},
-    { "$project": {applicantName: "$applicantName", count: 1,  _id: 0}},
-  ],async (error, results) => {
-    console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    res.send(results);
-  }
+  kafka.make_request('admin',{"path": "jobseekerreviews", "body": req.body}, function(err,results){
+    console.log('GET Request on jobseekerreviews');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
 });
 });
 
-
+//Top 10 CEOs (ceoRating)
 router.get("/topceos", async (req, res, next) => {
   console.log("GET Request on topceos");
-  con.query("SELECT ceoName, ceoRating FROM indeed.employers order by ceoRating DESC LIMIT 10",
-  async (error, results) => {
-    console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    res.send(results);
-  }
-})
+  kafka.make_request('admin',{"path": "topceos", "body": req.body}, function(err,results){
+    console.log('GET Request on topceos');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
 });
 
-
+//DailyViews
 router.get("/dailyviews", async (req, res, next) => {
   console.log("GET Request on dailyviews");
-  con.query("SELECT employerName, dailyViews FROM indeed.employers order by dailyViews DESC LIMIT 10",
-  async (error, results) => {
-    console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    res.send(results);
-  }
-})
+  kafka.make_request('admin',{"path": "dailyviews", "body": req.body}, function(err,results){
+    console.log('GET Request on dailyviews');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
 });
 
-
+//All Job Seeker Reviews
 router.get("/allreviews", async (req, res, next) => {
   console.log("GET Request on allreviews");
-  CompanyReviews.find({},async (error, results) => {
-    console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    res.send(results);
-  }
-})
+  kafka.make_request('adminReview',{"path": "allreviews", "body": req.body}, function(err,results){
+    console.log('GET Request on allreviews');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
 });
 
+//Filter Reviews
 router.post("/filterreviews", async (req, res, next) => {
   console.log("GET Request on filterreviews");
-  CompanyReviews.find({status: req.body.filter},async (error, results) => {
-    console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    res.send(results);
-  }
-})
+  kafka.make_request('adminReview',{"path": "filterreviews", "body": req.body}, function(err,results){
+    console.log('GET Request on filterreviews');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
 });
 
+//Approve Reject review
 router.post("/reviewactions", async (req, res, next) => {
   console.log("Post Request on reviewactions");
-  console.log(req.body);
-  CompanyReviews.findOneAndUpdate({_id: req.body.id},{ $set : {status: req.body.status}},
-  async (error, results) => {
-    console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    setValue(results.companyName);
-    // console.log(resCompName);
-    res.send(results);
-  }
-});
-
-function setValue(value) {
-  fCompName = value;
-  console.log(fCompName);
-  CompanyReviews.aggregate([
-    { "$match": {companyName: fCompName}},
-    { "$group": { _id: { companyName: "$companyName"}, avgrating: {$avg: "$rating"}, avgceorating: {$avg: "$ceoRating"}, count: { $sum: 1 }}},
-    { "$addFields": { companyName: "$_id.companyName" }},
-    { "$project": {companyName: "$companyName", count: 1, avgrating: 1, avgceorating: 1, _id: 0}},
-  ],async (error, results) => {
+  // console.log(req.body);
+  kafka.make_request('adminReview',{"path": "reviewactions", "body": req.body}, function(err,results){
+    console.log('GET Request on reviewactions');
     // console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    sqlUpdate(results);
-  }
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
 });
-}
-
-function sqlUpdate(sqlup) {
-  let sqlUpdate = "UPDATE indeed.employers " + "SET averageRating = ?, ceoRating= ?, totalReviews= ? WHERE companyName = ?";
-  con.query(sqlUpdate, [sqlup[0].avgrating, sqlup[0].avgceorating, sqlup[0].count, sqlup[0].companyName],
-  async (error, results) => {
-    console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    console.log("MySQL Updated!");
-  }
-})
-}
-
 });
 
-
+//All companies in the system
 router.get("/allcompanies", async (req, res, next) => {
   console.log("GET Request on allcompanies");
-  let allComp = "SELECT * FROM indeed.employers";
-  con.query(allComp, async (error, results) => {
-    console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    res.send(results);
-  }
-})
+  kafka.make_request('adminCompany',{"path": "allcompanies", "body": req.body}, function(err,results){
+    console.log('GET Request on allcompanies');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
 });
 
+//Search a company
 router.post("/companysearch", async (req, res, next) => {
   console.log("POST Request on companysearch");
-  let companySearch = "SELECT * FROM indeed.employers WHERE companyName = ?";
-  con.query(companySearch, [req.body.search], async (error, results) => {
-    console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    res.send(results);
-  }
-})
+  kafka.make_request('adminCompany',{"path": "companysearch", "body": req.body}, function(err,results){
+    console.log('GET Request on companysearch');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
 });
 
+//View company reviews
 router.post("/viewcompanyreview", async (req, res, next) => {
   console.log("POST Request on viewcompanyreview");
-  console.log(req.body);
-  CompanyReviews.find({companyName: req.body.companyName},async (error, results) => {
-    console.log(results);
-  if (error){
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-    });
-    res.end(error.code);
-  } else {
-    res.send(results);
-  }
-})
+  kafka.make_request('adminCompany',{"path": "viewcompanyreview", "body": req.body}, function(err,results){
+    console.log('GET Request on viewcompanyreview');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
+});
+
+//View company reviews
+router.post("/viewjobstats", async (req, res, next) => {
+  console.log("POST Request on viewjobstats");
+  kafka.make_request('adminCompany',{"path": "viewjobstats", "body": req.body}, function(err,results){
+    console.log('GET Request on viewjobstats');
+    // console.log(results);
+    if (err){
+        console.log("Inside err");
+    }else{
+        console.log("Inside results");
+        console.log(results);
+        res.send(results);
+    }
+});
 });
 
 module.exports = router;
