@@ -485,8 +485,8 @@ app.get("/reviewsperday", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
@@ -501,8 +501,8 @@ app.get("/mostreviewedcompanies", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
@@ -517,8 +517,8 @@ app.get("/avgratings", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
@@ -533,8 +533,8 @@ app.get("/jobseekerreviews", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
@@ -549,8 +549,8 @@ app.get("/topceos", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
@@ -565,8 +565,8 @@ app.get("/dailyviews", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
@@ -581,8 +581,8 @@ app.get("/allreviews", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
@@ -597,8 +597,8 @@ app.post("/filterreviews", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
@@ -614,8 +614,8 @@ app.post("/reviewactions", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
@@ -630,8 +630,8 @@ app.get("/allcompanies", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
@@ -646,8 +646,8 @@ app.post("/companysearch", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
@@ -662,8 +662,8 @@ app.post("/viewcompanyreview", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
@@ -678,8 +678,8 @@ app.post("/viewjobstats", async (req, res, next) => {
     if (err){
         console.log("Inside err");
     }else{
-        console.log("Inside results");
-        console.log(results);
+        // console.log("Inside results");
+        // console.log(results);
         res.send(results);
     }
 });
