@@ -225,6 +225,7 @@ const JobSeekerProfile = (props) => {
                     onClick={handleClose}
                     resumeURI={jobSeekerDetails.resumeURI}
                     getJobSeekerDetails={getJobSeekerDetails}
+                    onFileChangeHandler={onFileChangeHandler}
                   />
                 ) : null}
 
@@ -240,9 +241,9 @@ const JobSeekerProfile = (props) => {
                     htmlFor="sampleFile"
                     component="label"
                     type={"submit"}
-                    style={{ width: "40%", marginTop: 10 }}
+                    style={{ width: "50%", marginTop: 10 }}
                   >
-                    Upload a resume
+                    Upload/Replace a resume
                   </Button>
                   {showResume()}
                 </Stack>

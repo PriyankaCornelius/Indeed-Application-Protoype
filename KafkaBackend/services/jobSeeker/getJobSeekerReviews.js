@@ -2,7 +2,8 @@ const CompanyReviews = require("../../Models/CompanyReviews");
 
 const handle_request = async (msg, callback) => {
   try {
-    let companyReviews = await CompanyReviews.find({
+    let companyReviews = [];
+    companyReviews = await CompanyReviews.find({
       applicantId: parseInt(msg.id),
     });
 

@@ -12,7 +12,7 @@ var SavedJobsByJobseeker = require("./services/SavedJobsByJobseeker.js");
 var DeleteSavedJob = require("./services/DeleteSavedJob.js");
 var AppliedJobsByJobseeker = require("./services/AppliedJobsByJobseeker.js");
 var ApplyJob = require("./services/ApplyJob.js");
-
+var PostReply = require("./services/jobSeeker/postReply.js");
 var JobList = require("./services/jobSeeker/getJobList.js");
 var JobSeekerDetails = require("./services/jobSeeker/getJobSeekerDetails.js");
 var UpdateJobSeekerDetails = require("./services/jobSeeker/updateJobSeekerDetails.js");
@@ -21,7 +21,8 @@ var SaveJob = require("./services/jobSeeker/saveJob.js");
 var GetSaveJobs = require("./services/jobSeeker/getSaveJobs.js");
 var WhatTypeAheadList = require("./services/jobSeeker/getwhatTypeAheadList.js");
 var WhereTypeAheadList = require("./services/jobSeeker/getwhereTypeAheadList.js");
-
+var GetMessages = require("./services/jobSeeker/getMessages.js");
+var GetAllMessages = require("./services/jobSeeker/getAllMessages.js");
 var admin = require("./services/admin.js");
 var adminReview = require("./services/adminReview.js");
 var adminCompany = require("./services/adminCompany.js");
@@ -109,3 +110,6 @@ handleTopicRequest("adminCompany", adminCompany);
 handleTopicRequest("updateResume", UpdateResume);
 handleTopicRequest("deleteResume", DeleteResume);
 handleTopicRequest("deleteReview", DeleteReview);
+handleTopicRequest("getMessages", GetMessages);
+handleTopicRequest("getAllMessages", GetAllMessages);
+handleTopicRequest("postReply", PostReply);
