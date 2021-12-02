@@ -51,3 +51,7 @@ bin/kafka-topics.sh --create --topic getMessages --partitions 1  --replication-f
 bin/kafka-topics.sh --create --topic getAllMessages --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092
 
 bin/kafka-topics.sh --create --topic postReply --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092
+
+bin/kafka-topics.sh --create --topic adminCompany --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092
+
+bin/kafka-topics.sh --create --topic adminReview --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092

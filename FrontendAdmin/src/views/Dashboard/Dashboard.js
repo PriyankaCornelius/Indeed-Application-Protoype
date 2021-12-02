@@ -72,8 +72,8 @@ class Dashboard extends React.Component {
     const topJob = [];
     const topCEO = [];
     const views = [];
-    Axios.defaults.withCredentials = true;
-    Axios.get('http://localhost:3001/reviewsperday')
+    // Axios.defaults.withCredentials = true;
+    Axios.get('http://localhost:8080/reviewsperday')
       .then((res) => {
         if (res) {
           console.log(res.data);
@@ -90,8 +90,8 @@ class Dashboard extends React.Component {
         throw err;
       });
 
-    Axios.defaults.withCredentials = true;
-    Axios.get('http://localhost:3001/mostreviewedcompanies')
+    // Axios.defaults.withCredentials = true;
+    Axios.get('http://localhost:8080/mostreviewedcompanies')
       .then((res) => {
         if (res) {
           console.log(res.data);
@@ -108,8 +108,8 @@ class Dashboard extends React.Component {
         throw err;
       });
 
-    Axios.defaults.withCredentials = true;
-    Axios.get('http://localhost:3001/avgratings')
+    // Axios.defaults.withCredentials = true;
+    Axios.get('http://localhost:8080/avgratings')
       .then((res) => {
         if (res) {
           console.log(res.data);
@@ -126,8 +126,8 @@ class Dashboard extends React.Component {
         throw err;
       });
 
-    Axios.defaults.withCredentials = true;
-    Axios.get('http://localhost:3001/jobseekerreviews')
+    // Axios.defaults.withCredentials = true;
+    Axios.get('http://localhost:8080/jobseekerreviews')
       .then((res) => {
         if (res) {
           console.log(res.data);
@@ -144,8 +144,8 @@ class Dashboard extends React.Component {
         throw err;
       });
 
-    Axios.defaults.withCredentials = true;
-    Axios.get('http://localhost:3001/topceos')
+    // Axios.defaults.withCredentials = true;
+    Axios.get('http://localhost:8080/topceos')
       .then((res) => {
         if (res) {
           console.log(res.data);
@@ -162,8 +162,8 @@ class Dashboard extends React.Component {
         throw err;
       });
 
-    Axios.defaults.withCredentials = true;
-    Axios.get('http://localhost:3001/dailyviews')
+    // Axios.defaults.withCredentials = true;
+    Axios.get('http://localhost:8080/dailyviews')
       .then((res) => {
         if (res) {
           console.log(res.data);

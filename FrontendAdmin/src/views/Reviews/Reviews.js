@@ -45,8 +45,8 @@ import {
 
     allReviews() {
       const revList = [];
-      Axios.defaults.withCredentials = true;
-      Axios.get('http://localhost:3001/allreviews')
+      // Axios.defaults.withCredentials = true;
+      Axios.get('http://localhost:8080/allreviews')
         .then((res) => {
           if (res) {
             console.log(res.data);
@@ -65,8 +65,8 @@ import {
   
     finalSearch = (userData) => {
       console.log(userData);
-      Axios.defaults.withCredentials = true;
-      Axios.post('http://localhost:3001/filterreviews', userData)
+      // Axios.defaults.withCredentials = true;
+      Axios.post('http://localhost:8080/filterreviews', userData)
         .then((res) => {
           if (res.status === 200) {
             console.log(res.data);
@@ -81,8 +81,8 @@ import {
     handleActions = (e) => {
       console.log(e.currentTarget.id,  e.currentTarget.value)
       const action = {id: e.currentTarget.id, status: e.currentTarget.value};
-      Axios.defaults.withCredentials = true;
-      Axios.post('http://localhost:3001/reviewactions', action)
+      // Axios.defaults.withCredentials = true;
+      Axios.post('http://localhost:8080/reviewactions', action)
         .then((res) => {
           if (res.status === 200) {
             console.log(res.data);

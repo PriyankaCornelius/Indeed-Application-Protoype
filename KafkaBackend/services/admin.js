@@ -39,7 +39,7 @@ function reviewsperday(msg, callback){
         { "$limit" : 7},
         { "$project": {createdAt: "$createdAt", count: 1, _id: false}},
       ],async (error, results) => {
-        console.log(results);
+        // console.log(results);
       if (error){
         callback(null,{err: err})
         console.log(err);
@@ -61,7 +61,7 @@ function mostreviewedcompanies(msg, callback){
     { "$limit" : 5},
     { "$project": {companyName: "$companyName", count: 1, _id: 0}},
   ],async (error, results) => {
-    console.log(results);
+    // console.log(results);
     if (error){
       callback(null,{err: err})
       console.log(err);
@@ -84,7 +84,7 @@ function avgratings(msg, callback){
     { "$limit" : 5},
     { "$project": {companyName: "$companyName", count: 1, avgrating: 1, _id: 0}},
   ],async (error, results) => {
-    console.log(results);
+    // console.log(results);
     if (error){
       callback(null,{err: err})
       console.log(err);
@@ -106,7 +106,7 @@ function jobseekerreviews(msg, callback){
     { "$limit" : 5},
     { "$project": {applicantName: "$applicantName", count: 1,  _id: 0}},
   ],async (error, results) => {
-    console.log(results);
+    // console.log(results);
     if (error){
       callback(null,{err: err})
       console.log(err);
@@ -122,7 +122,7 @@ function topceos(msg, callback){
   console.log("In handle request:"+ JSON.stringify(msg));
   con.query("SELECT ceoName, ceoRating FROM indeed.employers order by ceoRating DESC LIMIT 10",
   async (error, results) => {
-    console.log(results);
+    // console.log(results);
     if (error){
       callback(null,{err: err})
       console.log(err);
@@ -138,7 +138,7 @@ function dailyviews(msg, callback){
   console.log("In handle request:"+ JSON.stringify(msg));
   con.query("SELECT employerName, dailyViews FROM indeed.employers order by dailyViews DESC LIMIT 10",
   async (error, results) => {
-    console.log(results);
+    // console.log(results);
     if (error){
       callback(null,{err: err})
       console.log(err);

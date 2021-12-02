@@ -22,7 +22,7 @@ function allreviews(msg, callback){
     // console.log(msg);
     console.log("In handle request:"+ JSON.stringify(msg));
     CompanyReviews.find({},async (error, results) => {
-        console.log(results);
+        // console.log(results);
         if (error){
             callback(null,{err: err})
             console.log(err);
@@ -38,7 +38,7 @@ function filterreviews(msg, callback){
     // console.log(msg);
     console.log("In handle request:"+ JSON.stringify(msg));
     CompanyReviews.find({status: msg.body.filter},async (error, results) => {
-        console.log(results);
+        // console.log(results);
         if (error){
             callback(null,{err: err})
             console.log(err);
@@ -55,7 +55,7 @@ function reviewactions(msg, callback){
     console.log("In handle request:"+ JSON.stringify(msg));
     CompanyReviews.findOneAndUpdate({_id: msg.body.id},{ $set : {status: msg.body.status}},
         async (error, results) => {
-          console.log(results);
+        //   console.log(results);
           if (error){
             callback(null,{err: err})
             console.log(err);
