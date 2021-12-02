@@ -418,7 +418,7 @@ const FindJobs = (props) => {
                     }}
                   >
                     <Link
-                      to={"/apply?jobid=" + jobDetails.id}
+                      to={userId ? "/apply?jobid=" + jobDetails.id : "/login"}
                       style={{ color: "white" }}
                     >
                       {" "}
