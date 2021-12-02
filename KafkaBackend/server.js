@@ -29,6 +29,7 @@ var adminCompany = require("./services/adminCompany.js");
 var UpdateResume = require("./services/jobSeeker/updateResume.js");
 var DeleteResume = require("./services/jobSeeker/deleteResume");
 var DeleteReview = require("./services/jobSeeker/deleteReview");
+var PostReview = require("./services/jobSeeker/postReview");
 var connection = new require("./Connection");
 
 var options = {
@@ -113,3 +114,5 @@ handleTopicRequest("deleteReview", DeleteReview);
 handleTopicRequest("getMessages", GetMessages);
 handleTopicRequest("getAllMessages", GetAllMessages);
 handleTopicRequest("postReply", PostReply);
+
+handleTopicRequest("postReview", PostReview);
