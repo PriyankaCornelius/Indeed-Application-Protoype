@@ -2,6 +2,7 @@ import {
   LOGIN_USER,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
+  UPDATE_RESUME,
 } from "../constants/ActionTypes";
 import { commonLogin } from "../../controllers/login";
 
@@ -42,4 +43,11 @@ export const commonLogoutFunc = () => (dispatch) => {
     type: LOGOUT_USER,
   });
   window.location.href = "/login";
+};
+
+export const updateResume = (payload) => (dispatch) => {
+  dispatch({
+    type: UPDATE_RESUME,
+    payload: payload,
+  });
 };
