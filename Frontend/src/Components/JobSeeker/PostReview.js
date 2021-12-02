@@ -6,8 +6,13 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { useLocation } from "react-router-dom";
 import { connect } from "react-redux";
+import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
 
 const PostReview = (props) => {
+  const [rating, setRating] = useState(null);
+  const [ceoRating, setCeoRating] = useState(null);
+
   return (
     <div>
       <MainHeader currentTab="companyReviews" />
@@ -35,48 +40,105 @@ const PostReview = (props) => {
               variant="h5"
               style={{ textAlign: "left", fontWeight: "bold" }}
             >
-              Application Details
+              Submit a Review
             </Typography>
             <form>
               <Grid container style={{ marginTop: "15px" }}>
                 <Grid item xs={12} style={{ marginBottom: "15px" }}>
                   <TextField
                     required
-                    id="firstName"
-                    name="firstName"
-                    label="First name"
+                    id="reviewTitle"
+                    name="reviewTitle"
+                    label="Review Summary"
                     fullWidth
                     autoComplete="given-name"
                     variant="outlined"
-                    defaultValue="Anay"
-                    disabled
                   />
+                </Grid>
+                <Grid item container direction="row" xs={12}>
+                  <Grid
+                    item
+                    xs={6}
+                    style={{ marginBottom: "15px", paddingRight: "10px" }}
+                  >
+                    <TextField
+                      required
+                      id="jobTitle"
+                      name="jobTitle"
+                      label="Your Role"
+                      fullWidth
+                      autoComplete="family-name"
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={6} style={{ marginBottom: "15px" }}>
+                    <TextField
+                      required
+                      id="location"
+                      name="location"
+                      label="Your Location"
+                      fullWidth
+                      autoComplete="family-name"
+                      variant="outlined"
+                    />
+                  </Grid>
                 </Grid>
                 <Grid item xs={12} style={{ marginBottom: "15px" }}>
                   <TextField
                     required
-                    id="lastName"
-                    name="lastName"
-                    label="Last name"
+                    id="review"
+                    name="review"
+                    label="Review"
+                    multiline
+                    rows={4}
                     fullWidth
                     autoComplete="family-name"
                     variant="outlined"
-                    defaultValue="Naik"
-                    disabled
                   />
                 </Grid>
-                <Grid item xs={12} style={{ marginBottom: "15px" }}>
-                  <TextField
-                    required
-                    id="phone"
-                    name="phoneNo"
-                    label="Phone No."
-                    fullWidth
-                    autoComplete="family-name"
-                    variant="outlined"
-                    defaultValue="6693061513"
-                    disabled
-                  />
+                <Grid
+                  item
+                  xs={12}
+                  container
+                  direction="row"
+                  style={{ marginBottom: "15px", textAlign: "left" }}
+                >
+                  <Grid item xs={3}>
+                    <Typography component="legend">
+                      <b>Overall Rating</b>
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Rating
+                      name="simple-controlled"
+                      value={rating}
+                      onChange={(event, newValue) => {
+                        setRating(newValue);
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  container
+                  direction="row"
+                  style={{ marginBottom: "15px", textAlign: "left" }}
+                >
+                  <Grid item item xs={3}>
+                    <Typography component="legend">
+                      <b>CEO Rating</b>
+                    </Typography>
+                  </Grid>
+                  <Grid item item xs={9}>
+                    <Rating
+                      name="simple-controlled"
+                      value={ceoRating}
+                      onChange={(event, newValue) => {
+                        setCeoRating(newValue);
+                      }}
+                    />
+                  </Grid>
                 </Grid>
                 <Grid item xs={12} style={{ marginBottom: "15px" }}>
                   <Button
