@@ -38,6 +38,7 @@ var PostSalary = require("./services/jobSeeker/postSalary");
 var FindCompanyReviews = require("./services/jobSeeker/findCompanyReviews");
 var JobDetails = require("./services/jobSeeker/getJobDetails");
 var CompanyDetailsById = require("./services/jobSeeker/companyDetailsById");
+var UpdateReviews = require("./services/jobSeeker/updateReviews");
 
 var getCompanyJobPosts = require("./services/employer/getCompanyJobPosts.js");
 var getJobApplicants = require("./services/employer/getJobApplicants.js");
@@ -138,3 +139,4 @@ handleTopicRequest("get_jobs_posted_by_company", getCompanyJobPosts);
 handleTopicRequest("get_job_applicants_by_jobId", getJobApplicants);
 handleTopicRequest("post_new_job", postJob);
 handleTopicRequest("get_company_details_by_id", CompanyDetailsById);
+handleTopicRequest("update_reviews", UpdateReviews);
