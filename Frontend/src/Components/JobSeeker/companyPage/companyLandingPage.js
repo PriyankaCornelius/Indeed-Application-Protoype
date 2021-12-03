@@ -5,6 +5,7 @@ import CompanyAppbar from "./companyAppbar";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { NODE_HOST, NODE_PORT } from "../../../envConfig";
+import CompanyReviewTab from "./CompanyReviewTab";
 
 const CompanyLandingPage = (props) => {
   const [selectedTab, setSelectedTab] = useState(null);
@@ -13,7 +14,8 @@ const CompanyLandingPage = (props) => {
   const SelectedTab = () => {
     if (selectedTab === "snapshot") return <div>snapshot</div>;
     else if (selectedTab === "whyjoinus") return <div>whyjoinus</div>;
-    else if (selectedTab === "reviews") return <div>reviews</div>;
+    else if (selectedTab === "reviews")
+      return <CompanyReviewTab companyDetails={companyDetails} />;
     else if (selectedTab === "salaries")
       return (
         <Grid
@@ -32,7 +34,8 @@ const CompanyLandingPage = (props) => {
               paddingTop: "15px",
             }}
           >
-            Amazon.com salaries: How much does Amazon.com pay?
+            {companyDetails.companyName} salaries: How much does{" "}
+            {companyDetails.companyName} pay?
           </div>
           <Button
             variant="outlined"
