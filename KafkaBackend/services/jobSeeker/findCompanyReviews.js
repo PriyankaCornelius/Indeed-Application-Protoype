@@ -8,7 +8,7 @@ const handle_request = async (msg, callback) => {
     "and (address like '%" +
     msg.where +
     "%' " +
-    "or companyName like '%" +
+    "and companyName like '%" +
     msg.what +
     "%')";
   con.query(query, (err, results) => {
