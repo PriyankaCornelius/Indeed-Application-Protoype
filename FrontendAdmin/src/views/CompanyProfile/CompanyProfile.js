@@ -14,6 +14,7 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import withStyles from "@material-ui/core/styles/withStyles"
+import { endpoint } from "views/util/port";
 import {
     Form,
     Modal,
@@ -46,7 +47,7 @@ import {
     componentDidMount() {
       const compList = [];
       // Axios.defaults.withCredentials = true;
-      Axios.get('http://localhost:8080/allcompanies')
+      Axios.get(endpoint+'/allcompanies')
         .then((res) => {
           if (res) {
             console.log(res.data);
@@ -68,7 +69,7 @@ import {
       console.log(e.currentTarget.id);
       const action = {companyName: e.currentTarget.id};
       // Axios.defaults.withCredentials = true;
-      Axios.post('http://localhost:8080/viewcompanyreview', action)
+      Axios.post(endpoint+'/viewcompanyreview', action)
         .then((res) => {
           if (res.status === 200) {
             // console.log(res.data);
@@ -79,7 +80,7 @@ import {
           }
         });
       // Axios.defaults.withCredentials = true;
-      Axios.post('http://localhost:8080/viewjobstats', action)
+      Axios.post(endpoint+'/viewjobstats', action)
         .then((res) => {
           if (res.status === 200) {
             console.log(res.data);
@@ -111,7 +112,7 @@ import {
       console.log(this.state.inSearch);
       const search = {search: this.state.inSearch}
       // Axios.defaults.withCredentials = true;
-      Axios.post('http://localhost:8080/companysearch', search)
+      Axios.post(endpoint+'/companysearch', search)
         .then((res) => {
           if (res.status === 200) {
             // console.log(res.data);

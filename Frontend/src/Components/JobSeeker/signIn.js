@@ -11,6 +11,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import { connect } from "react-redux";
 import { commonLoginFunc } from "../../redux/actions/loginActions";
+import indeedLogo from "../../Images/signInLogo.png";
 
 const SignIn = ({ commonLoginFunc }) => {
   const [email, setEmail] = useState(null);
@@ -48,11 +49,12 @@ const SignIn = ({ commonLoginFunc }) => {
           component="main"
           maxWidth="xs"
           style={{
-            marginTop: "150px",
+            marginTop: "30px",
             marginBottom: "100px",
-            marginLeft: "450px",
+            marginLeft: "420px",
           }}
         >
+          <img alt={"logo"} width="55%" src={indeedLogo} />
           <Paper
             variant="outlined"
             style={{
