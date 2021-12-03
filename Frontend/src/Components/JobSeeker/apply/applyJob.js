@@ -9,6 +9,8 @@ import SuccessConfirmation from "./SuccessConfirmation";
 import { useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import JobDescriptionCard from "./JobDescriptionCard";
+import axios from "axios";
+import { NODE_HOST, NODE_PORT } from "../../../envConfig";
 
 const ApplyJob = (props) => {
   const Input = styled("input")({
@@ -19,6 +21,7 @@ const ApplyJob = (props) => {
   const [successConfirmation, setSuccessConfirmation] = useState(false);
   const [validation, setValidation] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [jobDetails, setJobDetails] = useState(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -48,7 +51,10 @@ const ApplyJob = (props) => {
   useEffect(() => {
     const jobid = new URLSearchParams(search).get("jobid");
     if (jobid) {
-      // to do - get job details by id
+      axios
+        .get(`http://${NODE_HOST}:${NODE_PORT}/jobdetails/get/` + jobid)
+        .then((res) => setJobDetails(res.data[0]))
+        .catch((err) => console.log(err));
     }
   }, []);
 
@@ -177,7 +183,7 @@ const ApplyJob = (props) => {
           >
             <Grid item xs={2} />
             <Grid item xs={8}>
-              <JobDescriptionCard />
+              <JobDescriptionCard jobDetails={jobDetails} />
             </Grid>
             <Grid item xs={2} />
           </Grid>
