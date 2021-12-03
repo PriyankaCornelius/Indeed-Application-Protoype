@@ -30,7 +30,6 @@ const ProtectedRouter = ({ history }) => {
         <Route path="/employerApplicants" component={Applicants} />
         <Route path="/apply" component={ApplyJob} />
         <Route path="/myReviews" component={MyReviews} />
-        <Route path="/apply" component={ApplyJob} />
       </>
     );
   }
