@@ -327,7 +327,10 @@ const FindJobs = (props) => {
                       </Typography>
                       <Stack direction="row">
                         <Typography style={{ marginRight: 10, fontSize: 14 }}>
-                          <Link to="/company" style={{ marginRight: 10 }}>
+                          <Link
+                            to={"/company?id=" + jobs.companyId}
+                            style={{ marginRight: 10 }}
+                          >
                             {jobs.companyName}
                           </Link>
                         </Typography>
@@ -397,7 +400,10 @@ const FindJobs = (props) => {
                   </Typography>
 
                   <Stack direction="row">
-                    <Link to="/company" style={{ marginRight: 10 }}>
+                    <Link
+                      to={"/company?id=" + jobDetails.companyId}
+                      style={{ marginRight: 10 }}
+                    >
                       {jobDetails.companyName}
                     </Link>
                     <CompanyRating

@@ -323,12 +323,21 @@ const CompanyReviews = (props) => {
                           marginRight: "0.25rem",
                           color: "#2d2d2d",
                           textDecoration: "underline",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          window.location.href =
+                            "/company?id=" + company.id + "&tab=reviews";
                         }}
                       >
-                        {company.averageRating}&nbsp;
+                        {company.averageRating}
                         <img
                           src={StarIcon}
-                          style={{ width: "15px", height: "15px" }}
+                          style={{
+                            width: "15px",
+                            height: "15px",
+                            marginLeft: "5px",
+                          }}
                         />
                       </Grid>
                     </Grid>
