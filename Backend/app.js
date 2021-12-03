@@ -359,6 +359,22 @@ app.post("/deleteReview", function (req, res) {
 
 // anay's
 
+app.post("/postReview", function (req, res) {
+  kafka.make_request("postReview", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end("Success");
+    }
+  });
+});
+
 app.post("/commonLogin", async (req, res) => {
   kafka.make_request("login_common", req.body, function (err, results) {
     if (err) {
@@ -460,7 +476,8 @@ app.get("/appliedJobs/get/:jobseekerid", async (req, res) => {
 });
 
 // Apply for a job
-app.post("/applyJob", async (req, res) => {
+app.post("/applyJob", uploadS3.single("resumeURI"), async (req, res) => {
+  req.body.resumeURI = req.file?.location;
   kafka.make_request("apply_job", req.body, function (err, results) {
     if (err) {
       res.writeHead(500, {
