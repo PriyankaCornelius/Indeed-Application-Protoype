@@ -62,7 +62,19 @@ const JobDescriptionCard = (props) => {
           marginBottom: "15px",
         }}
       >
-        {props.jobDetails.fulldescription}
+        {props.jobDetails.fulldescription ? (
+          props.jobDetails.fulldescription
+        ) : (
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "15px",
+              fontWeight: "bold",
+            }}
+          >
+            No Job Description found!
+          </div>
+        )}
       </p>
     </Card>
   ) : null;
