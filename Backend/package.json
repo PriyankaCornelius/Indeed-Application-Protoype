@@ -4,7 +4,7 @@
   "description": "Group Project CMPE 273- Indeed Application Prototype",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -23,6 +23,9 @@
     "nodemon": "^2.0.13",
     "passport": "^0.5.0",
     "passport-jwt": "^4.0.0",
-    "redis": "^3.1.2"
+    "redis": "^3.1.2",
+    "chai": "^4.3.4",
+    "mocha": "^9.1.2",
+    "supertest": "^6.1.6"
   }
 }

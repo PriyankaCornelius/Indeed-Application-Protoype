@@ -18,6 +18,8 @@ import { useSelector } from "react-redux";
 
 const JobSeekerProfile = (props) => {
   const userId = useSelector((state) => state.login.user.id);
+  const userObject = useSelector((state) => state.login.user);
+  const token = useSelector((state) => state.login.token);
   const [jobSeekerDetails, setJobSeekerDetails] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -172,6 +174,7 @@ const JobSeekerProfile = (props) => {
   useEffect(() => {
     getJobSeekerDetails();
   }, []);
+
   return (
     <div>
       <MainHeader currentTab="profile"></MainHeader>
@@ -223,8 +226,12 @@ const JobSeekerProfile = (props) => {
                     open={open}
                     onClose={handleClose}
                     onClick={handleClose}
+                    userId={userId}
+                    userObject={userObject}
+                    token={token}
                     resumeURI={jobSeekerDetails.resumeURI}
                     getJobSeekerDetails={getJobSeekerDetails}
+                    onFileChangeHandler={onFileChangeHandler}
                   />
                 ) : null}
 
@@ -240,9 +247,9 @@ const JobSeekerProfile = (props) => {
                     htmlFor="sampleFile"
                     component="label"
                     type={"submit"}
-                    style={{ width: "40%", marginTop: 10 }}
+                    style={{ width: "50%", marginTop: 10 }}
                   >
-                    Upload a resume
+                    Upload/Replace a resume
                   </Button>
                   {showResume()}
                 </Stack>

@@ -1,15 +1,17 @@
 const CompanyReviews = require("../../Models/CompanyReviews");
 
 const handle_request = async (msg, callback) => {
+  let ts = Date.now();
+  let date_ob = new Date(ts);
   try {
-    let companyReviews = [];
-    companyReviews = await CompanyReviews.find({
-      applicantId: parseInt(msg.id),
+    const Review = new CompanyReviews({
+      ...msg,
+      createdAt: date_ob,
     });
 
-    if (companyReviews) {
-      callback(null, companyReviews);
-    } else throw error;
+    Review.save();
+
+    callback(null, { message: "Success" });
   } catch (exception) {
     callback({ message: exception }, null);
   }

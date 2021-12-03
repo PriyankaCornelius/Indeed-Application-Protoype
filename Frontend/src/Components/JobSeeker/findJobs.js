@@ -17,11 +17,12 @@ import {
   CardActions,
   CardContent,
   CardActionArea,
+  Pagination,
 } from "@mui/material";
 
 const FindJobs = (props) => {
   const [showJobs, setShowJobs] = useState(false);
-  const [jobCards, setJobCards] = useState([]);
+  const [jobCards, setJobCards] = useState(undefined);
   const [jobDetails, setJobDetails] = useState({});
   const [jobFilterWhat, setJobFilterWhat] = useState("");
   const [jobFilterWhere, setJobFilterWhere] = useState("");
@@ -31,11 +32,20 @@ const FindJobs = (props) => {
   const [jobWhereTypeaheadValue, setJobWhereTypeaheadValue] = useState("");
   const [savedJob, setSavedJob] = useState({});
   const [cardColor, setCardColor] = useState({ 0: "blue" });
+  const [page, setPage] = useState(0);
+  const resultsPerPage = 1;
+
+  const handleChange = async (event, value) => {
+    setPage(value);
+    getJobsList(value);
+  };
+
   const val = " days ago";
   var today = new Date();
   const oneDay = 24 * 60 * 60 * 1000;
 
   const userId = useSelector((state) => state.login.user.id);
+  const resume = useSelector((state) => state.login.user.resumeFilename);
 
   const renderBulletList = (text) => {
     let textList = text?.split("· ");
@@ -49,10 +59,12 @@ const FindJobs = (props) => {
 
   const onClickHandler = () => {
     setShowJobs(true);
-    getJobsList();
+    getJobsList(page);
   };
 
-  const getJobsList = async () => {
+  const getJobsList = async (pageValue) => {
+    let skip = 0;
+    if (pageValue > 0) skip = (pageValue - 1) * resultsPerPage;
     const response = await fetch(
       `http://${NODE_HOST}:${NODE_PORT}/getJobsList`,
       {
@@ -63,6 +75,8 @@ const FindJobs = (props) => {
         body: JSON.stringify({
           what: jobWhatTypeaheadValue,
           where: jobFilterWhere,
+          skip: skip,
+          take: resultsPerPage,
         }),
       }
     );
@@ -70,8 +84,12 @@ const FindJobs = (props) => {
     const data = await response.json();
 
     setCardColor({ 0: "blue" });
+    console.log("data form ", data);
+    if (data.status === "error") {
+      setJobCards(undefined);
+    }
+    setJobCards(data);
     if (data && data.length > 0) {
-      setJobCards(data);
       setJobDetails(data[0]);
       getSaveJob(data[0].id);
     }
@@ -156,6 +174,10 @@ const FindJobs = (props) => {
     getWhereTypeAheadList();
   }, [jobFilterWhere]);
 
+  // useEffect(() => {
+  //   getJobsList();
+  // }, [page]);
+
   return (
     <div>
       <MainHeader currentTab="findJobs"></MainHeader>
@@ -234,10 +256,22 @@ const FindJobs = (props) => {
       </Grid>
       <Grid flex>
         <Stack sx={{ mt: 3, mb: 3 }}>
-          <Typography sx={{ textAlign: "center", lineHeight: 10 }}>
-            <Link to="/jobSeekerProfile"> Post your resume</Link>– It only takes
-            a few seconds
-          </Typography>
+          {resume ? (
+            <Typography sx={{ textAlign: "center", lineHeight: 10 }}>
+              Post your resume - It only takes a few seconds{" "}
+            </Typography>
+          ) : userId ? (
+            <Typography sx={{ textAlign: "center", lineHeight: 10 }}>
+              <Link to="/jobSeekerProfile"> Post your resume</Link>– It only
+              takes a few seconds
+            </Typography>
+          ) : (
+            <Typography sx={{ textAlign: "center", lineHeight: 10 }}>
+              <Link to="/login"> Post your resume</Link>– It only takes a few
+              seconds
+            </Typography>
+          )}
+
           <Typography sx={{ textAlign: "center", lineHeight: 10 }}>
             <Link to="/employerHeader">Employers: Post a job</Link>
           </Typography>
@@ -313,15 +347,23 @@ const FindJobs = (props) => {
                     </CardContent>
                   </CardActionArea>
 
-                  <CardActions></CardActions>
+                  {/* <CardActions></CardActions> */}
                 </Card>
               );
             })}{" "}
+            {jobCards && jobCards?.length > 0 ? (
+              <Pagination
+                onChange={handleChange}
+                count={20}
+                variant="outlined"
+                shape="rounded"
+                style={{ display: "flex", justifyContent: "center" }}
+              />
+            ) : null}
           </Grid>
 
           {/* display of main job card */}
-
-          {jobCards.length > 0 ? (
+          {jobCards && jobCards?.length > 0 ? (
             <Grid item>
               <Card
                 variant="outlined"
@@ -367,38 +409,23 @@ const FindJobs = (props) => {
                     Employer actively reviewed job 3 days ago
                   </Typography>
 
-                  {jobDetails.jobWebsite ? (
-                    <Button
-                      variant="contained"
-                      style={{
-                        textTransform: "none",
-                        marginBottom: 10,
-                        marginRight: 10,
-                      }}
+                  <Button
+                    variant="contained"
+                    style={{
+                      textTransform: "none",
+                      marginBottom: 10,
+                      marginRight: 10,
+                    }}
+                  >
+                    <Link
+                      to={userId ? "/apply?jobid=" + jobDetails.id : "/login"}
+                      style={{ color: "white" }}
                     >
-                      <a
-                        href={jobDetails.jobWebsite}
-                        style={{ color: "white" }}
-                      >
-                        {" "}
-                        Apply on company site
-                      </a>
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      style={{
-                        textTransform: "none",
-                        marginBottom: 10,
-                        marginRight: 10,
-                      }}
-                    >
-                      <Link to="/apply" style={{ color: "white" }}>
-                        {" "}
-                        Apply now
-                      </Link>
-                    </Button>
-                  )}
+                      {" "}
+                      Apply now
+                    </Link>
+                  </Button>
+
                   {userId ? (
                     <Button onClick={() => saveJob(jobDetails.id)}>
                       {savedJob.saved ? (
@@ -415,7 +442,7 @@ const FindJobs = (props) => {
                     </Link>
                   )}
 
-                  <Divider></Divider>
+                  <Divider />
 
                   <Stack>
                     <Typography
@@ -587,12 +614,12 @@ const FindJobs = (props) => {
                 </CardContent>
               </Card>
             </Grid>
-          ) : (
+          ) : jobCards?.length === 0 ? (
             <Typography style={{ justifyContent: "center", fontSize: 30 }}>
               {" "}
               No jobs found !!
             </Typography>
-          )}
+          ) : null}
         </Grid>
       ) : null}
     </div>

@@ -1,13 +1,16 @@
 import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
-import { Menu, MenuItem, Typography } from "@mui/material";
+import { Menu, MenuItem, Typography, Button } from "@mui/material";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import { NODE_HOST, NODE_PORT } from "../../envConfig";
 import { ListItemIcon } from "@material-ui/core";
+import { updateResume } from "../../redux/actions/loginActions";
+import { connect } from "react-redux";
 
 const ResumeActions = (props) => {
   const deleteResume = async () => {
+    console.log("here");
     const response = await fetch(
       `http://${NODE_HOST}:${NODE_PORT}/deleteResume`,
       {
@@ -17,7 +20,7 @@ const ResumeActions = (props) => {
         },
         body: JSON.stringify({
           resumeURI: props.resumeURI,
-          id: 1,
+          id: props.userId,
         }),
       }
     );
@@ -26,8 +29,17 @@ const ResumeActions = (props) => {
 
     if (data) {
       props.getJobSeekerDetails();
+      let user = props.userObject;
+      console.log(user);
+      user.resumeFilename = data.resumeFilename ? data.resumeFilename : null;
+      user.resumeURI = data.resumeURI ? data.resumeURI : null;
+      let dataJson = {};
+      dataJson.user = user;
+      dataJson.token = props.token;
+      props.updateResume(dataJson);
     }
   };
+
   return (
     <React.Fragment>
       <Menu
@@ -62,12 +74,6 @@ const ResumeActions = (props) => {
       >
         <MenuItem>
           <ListItemIcon>
-            <FileCopyIcon fontSize="small" />
-          </ListItemIcon>
-          Replace
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
             <a href={props.resumeURI} download style={{ color: "grey" }}>
               <DownloadIcon fontSize="small" />
             </a>
@@ -84,4 +90,5 @@ const ResumeActions = (props) => {
     </React.Fragment>
   );
 };
-export default ResumeActions;
+
+export default connect(null, { updateResume })(ResumeActions);

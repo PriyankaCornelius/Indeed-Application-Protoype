@@ -14,8 +14,10 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import withStyles from "@material-ui/core/styles/withStyles"
+import { endpoint } from "views/util/port";
 import {
     Form,
+    Modal,
     // Card,
     // Container,
     // Row,
@@ -32,7 +34,9 @@ import {
         search: false,
         searchResult: [],
         companyReview: [],
+        companyName: '',
         reviewPage: false,
+        jobStats: [],
         // action: '',
       };
       this.handleChange = this.handleChange.bind(this);
@@ -42,8 +46,8 @@ import {
   
     componentDidMount() {
       const compList = [];
-      Axios.defaults.withCredentials = true;
-      Axios.get('http://localhost:3001/allcompanies')
+      // Axios.defaults.withCredentials = true;
+      Axios.get(endpoint+'/allcompanies')
         .then((res) => {
           if (res) {
             console.log(res.data);
@@ -64,12 +68,23 @@ import {
     handleActions = (e) => {
       console.log(e.currentTarget.id);
       const action = {companyName: e.currentTarget.id};
-      Axios.defaults.withCredentials = true;
-      Axios.post('http://localhost:3001/viewcompanyreview', action)
+      // Axios.defaults.withCredentials = true;
+      Axios.post(endpoint+'/viewcompanyreview', action)
         .then((res) => {
           if (res.status === 200) {
             // console.log(res.data);
             this.setState({ companyReview: res.data });
+            
+          } else {
+            console.log("Error!")
+          }
+        });
+      // Axios.defaults.withCredentials = true;
+      Axios.post(endpoint+'/viewjobstats', action)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res.data);
+            this.setState({ jobStats: res.data });
             this.setState({ reviewPage: true });
           } else {
             console.log("Error!")
@@ -96,8 +111,8 @@ import {
       e.preventDefault();
       console.log(this.state.inSearch);
       const search = {search: this.state.inSearch}
-      Axios.defaults.withCredentials = true;
-      Axios.post('http://localhost:3001/companysearch', search)
+      // Axios.defaults.withCredentials = true;
+      Axios.post(endpoint+'/companysearch', search)
         .then((res) => {
           if (res.status === 200) {
             // console.log(res.data);
@@ -109,8 +124,9 @@ import {
           }
         });
     }
-  
+
     render() {
+      console.log(this.state.jobStats)
       if (!this.state.search && !this.state.reviewPage) {
         return (
         <div>
@@ -120,7 +136,7 @@ import {
                       <GridItem>
                       <input type="text" name="inSearch" placeholder=" Search Companies " style={{ width: '350px', height: '35px' }} onChange={this.handleChange}  required />
                           &nbsp; &nbsp; &nbsp;
-                          <Button color="primary" type="submit" onClick={this.handleSearch} >Search</Button>
+                          <Button color="primary" onClick={this.handleSearch} >Search</Button>
                       </GridItem>
                       </GridContainer>
                       </Form>
@@ -136,7 +152,7 @@ import {
                     <p><b>Industry</b>: {companies.industry}</p>
                     </CardBody>
                     <CardFooter>
-                    <Button color="primary" id={companies.companyName} onClick={this.handleActions} >View Reviews</Button>
+                    <Button color="success" id={companies.companyName} onClick={this.handleActions} >View Reviews</Button>
                     </CardFooter>
                   </CardBody>
                 </Card>
@@ -159,6 +175,7 @@ import {
                             <Button color="warning" type="submit" onClick={this.handleHome}>All Companies</Button>
                         </GridItem>
                         </GridContainer>
+                        <h6>Job Applications: {this.state.jobStats[0].applications} &nbsp;&nbsp;&nbsp; Hired: {this.state.jobStats[0].hired} &nbsp;&nbsp;&nbsp; Rejected: {this.state.jobStats[0].rejected}</h6>
                         </Form>
               <Form inline>
                 <GridContainer >
@@ -206,7 +223,7 @@ import {
                       <p><b>Industry</b>: {companies.industry}</p>
                       </CardBody>
                       <CardFooter>
-                      <Button color="primary" id={companies.companyName} onClick={this.handleActions} >View Reviews</Button>
+                      <Button color="success" id={companies.companyName} onClick={this.handleActions} >View Reviews</Button>
                       </CardFooter>
                     </CardBody>
                   </Card>
