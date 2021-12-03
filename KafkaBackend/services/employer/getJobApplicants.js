@@ -7,9 +7,7 @@ const handle_request = async (msg, callback) => {
       let sqlSelect = `SELECT jobapplications.*, jobseekers.firstName, jobseekers.lastName, jobseekers.resumeFilename from jobapplications join jobseekers on jobseekers.id=jobapplications.applicantId where jobapplications.jobId=?`;
       con.query(sqlSelect, [msg.id], (err, result) => {
         if (result) {
-          callback(null, {
-            result
-          });
+          callback(null,result);
         } else throw err;
       });
     } catch (exception) {

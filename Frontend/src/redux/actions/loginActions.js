@@ -23,7 +23,7 @@ export const commonLoginFunc = (payload, setLoginError) => (dispatch) => {
         });
         if (res.data[0][0].personaType === "js") window.location.href = "/";
         if (res.data[0][0].personaType === "a")
-          window.location.href = "http://localhost:3001/admin/dashboard";
+          window.location.href = "http://18.191.158.78:3001/admin/dashboard";
         if (res.data[0][0].personaType === "e")
           window.location.href = "/employerLandingPage";
       }

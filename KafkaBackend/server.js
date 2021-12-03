@@ -1,6 +1,6 @@
 const { mongoDB } = require("./mongoDBConfig");
 const mongoose = require("mongoose");
-const con = require("./sqlDbConfig");
+// const con = require("./sqlDbConfig");
 //Here
 
 //topics files
@@ -17,6 +17,7 @@ var ApplyJob = require("./services/ApplyJob.js");
 var FeaturedReviews = require("./services/FeaturedReviews");
 var PutDescEmployer = require("./services/PutDescriptionEmployer");
 
+var UpdateDateAndViewCount = require("./services/jobSeeker/updateDateAndViewCount");
 var PostReply = require("./services/jobSeeker/postReply.js");
 var JobList = require("./services/jobSeeker/getJobList.js");
 var JobSeekerDetails = require("./services/jobSeeker/getJobSeekerDetails.js");
@@ -46,6 +47,8 @@ var UpdateReviews = require("./services/jobSeeker/updateReviews");
 var getCompanyJobPosts = require("./services/employer/getCompanyJobPosts.js");
 var getJobApplicants = require("./services/employer/getJobApplicants.js");
 var postJob = require("./services/employer/postJob");
+var postJob = require("./services/employer/postJob");
+var getEmployerMessages = require("./services/employer/getEmployerMessages");
 var connection = new require("./Connection");
 
 var options = {
@@ -148,3 +151,6 @@ handleTopicRequest("get_job_applicants_by_jobId", getJobApplicants);
 handleTopicRequest("post_new_job", postJob);
 handleTopicRequest("get_company_details_by_id", CompanyDetailsById);
 handleTopicRequest("update_reviews", UpdateReviews);
+handleTopicRequest("getEmployerMessages", getEmployerMessages);
+
+handleTopicRequest("updateDateAndViewCount", UpdateDateAndViewCount);

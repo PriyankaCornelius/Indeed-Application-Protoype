@@ -24,7 +24,7 @@ mongoose.connect(mongoDB, options, (err, res) => {
   }
 });
 
-const CompanyReviews = require("../models/CompanyReviews");
+// const CompanyReviews = require("../models/CompanyReviews");
 
 const Redis = require("redis");
 const redisClient = Redis.createClient();

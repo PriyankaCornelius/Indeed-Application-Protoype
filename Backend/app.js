@@ -220,6 +220,24 @@ app.get("/getMessages", function (req, res) {
   });
 });
 
+app.get("/getEmployerMessages", function (req, res) {
+  kafka.make_request("getEmployerMessages", req.query, function (err, results) {
+    console.log("in result");
+    console.log(results);
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else********************");
+      res.status(200).json(results);
+      res.end();
+    }
+  });
+});
+
 // app.get("/getMessages", function (req, res) {
 //   let userId = req.query.userId;
 //   redisClient.get(`getMessages?id=${userId}`, async (error, results) => {
@@ -330,50 +348,6 @@ app.post("/updateResume", uploadS3.single("file"), function (req, res) {
   req.body.originalname = req.file?.originalname;
   console.log("req.file", req.file);
   kafka.make_request("updateResume", req.body, function (err, results) {
-    console.log("in result");
-    console.log(results);
-    if (err) {
-      console.log("Inside err");
-      res.json({
-        status: "error",
-        msg: "System Error, Try Again.",
-      });
-    } else {
-      console.log("Inside else");
-      res.status(200).json(results);
-      res.end();
-    }
-  });
-});
-
-app.post("/updateBanner", uploadS3.single("banner"), function (req, res) {
-  console.log("req.body", req.body);
-  req.body.file = req.file?.location;
-  req.body.originalname = req.file?.originalname;
-  console.log("req.file", req.file);
-  kafka.make_request("updateBanner", req.body, function (err, results) {
-    console.log("in result");
-    console.log(results);
-    if (err) {
-      console.log("Inside err");
-      res.json({
-        status: "error",
-        msg: "System Error, Try Again.",
-      });
-    } else {
-      console.log("Inside else");
-      res.status(200).json(results);
-      res.end();
-    }
-  });
-});
-
-app.post("/updateLogo", uploadS3.single("logo"), function (req, res) {
-  console.log("req.body", req.body);
-  req.body.file = req.file?.location;
-  req.body.originalname = req.file?.originalname;
-  console.log("req.file", req.file);
-  kafka.make_request("updateLogo", req.body, function (err, results) {
     console.log("in result");
     console.log(results);
     if (err) {
@@ -552,24 +526,6 @@ app.put("/updateprofile/company", async (req, res, next) => {
       }
     }
   );
-});
-
-app.put("/updateprofileDescription/company", async (req, res, next) => {
-  console.log("Request is " + req.body);
-  kafka.make_request("putDescEmp", req.body, function (err, results) {
-    if (err) {
-      res.writeHead(500, {
-        "Content-Type": "text/plain",
-      });
-      res.end("Error Occured");
-    } else {
-      res.writeHead(200, {
-        "Content-Type": "application/json",
-      });
-      console.log("Profile Updated Successfully!");
-      res.status(200).end(JSON.stringify(results));
-    }
-  });
 });
 
 app.post("/postSalary", function (req, res) {
@@ -771,11 +727,11 @@ app.get("/reviewsperday", async (req, res, next) => {
   );
 });
 // *****************EMPLOYER'S APIs*********************
-app.get("/getCompanyJobPosts", function (req, res) {
+app.post("/getCompanyJobPosts", function (req, res) {
   // console.log("in app getCompanyJobPosts",req.query);
   kafka.make_request(
     "get_jobs_posted_by_company",
-    req.query,
+    req.body,
     function (err, results) {
       if (err) {
         res.writeHead(500, {
@@ -970,6 +926,26 @@ app.post("/filterreviews", async (req, res, next) => {
   );
 });
 
+app.post("/updateDateAndViewCount", function (req, res) {
+  kafka.make_request(
+    "updateDateAndViewCount",
+    req.body,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end("Success");
+      }
+    }
+  );
+});
+
 //Approve Reject review
 app.post("/reviewactions", async (req, res, next) => {
   console.log("Post Request on reviewactions");
@@ -1069,23 +1045,6 @@ app.post("/viewjobstats", async (req, res, next) => {
       }
     }
   );
-});
-
-//update reviews
-app.put("/reviews/update/helpfulness", async (req, res) => {
-  kafka.make_request("update_reviews", req.body, function (err, results) {
-    if (err) {
-      res.writeHead(500, {
-        "Content-Type": "text/plain",
-      });
-      res.end("Error Occured");
-    } else {
-      res.writeHead(200, {
-        "Content-Type": "application/json",
-      });
-      res.end(JSON.stringify(results));
-    }
-  });
 });
 
 const PORT = process.env.PORT || 8080;

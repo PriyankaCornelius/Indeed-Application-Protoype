@@ -24,34 +24,44 @@ const Applicants = (props) => {
   console.log("userid", userId);
 
   
-
-  const getCompanyJobPosts = async () => {
+  let val = 1;
+  const getCompanyJobPosts = async (val) => {
+    let skip = 0;
+    const resultsPerPage = 20000;
     const response = await fetch(
       `http://${NODE_HOST}:${NODE_PORT}/getCompanyJobPosts?id=${userId}`,
       {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          skip: skip,
+          take: resultsPerPage,
+          id:userId
+        }),
       }
     ).then(response => response.json())
       .then(data => {
         console.log("company job posts",data.result);
-        setJobsDropdown(data.result)
+        setJobsDropdown(data)
         console.log("lennnnn", jobsDropdown.length);
-      });
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });;
   }
   let jobId;
   useEffect(() => {
     if (props.location.state) {
-      console.log("yes props");
+     
     jobId = props.location.state.jobId;
     getJobApplicants();
     console.log("jobId",jobId)
   } else {
     
-      console.log("no props");
-    getCompanyJobPosts();
+    getCompanyJobPosts(1);
   }
   }, []);
 
@@ -64,12 +74,15 @@ const Applicants = (props) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
-    ).then(response => response.json())
-      .then(data => {
-        console.log("applicants for the job",data.result);
-        setJobApplicantsData(data.result);
-      });
+      })
+    // ).then(response => response.json())
+    //   .then(data => {
+    //     console.log("applicants for the job",data.result);
+    //     setJobApplicantsData(data.result);
+    //   });
+    const data = await response.json();
+    console.log("applicants for the job",data);
+    setJobApplicantsData(data);
   }
   // const handleApplicantStatusChange = e => {
   //   e.preventDefault();
@@ -89,9 +102,13 @@ const Applicants = (props) => {
       }
     ).then(response => response.json())
       .then(data => {
-        console.log("applicants for the job",data.result);
-        setJobApplicantsData(data.result);
-      });
+        console.log("applicants for the job",data);
+        setJobApplicantsData(data);
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });;
   }
 
   const jobSelectionChangeHandler = e => {
@@ -106,7 +123,7 @@ const Applicants = (props) => {
   
   return (
     <div>
-      <EmployerDashboard currentTab="jobs"></EmployerDashboard>
+      <EmployerDashboard currentTab="applicants"></EmployerDashboard>
       {jobsDropdown.length !== 0 ?
           <Select
           displayEmpty
