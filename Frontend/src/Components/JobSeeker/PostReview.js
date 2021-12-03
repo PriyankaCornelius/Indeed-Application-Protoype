@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MainHeader from "./mainHeader";
 import { Grid } from "@material-ui/core";
 import { TextField, Button } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { useLocation } from "react-router-dom";
 import { connect } from "react-redux";
-import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import SuccessConfirmation from "./apply/SuccessConfirmation";
 import axios from "axios";
