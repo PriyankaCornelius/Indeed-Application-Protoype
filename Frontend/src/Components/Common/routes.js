@@ -29,7 +29,6 @@ import EmployerLandingPage from "../Employer/EmployerLandingPage";
 import PostReview from "../JobSeeker/PostReview";
 import PostSalary from "../JobSeeker/PostSalary";
 import Applicants from "../Employer/applicants";
-
 const Routes = () => {
   const history = useHistory();
 
