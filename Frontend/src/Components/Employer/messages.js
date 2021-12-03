@@ -25,7 +25,7 @@ const Messaging = (props) => {
   const companyName = useSelector((state) => state.login.user.companyName);
   const [messageCards, setMessageCards] = useState(undefined);
   const [messageDetails, setMessageDetails] = useState([]);
-  const [cardColor, setCardColor] = useState({ 0: "blue" });
+  const [cardColor, setCardColor] = useState({ 0: "grey" });
   const [employerReply, setEmployerReply] = useState("");
   const [jobsDropdown, setJobsDropdown] = useState([]);
   const [displayJobsDropdown, setDisplayJobsDropdown] = useState(false);
@@ -62,7 +62,7 @@ const Messaging = (props) => {
     //   });;
     const data = await response.json();
     console.log("applicants for the job", data);
-    setJobApplicantsData(data);
+    setJobApplicantsData(data.result);
   };
 
   const onChangeReplyHandler = (event) => {
@@ -76,11 +76,11 @@ const Messaging = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        applicantId: currentApplicant.applicantId,
+        applicantId: currentApplicant,
         companyId: userId,
         messageContent: employerReply,
         messageSender: "Employer",
-        applicantName: currentApplicant.firstName + currentApplicant.lastName,
+        // applicantName: currentApplicant.firstName + currentApplicant.lastName,
         companyName: companyName,
       }),
     });
@@ -88,7 +88,7 @@ const Messaging = (props) => {
     const data = await response.json();
 
     if (data.message === "Success") {
-      retriveMessages(userId, companyName);
+      retriveMessages(userId, currentApplicant);
       setEmployerReply("");
     }
   };
@@ -99,7 +99,11 @@ const Messaging = (props) => {
     console.log("jobSelection", jobSelection);
     var jobId = e.target.value.id;
     getJobApplicants(jobId);
+    // if (currentApplicant) {
+    //   retriveMessages(userId, currentApplicant);
+    // }
   };
+
   const getMessages = async () => {
     const response = await fetch(
       `http://${NODE_HOST}:${NODE_PORT}/getEmployerMessages?id=${userId}`,
@@ -117,7 +121,7 @@ const Messaging = (props) => {
     }
     let applicantIdsList = Object.keys(data);
     if (applicantIdsList.length > 0) {
-      console.log(applicantIdsList, "****************");
+      console.log(applicantIdsList, "******");
       setMessageCards(
         applicantIdsList.map((applicantIdData) => {
           return {
@@ -131,11 +135,11 @@ const Messaging = (props) => {
     }
   };
 
-  const retriveMessages = async (companyId, applicant) => {
-    setCurrentApplicant(applicant);
+  const retriveMessages = async (companyId, applicantId) => {
+    setCurrentApplicant(applicantId);
     setMessageDetails([]);
     const response = await fetch(
-      `http://${NODE_HOST}:${NODE_PORT}/getAllMessages?applicantId=${applicant.applicantId}&companyId=${companyId}`,
+      `http://${NODE_HOST}:${NODE_PORT}/getAllMessages?applicantId=${applicantId}&companyId=${companyId}`,
       {
         method: "GET",
         headers: {
@@ -282,7 +286,7 @@ const Messaging = (props) => {
                   );
                 })}
 
-                {jobApplicantsData.length !== 0 ? (
+                {jobApplicantsData.length > 0 ? (
                   jobApplicantsData.map((applicant, index) => {
                     return (
                       //   <Typography
@@ -308,7 +312,7 @@ const Messaging = (props) => {
                         onClick={() => {
                           setCardColor({ [index]: "blue" });
                           // retriveMessages(userId, message.companyId);
-                          retriveMessages(userId, applicant);
+                          retriveMessages(userId, applicant.applicantId);
                         }}
                       >
                         <CardContent>
