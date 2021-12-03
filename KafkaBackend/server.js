@@ -37,11 +37,11 @@ var PostReview = require("./services/jobSeeker/postReview");
 var PostSalary = require("./services/jobSeeker/postSalary");
 var FindCompanyReviews = require("./services/jobSeeker/findCompanyReviews");
 var JobDetails = require("./services/jobSeeker/getJobDetails");
-
+var CompanyDetailsById = require("./services/jobSeeker/companyDetailsById");
 
 var getCompanyJobPosts = require("./services/employer/getCompanyJobPosts.js");
 var getJobApplicants = require("./services/employer/getJobApplicants.js");
-var postJob = require('./services/employer/postJob');
+var postJob = require("./services/employer/postJob");
 var connection = new require("./Connection");
 
 var options = {
@@ -137,3 +137,4 @@ handleTopicRequest("get_job_details_by_id", JobDetails);
 handleTopicRequest("get_jobs_posted_by_company", getCompanyJobPosts);
 handleTopicRequest("get_job_applicants_by_jobId", getJobApplicants);
 handleTopicRequest("post_new_job", postJob);
+handleTopicRequest("get_company_details_by_id", CompanyDetailsById);
