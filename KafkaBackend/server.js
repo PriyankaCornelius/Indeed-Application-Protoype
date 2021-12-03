@@ -1,6 +1,6 @@
 const { mongoDB } = require("./mongoDBConfig");
 const mongoose = require("mongoose");
-const con = require("./sqlDbConfig");
+// const con = require("./sqlDbConfig");
 //Here
 
 //topics files
