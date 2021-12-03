@@ -1,8 +1,10 @@
 const con = require("../sqldbConfig");
+var crypto = require("crypto");
 
 function handle_request(msg, callback) {
   console.log("Inside the Function!!!");
   let table = "";
+
   if (msg.personaType === "js") table = "jobseekers";
   else if (msg.personaType === "e") table = "employers";
   else table = "admins";
@@ -21,8 +23,13 @@ function handle_request(msg, callback) {
       console.log("error kya h", err);
       callback(err, "Error");
     } else {
-      if (results.length > 0) callback(null, results);
-      else callback(err, "Invalid Credentials");
+      if (results.length > 0) {
+        results[0].password = crypto
+          .createHash("md5")
+          .update(msg.password)
+          .digest("hex");
+        callback(null, results);
+      } else callback(err, "Invalid Credentials");
     }
   });
 }

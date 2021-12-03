@@ -14,12 +14,16 @@ import {
 import { TextField, Typography, Box } from "@material-ui/core";
 import EditIcon from "@mui/icons-material/Edit";
 import ResumeActions from "./resumeActions";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { UPDATE_RESUME } from "../../redux/constants/ActionTypes";
 
 const JobSeekerProfile = (props) => {
+  const dispatch = useDispatch();
+
   const userId = useSelector((state) => state.login.user.id);
   const userObject = useSelector((state) => state.login.user);
   const token = useSelector((state) => state.login.token);
+
   const [jobSeekerDetails, setJobSeekerDetails] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -80,6 +84,21 @@ const JobSeekerProfile = (props) => {
       resumeFilename: data.resumeFilename ? data.resumeFilename : "",
       resumeURI: data.resumeURI ? data.resumeURI : "",
     });
+
+    let user = userObject;
+    user.firstName = data.firstName ? data.firstName : null;
+    user.lastName = data.lastName ? data.lastName : null;
+    user.email = data.email ? data.email : null;
+    user.phoneNo = data.phoneNo ? data.phoneNo : null;
+    user.resumeFilename = data.resumeFilename ? data.resumeFilename : null;
+    user.resumeURI = data.resumeURI ? data.resumeURI : null;
+    let dataJson = {};
+    dataJson.user = user;
+    dataJson.token = token;
+    dispatch({
+      type: UPDATE_RESUME,
+      payload: dataJson,
+    });
   };
 
   const onFileChangeHandler = (event) => {
@@ -130,7 +149,14 @@ const JobSeekerProfile = (props) => {
 
     const data = await response.json();
 
-    // setJobSeekerDetails(data);
+    if (data.message === "Profile Updated") {
+      alert("Your profile has been updated!!");
+    } else {
+      alert(
+        "New Email Id provided already exists, update a unique email id !!"
+      );
+    }
+    getJobSeekerDetails();
   };
 
   const onChangeHandler = (event) => {
@@ -186,14 +212,17 @@ const JobSeekerProfile = (props) => {
             direction="row"
             style={{ margin: 13 }}
           >
-            <Avatar {...stringAvatar("Archita Chakraborty")} />
+            <Avatar
+              {...stringAvatar(
+                jobSeekerDetails.firstName + " " + jobSeekerDetails.lastName
+              )}
+            />
 
             <h2>
               {jobSeekerDetails.firstName
                 ? jobSeekerDetails.firstName
                 : "Add Name"}
-              {jobSeekerDetails.middleName ? jobSeekerDetails.middleName : ""}
-              {jobSeekerDetails.lastName ? jobSeekerDetails.lastName : ""}
+              {jobSeekerDetails.lastName ? " " + jobSeekerDetails.lastName : ""}
             </h2>
           </Stack>
           <Stack justifyContent="center" spacing={1} direction="row">
@@ -308,6 +337,7 @@ const JobSeekerProfile = (props) => {
                       variant="outlined"
                       margin="dense"
                       required
+                      style={{ marginRight: 15 }}
                       label="First Name"
                       value={
                         jobSeekerDetails.firstName
