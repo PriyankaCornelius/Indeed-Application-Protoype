@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 
 const CompanyLandingPage = (props) => {
   const [selectedTab, setSelectedTab] = useState(null);
+  const [companyDetails, setCompanyDetails] = useState(null);
 
   const SelectedTab = () => {
     if (selectedTab === "snapshot") return <div>snapshot</div>;
@@ -76,7 +77,16 @@ const CompanyLandingPage = (props) => {
                   marginTop: "22px",
                   backgroundColor: "white",
                 }}
-              />
+              >
+                <img
+                  src={
+                    companyDetails && companyDetails.companyLogo
+                      ? companyDetails.companyLogo
+                      : "https://forcebrands.com/assets/fallback/company-default-4549373b79625823b56e48c7918608f77be903ad2fd38cfc9b6929d095994013.png"
+                  }
+                  style={{ width: "3rem", height: "3rem" }}
+                />
+              </div>
             </Grid>
             <Grid
               item

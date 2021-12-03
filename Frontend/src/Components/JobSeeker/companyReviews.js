@@ -273,7 +273,16 @@ const CompanyReviews = (props) => {
                           marginRight: "1rem",
                           backgroundColor: "white",
                         }}
-                      />
+                      >
+                        <img
+                          src={
+                            company.companyLogo
+                              ? company.companyLogo
+                              : "https://forcebrands.com/assets/fallback/company-default-4549373b79625823b56e48c7918608f77be903ad2fd38cfc9b6929d095994013.png"
+                          }
+                          style={{ width: "3rem", height: "3rem" }}
+                        />
+                      </div>
                     </Grid>
                     <Grid
                       item

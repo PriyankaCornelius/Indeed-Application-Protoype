@@ -10,6 +10,7 @@ import { styled } from "@mui/material/styles";
 
 const JobDescriptionCard = (props) => {
   const [expanded, setExpanded] = useState(false);
+  const [details, setDetails] = useState(false);
 
   const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -56,7 +57,14 @@ const JobDescriptionCard = (props) => {
                 padding: "0.5rem",
               }}
             >
-              img
+              <img
+                src={
+                  details.companyLogo
+                    ? details.companyLogo
+                    : "https://forcebrands.com/assets/fallback/company-default-4549373b79625823b56e48c7918608f77be903ad2fd38cfc9b6929d095994013.png"
+                }
+                style={{ width: "3rem", height: "3rem" }}
+              />
             </div>
           </Grid>
           <Grid item xs={9} style={{ marginTop: "15px" }}>
