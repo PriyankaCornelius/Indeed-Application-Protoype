@@ -402,7 +402,7 @@ class Dashboard extends React.Component {
         </GridItem>
       </GridContainer>
       <GridContainer>
-      <GridItem xs={12} sm={12} md={7}>
+      <GridItem xs={12} sm={12} md={8}>
           <Card chart>
             <CardHeader color="primary">
               <ChartistGraph
