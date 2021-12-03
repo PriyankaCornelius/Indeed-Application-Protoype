@@ -25,6 +25,10 @@ const multer = require("multer");
 const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
 
+const Redis = require("redis");
+// const redisClient = Redis.createClient();
+const DEFAULT_EXPIRATION = 3600;
+
 const s3 = new AWS.S3({
   accessKeyId: "AKIAZJZS76WTOJJJGHU3",
   secretAccessKey: "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",
@@ -216,6 +220,38 @@ app.get("/getMessages", function (req, res) {
   });
 });
 
+// app.get("/getMessages", function (req, res) {
+//   let userId = req.query.userId;
+//   redisClient.get(`getMessages?id=${userId}`, async (error, results) => {
+//     if (error) console.log(error);
+//     if (results != null) {
+//       return res.json(JSON.parse(results));
+//     } else {
+//       kafka.make_request("getMessages", req.query, function (err, results) {
+//         console.log("in result");
+//         console.log(results);
+//         if (err) {
+//           console.log("Inside err");
+//           res.json({
+//             status: "error",
+//             msg: "System Error, Try Again.",
+//           });
+//         } else {
+//           console.log("Inside else");
+//           redisClient.setex(
+//             `getMessages?id=${userId}`,
+//             DEFAULT_EXPIRATION,
+//             JSON.stringify(results)
+//           );
+//           // res.json(result);
+//           res.status(200).json(results);
+//           res.end();
+//         }
+//       });
+//     }
+//   });
+// });
+
 app.get("/getAllMessages", function (req, res) {
   kafka.make_request("getAllMessages", req.query, function (err, results) {
     console.log("in result");
@@ -359,6 +395,22 @@ app.post("/deleteReview", function (req, res) {
 
 // anay's
 
+app.post("/findCompanyReviews", function (req, res) {
+  kafka.make_request("findCompanyReviews", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify(results));
+    }
+  });
+});
+
 app.post("/postReview", function (req, res) {
   kafka.make_request("postReview", req.body, function (err, results) {
     if (err) {
@@ -436,6 +488,27 @@ app.get("/savedJobs/get/:jobseekerid", async (req, res) => {
   kafka.make_request(
     "get_saved_jobs_by_jobseeker_id",
     req.params.jobseekerid,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
+// Get Job Details by ID
+app.get("/jobdetails/get/:jobid", async (req, res) => {
+  kafka.make_request(
+    "get_job_details_by_id",
+    req.params.jobid,
     function (err, results) {
       if (err) {
         res.writeHead(500, {

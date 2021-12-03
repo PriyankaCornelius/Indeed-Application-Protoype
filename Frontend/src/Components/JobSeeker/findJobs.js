@@ -33,6 +33,11 @@ const FindJobs = (props) => {
   const [savedJob, setSavedJob] = useState({});
   const [cardColor, setCardColor] = useState({ 0: "blue" });
   const [page, setPage] = useState(0);
+  const [state, setState] = useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+  });
   const resultsPerPage = 1;
 
   const handleChange = async (event, value) => {
@@ -58,8 +63,10 @@ const FindJobs = (props) => {
   };
 
   const onClickHandler = () => {
-    setShowJobs(true);
-    getJobsList(page);
+    if (jobWhatTypeaheadValue.length > 0 || jobWhereTypeaheadValue.length > 0) {
+      setShowJobs(true);
+      getJobsList(page);
+    } else alert("Choose a What or Where filter option for Job Search !!");
   };
 
   const getJobsList = async (pageValue) => {
@@ -84,7 +91,7 @@ const FindJobs = (props) => {
     const data = await response.json();
 
     setCardColor({ 0: "blue" });
-    console.log("data form ", data);
+
     if (data.status === "error") {
       setJobCards(undefined);
     }
@@ -137,18 +144,20 @@ const FindJobs = (props) => {
   };
 
   const getWhatTypeAheadList = async () => {
-    const response = await fetch(
-      `http://${NODE_HOST}:${NODE_PORT}/getWhatTypeAheadList?what=${jobFilterWhat}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
+    if (jobFilterWhat.length >= 3) {
+      const response = await fetch(
+        `http://${NODE_HOST}:${NODE_PORT}/getWhatTypeAheadList?what=${jobFilterWhat}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
 
-    setWhatTypeaheadList(data);
+      setWhatTypeaheadList(data);
+    }
   };
 
   const getWhereTypeAheadList = async () => {
@@ -194,7 +203,7 @@ const FindJobs = (props) => {
             options={jobWhatTypeaheadList}
             value={jobWhatTypeaheadValue}
             onChange={(event, newValue) => {
-              setJobWhatTypeaheadValue(newValue);
+              setJobWhatTypeaheadValue(newValue); //limit to 3 characters
             }}
             inputValue={jobFilterWhat}
             onInputChange={(event, newInputValue) => {
@@ -249,6 +258,12 @@ const FindJobs = (props) => {
               textTransform: "none",
             }}
             onClick={onClickHandler}
+            // disabled={
+            //   !(
+            //     jobWhatTypeaheadValue.length > 0 ||
+            //     jobWhereTypeaheadValue.length > 0
+            //   )
+            // }
           >
             Find jobs
           </Button>
@@ -312,7 +327,10 @@ const FindJobs = (props) => {
                       </Typography>
                       <Stack direction="row">
                         <Typography style={{ marginRight: 10, fontSize: 14 }}>
-                          <Link to="/company" style={{ marginRight: 10 }}>
+                          <Link
+                            to={"/company?id=" + jobs.companyId}
+                            style={{ marginRight: 10 }}
+                          >
                             {jobs.companyName}
                           </Link>
                         </Typography>
@@ -382,7 +400,10 @@ const FindJobs = (props) => {
                   </Typography>
 
                   <Stack direction="row">
-                    <Link to="/company" style={{ marginRight: 10 }}>
+                    <Link
+                      to={"/company?id=" + jobDetails.companyId}
+                      style={{ marginRight: 10 }}
+                    >
                       {jobDetails.companyName}
                     </Link>
                     <CompanyRating

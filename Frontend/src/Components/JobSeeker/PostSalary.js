@@ -14,6 +14,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import SuccessConfirmation from "./apply/SuccessConfirmation";
 import axios from "axios";
+import { NODE_HOST, NODE_PORT } from "../../envConfig";
 
 const PostSalary = (props) => {
   const [isCurrent, setIsCurrent] = useState(null);
@@ -50,7 +51,7 @@ const PostSalary = (props) => {
     data.otherBenefits = otherBenefits;
     data.status = "Pending";
     axios
-      .post("http://localhost:8080/postSalary", data)
+      .post(`http://${NODE_HOST}:${NODE_PORT}/postSalary`, data)
       .then((res) => {
         if (res.data === "Success") setSuccess(true);
       })

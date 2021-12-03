@@ -15,8 +15,6 @@ const handle_request = async (msg, callback) => {
       };
     });
 
-    console.log("array", newArray);
-
     if (newArray) {
       callback(null, newArray);
     } else throw error;

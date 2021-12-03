@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 
 const CompanyLandingPage = (props) => {
   const [selectedTab, setSelectedTab] = useState(null);
+  const [companyDetails, setCompanyDetails] = useState([]);
 
   const SelectedTab = () => {
     if (selectedTab === "snapshot") return <div>snapshot</div>;
@@ -28,114 +29,125 @@ const CompanyLandingPage = (props) => {
   return (
     <div>
       <MainHeader currentTab="companyReviews"></MainHeader>
-      <Grid container direction="column">
-        <Grid
-          item
-          style={{
-            height: "288px",
-          }}
-        >
-          <img
+      {companyDetails ? (
+        <Grid container direction="column">
+          <Grid
+            item
             style={{
-              boxSizing: "border-box",
-              margin: 0,
-              minWidth: 0,
-              position: "relative",
-              width: "100%",
-              backgroundPosition: "center center",
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              borderBottomLeftRadius: "8px",
-              borderBottomRightRadius: "8px",
+              height: "288px",
             }}
-            src="https://d2q79iu7y748jz.cloudfront.net/s/_headerimage/1960x400/7ddf0e5102834468e93f7022dac2610e"
-          />
-        </Grid>
-        <Grid
-          item
-          container
-          direction="row"
-          style={{
-            height: "103px",
-            backgroundColor: "#151514",
-            color: "white",
-          }}
-        >
-          <Grid item xs={2} />
-          <Grid item container direction="row" xs={6}>
-            <Grid item xs={1}>
-              <div
-                style={{
-                  height: "3rem",
-                  width: "3rem",
-                  minWidth: "3rem",
-                  border: "1px solid #ececec",
-                  borderRadius: "8px",
-                  marginRight: "1rem",
-                  padding: "0.5rem",
-                  marginTop: "22px",
-                  backgroundColor: "white",
-                }}
-              />
-            </Grid>
-            <Grid
-              item
-              container
-              direction="column"
-              xs={10}
-              style={{ textAlign: "left", marginLeft: "15px" }}
-            >
+          >
+            <img
+              style={{
+                boxSizing: "border-box",
+                margin: 0,
+                minWidth: 0,
+                position: "relative",
+                width: "100%",
+                backgroundPosition: "center center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                borderBottomLeftRadius: "8px",
+                borderBottomRightRadius: "8px",
+              }}
+              src="https://d2q79iu7y748jz.cloudfront.net/s/_headerimage/1960x400/7ddf0e5102834468e93f7022dac2610e"
+            />
+          </Grid>
+          <Grid
+            item
+            container
+            direction="row"
+            style={{
+              height: "103px",
+              backgroundColor: "#151514",
+              color: "white",
+            }}
+          >
+            <Grid item xs={2} />
+            <Grid item container direction="row" xs={6}>
+              <Grid item xs={1}>
+                <div
+                  style={{
+                    height: "3rem",
+                    width: "3rem",
+                    minWidth: "3rem",
+                    border: "1px solid #ececec",
+                    borderRadius: "8px",
+                    marginRight: "1rem",
+                    padding: "0.5rem",
+                    marginTop: "22px",
+                    backgroundColor: "white",
+                  }}
+                >
+                  <img
+                    src={
+                      companyDetails && companyDetails.companyLogo
+                        ? companyDetails.companyLogo
+                        : "https://forcebrands.com/assets/fallback/company-default-4549373b79625823b56e48c7918608f77be903ad2fd38cfc9b6929d095994013.png"
+                    }
+                    style={{ width: "3rem", height: "3rem" }}
+                  />
+                </div>
+              </Grid>
               <Grid
                 item
-                style={{
-                  fontWeight: "bold",
-                  marginTop: "25px",
-                  fontSize: "18px",
-                  marginBottom: "15px",
-                }}
+                container
+                direction="column"
+                xs={10}
+                style={{ textAlign: "left", marginLeft: "15px" }}
               >
-                Best Buy
-              </Grid>
-              <Grid item container direction="row">
-                <Grid item xs={1}>
-                  69 |
+                <Grid
+                  item
+                  style={{
+                    fontWeight: "bold",
+                    marginTop: "25px",
+                    fontSize: "18px",
+                    marginBottom: "15px",
+                  }}
+                >
+                  Best Buy
                 </Grid>
-                <Grid item xs={4}>
-                  3.8
+                <Grid item container direction="row">
+                  <Grid item xs={1}>
+                    69 |
+                  </Grid>
+                  <Grid item xs={4}>
+                    3.8
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
+            <Grid item xs={2}>
+              <Button
+                variant="contained"
+                size="medium"
+                style={{
+                  backgroundColor: "white",
+                  marginTop: "35px",
+                  width: "203px",
+                  height: "44px",
+                  textTransform: "none",
+                  fontWeight: "bold",
+                }}
+              >
+                <b>Write a review</b>
+              </Button>
+            </Grid>
+            <Grid item xs={2} />
           </Grid>
-          <Grid item xs={2}>
-            <Button
-              variant="contained"
-              size="medium"
-              style={{
-                backgroundColor: "white",
-                marginTop: "35px",
-                width: "203px",
-                height: "44px",
-                textTransform: "none",
-                fontWeight: "bold",
-              }}
-            >
-              <b>Write a review</b>
-            </Button>
+          <Grid item container direction="row" style={{ height: "70px" }}>
+            <Grid item xs={2} />
+            <Grid item xs={8}>
+              <CompanyAppbar companyId={companyDetails.id} />
+            </Grid>
+            <Grid item xs={2} />
           </Grid>
-          <Grid item xs={2} />
-        </Grid>
-        <Grid item container direction="row" style={{ height: "70px" }}>
-          <Grid item xs={2} />
-          <Grid item xs={8}>
-            <CompanyAppbar />
+          <Grid item style={{ height: "100%" }}>
+            <Divider />
+            <SelectedTab />
           </Grid>
-          <Grid item xs={2} />
         </Grid>
-        <Grid item style={{ height: "100%" }}>
-          <Divider />
-          <SelectedTab />
-        </Grid>
-      </Grid>
+      ) : null}
     </div>
   );
 };

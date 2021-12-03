@@ -45,7 +45,11 @@ const MyJobs = ({ user }) => {
                   >
                     <Grid item xs={1}>
                       <img
-                        src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/5abe00d629e40745c7f3ffb6aa792c7b"
+                        src={
+                          job.companyLogo
+                            ? job.companyLogo
+                            : "https://forcebrands.com/assets/fallback/company-default-4549373b79625823b56e48c7918608f77be903ad2fd38cfc9b6929d095994013.png"
+                        }
                         style={{ width: "55px", height: "55px" }}
                       />
                     </Grid>
@@ -207,7 +211,11 @@ const MyJobs = ({ user }) => {
                   >
                     <Grid item xs={1}>
                       <img
-                        src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/5abe00d629e40745c7f3ffb6aa792c7b"
+                        src={
+                          job.companyLogo
+                            ? job.companyLogo
+                            : "https://forcebrands.com/assets/fallback/company-default-4549373b79625823b56e48c7918608f77be903ad2fd38cfc9b6929d095994013.png"
+                        }
                         style={{ width: "55px", height: "55px" }}
                       />
                     </Grid>
