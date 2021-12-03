@@ -2,7 +2,7 @@ const con = require("../sqldbConfig.js");
 
 const handle_request = async (msg, callback) => {
   try {
-    let updateSQL = `UPDATE  indeed.employers set companyBanner = ?  where  email = ?`;
+    let updateSQL = `UPDATE  indeed.employers SET companyBanner = ?  where  email = ?`;
     con.query(updateSQL, [msg.file, msg.id], (err, result1) => {
       if (result1) {
         callback(null, { message: "Banner Uploaded " });

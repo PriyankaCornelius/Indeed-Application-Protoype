@@ -115,23 +115,6 @@ const CompanySnapshots = (props) => {
               </CardContent>
             </Card>
           </Stack>
-          <Stack justifyContent="center" spacing={1} direction="row">
-            <Card
-              variant="outlined"
-              style={{
-                width: "42vw",
-                // margin: 15,
-                height: "12vw",
-                textAlign: "left",
-              }}
-            >
-              <CardContent>
-                <Typography style={{ fontSize: 16, fontWeight: 600 }}>
-                  Reviews
-                </Typography>
-              </CardContent>
-            </Card>
-          </Stack>
         </Grid>
       </Grid>
     </div>
