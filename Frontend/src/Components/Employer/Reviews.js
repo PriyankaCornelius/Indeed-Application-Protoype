@@ -45,9 +45,6 @@ const EmployerReviews = (props) => {
     allreviews.map((item) => {
       console.log("Item " + item);
     });
-    allreviews.forEach((element) => {
-      //   console.log("For Each Item " + JSON.stringify(element));
-    });
   };
 
   const onChangeHandler = (event) => {
