@@ -1,7 +1,7 @@
 const cardBodyStyle = {
   cardBody: {
     padding: "0.9375rem 20px",
-    // flex: "1 1 auto",
+    flex: "1 1 auto",
     overflow: "auto",
     WebkitBoxFlex: "1",
     position: "relative",
