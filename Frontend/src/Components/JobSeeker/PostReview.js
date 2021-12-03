@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import Rating from "@mui/material/Rating";
 import SuccessConfirmation from "./apply/SuccessConfirmation";
 import axios from "axios";
+import { NODE_HOST, NODE_PORT } from "../../envConfig";
 
 const PostReview = (props) => {
   const [reviewTitle, setReviewTitle] = useState(null);
@@ -36,7 +37,7 @@ const PostReview = (props) => {
       data.ceoRating = ceoRating;
       data.status = "Pending";
       axios
-        .post("http://localhost:8080/postReview", data)
+        .post(`http://${NODE_HOST}:${NODE_PORT}/postReview`, data)
         .then((res) => {
           if (res.data === "Success") setSuccess(true);
         })

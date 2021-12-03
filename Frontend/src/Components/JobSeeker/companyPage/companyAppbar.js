@@ -6,32 +6,32 @@ const CompanyAppbar = (props) => {
   const ALL_TABS = [
     {
       label: "Snapshot",
-      to: "/company?tab=snapshot",
+      to: "/company?id=" + props.companyId + "&tab=snapshot",
       value: "snapshot",
     },
     {
       label: "Why Join Us",
-      to: "/company?tab=whyjoinus",
+      to: "/company?id=" + props.companyId + "&tab=whyjoinus",
       value: "whyjoinus",
     },
     {
       label: "Reviews",
-      to: "/company?tab=reviews",
+      to: "/company?id=" + props.companyId + "&tab=reviews",
       value: "reviews",
     },
     {
       label: "Salaries",
-      to: "/company?tab=salaries",
+      to: "/company?id=" + props.companyId + "&tab=salaries",
       value: "salaries",
     },
     {
       label: "Photos",
-      to: "/company?tab=photos",
+      to: "/company?id=" + props.companyId + "&tab=photos",
       value: "photos",
     },
     {
       label: "Jobs",
-      to: "/company?tab=jobs",
+      to: "/company?id=" + props.companyId + "&tab=jobs",
       value: "jobs",
     },
   ];

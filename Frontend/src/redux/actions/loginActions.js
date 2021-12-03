@@ -23,9 +23,9 @@ export const commonLoginFunc = (payload, setLoginError) => (dispatch) => {
         });
         if (res.data[0][0].personaType === "js") window.location.href = "/";
         if (res.data[0][0].personaType === "a")
-          window.location.href = "/admin/dashboard";
+          window.location.href = "http://localhost:3001/admin/dashboard";
         if (res.data[0][0].personaType === "e")
-          window.location.href = "/employerHeader";
+          window.location.href = "/employerLandingPage";
       }
     })
     .catch((err) => {
