@@ -553,6 +553,7 @@ app.post("/commonLogin", async (req, res) => {
 
 // Common Register
 app.post("/commonRegister", async (req, res) => {
+  console.log("in kafka.make_request app.js");
   kafka.make_request("register_common", req.body, function (err, results) {
     if (err) {
       res.writeHead(500, {
@@ -683,10 +684,72 @@ app.get("/reviewsperday", async (req, res, next) => {
         // console.log(results);
         res.send(results);
       }
+    })
+});
+// *****************EMPLOYER'S APIs*********************
+app.get("/getCompanyJobPosts", function (req, res) {
+  // console.log("in app getCompanyJobPosts",req.query); 
+  kafka.make_request(
+    "get_jobs_posted_by_company",
+    req.query,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
     }
   );
 });
 
+app.get("/getJobApplicants", function (req, res) {
+  // console.log("in app getJobApplicants",req.query); 
+  kafka.make_request(
+    "get_job_applicants_by_jobId",
+    req.query,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+        
+app.post("/postJob", function (req, res) {
+  console.log("in app postJob",req.body); 
+  kafka.make_request(
+    "post_new_job",
+    req.body,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+        
 //Top 5 Reviewed Companies
 app.get("/mostreviewedcompanies", async (req, res, next) => {
   console.log("GET Request on mostreviews");
@@ -726,6 +789,8 @@ app.get("/avgratings", async (req, res, next) => {
     }
   );
 });
+
+
 
 //Top 5 Job Seekers (reviews)
 app.get("/jobseekerreviews", async (req, res, next) => {
@@ -928,7 +993,7 @@ app.post("/viewjobstats", async (req, res, next) => {
   );
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
 
 module.exports = app;
