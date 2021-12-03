@@ -27,7 +27,7 @@ const EmployersHeader = (props) => {
   const LEFT_PROFILE_TABS = [
     {
       icon: <img alt={"logo"} width="115" height="40" src={indeedLogo} />,
-      to: "/",
+      to: "/employerLandingPage",
       value: "",
     },
     {

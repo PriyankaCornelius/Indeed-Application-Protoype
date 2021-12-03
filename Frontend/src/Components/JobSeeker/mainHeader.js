@@ -91,7 +91,7 @@ const MainHeader = (props) => {
 
       {
         label: "Employers / Post Job",
-        href: "/employerHeader",
+        href: "/employerLandingPage",
         value: "employersPostJobs",
         style: {
           textTransform: "none",

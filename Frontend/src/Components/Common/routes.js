@@ -20,6 +20,10 @@ import JobSeekerProfile from "../JobSeeker/jobSeekerProfile";
 import EmployerDashboard from "../Employer/employerDashboard";
 import Analytics from "../Employer/analytics";
 import CompanyLandingPage from "../JobSeeker/companyPage/companyLandingPage";
+import MyReviews from "../JobSeeker/myReviews";
+import EmployerProfile from "../Employer/EmployerProfile";
+import EmployerReviews from "../Employer/Reviews";
+import EmployerLandingPage from "../Employer/EmployerLandingPage";
 import PostReview from "../JobSeeker/PostReview";
 import PostSalary from "../JobSeeker/PostSalary";
 
@@ -45,6 +49,10 @@ const Routes = () => {
         <Route path="/employerHeader" component={EmployersHeader} />
         <Route path="/employerDashboard" component={EmployerDashboard} />
         <Route path="/employerAnalytics" component={Analytics} />
+        <Route path="/myReviews" component={MyReviews} />
+        <Route path="/employerProfile" component={EmployerProfile} />
+        <Route path="/employerReviews" component={EmployerReviews} />
+        <Route path="/employerLandingPage" component={EmployerLandingPage} />
         <Route path="/postReview" component={PostReview} />
         <Route path="/postSalary" component={PostSalary} />
         <Route path="*" component={ProtectedRouter} />

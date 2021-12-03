@@ -1,6 +1,7 @@
 const con = require("../sqldbConfig");
 
 function handle_request(msg, callback) {
+  console.log("Inside the Function!!!");
   let table = "";
   if (msg.personaType === "js") table = "jobseekers";
   else if (msg.personaType === "e") table = "employers";

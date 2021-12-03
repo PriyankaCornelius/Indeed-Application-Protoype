@@ -27,7 +27,7 @@ mongoose.connect(mongoDB, options, (err, res) => {
 const CompanyReviews = require("../models/CompanyReviews");
 
 const Redis = require("redis");
-//const redisClient = Redis.createClient();
+const redisClient = Redis.createClient();
 
 const DEFAULT_EXPIRATION = 3600;
 
@@ -52,45 +52,86 @@ router.get("/getJobsList", function (req, res) {
   });
 });
 
-router.get("/reviews/company/:companyid", async (req, res, next) => {
-  const companyId = req.params.companyid;
-  redisClient.get(`reviews?companyId=${companyId}`, async (error, reviews) => {
-    if (error) console.log(error);
-    if (reviews != null) {
-      return res.json(JSON.parse(reviews));
-    } else {
-      CompanyReviews.find({ companyId: companyId }, (error, result) => {
-        if (error) {
-          res.json("error");
-        } else {
-          redisClient.setex(
-            `reviews?companyId=${companyId}`,
-            DEFAULT_EXPIRATION,
-            JSON.stringify(result)
-          );
-          res.json(result);
-        }
+router.put("/reviews/featured", function (req, res) {
+  console.log(req.query);
+  kafka.make_request("reviews_featured", req.query, function (err, results) {
+    console.log("in /reviews/featured");
+    console.log(results);
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
       });
+    } else {
+      console.log("Inside else");
+      res.status(200).json(results);
+      res.end();
     }
   });
-  // kafka.make_request(
-  //   "get_reviews_by_company_id0",
-  //   req.params.companyid,
-  //   function (err, results) {
-  //     if (err) {
-  //       res.writeHead(500, {
-  //         "Content-Type": "text/plain",
-  //       });
-  //       res.end("Error Occured");
-  //     } else {
-  //       res.writeHead(200, {
-  //         "Content-Type": "application/json",
-  //       });
-  //       res.end(JSON.stringify(results));
-  //     }
-  //   }
-  // );
 });
+
+router.get("/reviews/company/companyid", function (req, res) {
+  kafka.make_request(
+    "get_reviews_by_company_id",
+    req.query,
+    function (err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again.",
+        });
+      } else {
+        console.log("Inside else ", JSON.stringify(results));
+        res.status(200).send(results);
+        res.end();
+      }
+    }
+  );
+});
+
+// router.get("/reviews/company/:companyid", async (req, res, next) => {
+//   const companyId = req.params.companyid;
+//   redisClient.get(`reviews?companyId=${companyId}`, async (error, reviews) => {
+//     if (error) console.log(error);
+//     if (reviews != null) {
+//       return res.json(JSON.parse(reviews));
+//     } else {
+//       CompanyReviews.find({ companyId: companyId }, (error, result) => {
+//         if (error) {
+//           res.json("error");
+//         } else {
+//           redisClient.setex(
+//             `reviews?companyId=${companyId}`,
+//             DEFAULT_EXPIRATION,
+//             JSON.stringify(result)
+//           );
+//           res.json(result);
+//         }
+//       });
+//     }
+//   });
+//   kafka.make_request(
+//     "get_reviews_by_company_id0",
+//     req.params.companyid,
+//     function (err, results) {
+//       if (err) {
+//         res.writeHead(500, {
+//           "Content-Type": "text/plain",
+//         });
+//         res.end("Error Occured");
+//       } else {
+//         res.writeHead(200, {
+//           "Content-Type": "application/json",
+//         });
+//         res.end(JSON.stringify(results));
+//       }
+//     }
+//   );
+// });
 
 router.get("/getprofile/company/:companyid", async (req, res, next) => {
   console.log("GET Request on Profile : ", req.query);
@@ -113,10 +154,11 @@ router.get("/getprofile/company/:companyid", async (req, res, next) => {
   );
 });
 
-router.put("/updateprofile/company/:companyid", async (req, res, next) => {
+router.put("/updateprofile/company", async (req, res, next) => {
+  console.log("Request is " + req.body);
   kafka.make_request(
     "put_company_profile_by_company_id",
-    req.query,
+    req.body,
     function (err, results) {
       if (err) {
         res.writeHead(500, {
@@ -128,7 +170,7 @@ router.put("/updateprofile/company/:companyid", async (req, res, next) => {
           "Content-Type": "application/json",
         });
         console.log("Profile Updated Successfully!");
-        res.end(JSON.stringify(results));
+        res.status(200).end(JSON.stringify(results));
       }
     }
   );

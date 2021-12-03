@@ -7,8 +7,14 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { Menu, MenuItem, Typography } from "@mui/material";
 import { ListItemIcon } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { commonLogoutFunc } from "../../redux/actions/loginActions";
+import { connect } from "react-redux";
 
-const ProfileIconData = (props) => {
+const ProfileDropDown = (props) => {
+  const handleLogout = (e) => {
+    e.preventDefault();
+    props.commonLogoutFunc();
+  };
   return (
     <React.Fragment>
       <Menu
@@ -46,7 +52,7 @@ const ProfileIconData = (props) => {
         >
           company@email.com
         </Typography>
-        <Link to="/jobSeekerProfile" style={{ textDecoration: "none" }}>
+        <Link to="/employerProfile" style={{ textDecoration: "none" }}>
           <MenuItem>
             <ListItemIcon>
               <DescriptionIcon fontSize="small" />
@@ -54,22 +60,25 @@ const ProfileIconData = (props) => {
             Company Profile
           </MenuItem>
         </Link>
-        <MenuItem>
-          <ListItemIcon>
-            <ReviewsIcon fontSize="small" />
-          </ListItemIcon>
-          Reviews
-        </MenuItem>
-
-        <MenuItem>
-          <ListItemIcon>
-            <LogoutIcon fontSize="small" />
-          </ListItemIcon>
-          Sign out
-        </MenuItem>
+        <Link to="/employerReviews" style={{ textDecoration: "none" }}>
+          <MenuItem>
+            <ListItemIcon>
+              <ReviewsIcon fontSize="small" />
+            </ListItemIcon>
+            Reviews
+          </MenuItem>
+        </Link>
+        <Link to="#" onClick={handleLogout} style={{ textDecoration: "none" }}>
+          <MenuItem>
+            <ListItemIcon>
+              <LogoutIcon fontSize="small" />
+            </ListItemIcon>
+            Sign out
+          </MenuItem>
+        </Link>
       </Menu>
     </React.Fragment>
   );
 };
 
-export default ProfileIconData;
+export default connect(null, { commonLogoutFunc })(ProfileDropDown);

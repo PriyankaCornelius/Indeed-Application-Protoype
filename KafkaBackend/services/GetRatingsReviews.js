@@ -1,16 +1,16 @@
 const CompanyReviews = require("../models/CompanyReviews");
 
 function handle_request(msg, callback) {
-  console.log("Message is : ", msg);
-  CompanyReviews.find({ companyId: msg.companyId }, (error, result) => {
+  console.log("For puting reviews, Message is : ", msg);
+  CompanyReviews.findOne({ companyId: msg.companyId }, (error, result) => {
     if (error) {
       callback(error, "Error");
     }
     if (result) {
-      console.log("Result Found ", result);
+      console.log("Updated Successfully ", result);
       callback(null, result);
     } else {
-      console.log("Result is ", result);
+      console.log("Unknown Error ", result);
       callback(null, result);
     }
   });
