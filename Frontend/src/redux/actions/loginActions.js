@@ -2,6 +2,7 @@ import {
   LOGIN_USER,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
+  UPDATE_RESUME,
 } from "../constants/ActionTypes";
 import { commonLogin } from "../../controllers/login";
 
@@ -23,7 +24,8 @@ export const commonLoginFunc = (payload, setLoginError) => (dispatch) => {
         if (res.data[0][0].personaType === "js") window.location.href = "/";
         if (res.data[0][0].personaType === "a")
           window.location.href = "/admin/dashboard";
-        // to add - employer landing page
+        if (res.data[0][0].personaType === "e")
+          window.location.href = "/employerHeader";
       }
     })
     .catch((err) => {
@@ -41,4 +43,11 @@ export const commonLogoutFunc = () => (dispatch) => {
     type: LOGOUT_USER,
   });
   window.location.href = "/login";
+};
+
+export const updateResume = (payload) => (dispatch) => {
+  dispatch({
+    type: UPDATE_RESUME,
+    payload: payload,
+  });
 };

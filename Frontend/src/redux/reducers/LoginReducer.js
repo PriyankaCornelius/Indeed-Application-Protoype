@@ -2,6 +2,7 @@ import {
   LOGIN_USER,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
+  UPDATE_RESUME,
 } from "../constants/ActionTypes";
 
 const initialState = {
@@ -28,6 +29,12 @@ export default function (state = initialState, action) {
       return {
         user: {},
         token: null,
+        error: false,
+      };
+    case UPDATE_RESUME:
+      return {
+        user: action.payload.user,
+        token: action.payload.token,
         error: false,
       };
     default:
