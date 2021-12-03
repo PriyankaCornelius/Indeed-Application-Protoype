@@ -59,3 +59,7 @@ bin/kafka-topics.sh --create --topic adminReview --partitions 1  --replication-f
 bin/kafka-topics.sh --create --topic postReview --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092
 
 bin/kafka-topics.sh --create --topic postSalary --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092
+
+bin/kafka-topics.sh --create --topic findCompanyReviews --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092
+
+
