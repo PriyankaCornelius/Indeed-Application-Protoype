@@ -34,7 +34,7 @@ const Register = ({}) => {
         else setRegisterError(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.log("signup error",err);
         setRegisterError("Something went wrong. Please try again");
       });
   };

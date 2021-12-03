@@ -554,6 +554,24 @@ app.put("/updateprofile/company", async (req, res, next) => {
   );
 });
 
+app.put("/updateprofileDescription/company", async (req, res, next) => {
+  console.log("Request is " + req.body);
+  kafka.make_request("putDescEmp", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log("Profile Updated Successfully!");
+      res.status(200).end(JSON.stringify(results));
+    }
+  });
+});
+
 app.post("/postSalary", function (req, res) {
   kafka.make_request("postSalary", req.body, function (err, results) {
     if (err) {
@@ -597,6 +615,7 @@ app.post("/commonLogin", async (req, res) => {
 
 // Common Register
 app.post("/commonRegister", async (req, res) => {
+  console.log("in kafka.make_request app.js");
   kafka.make_request("register_common", req.body, function (err, results) {
     if (err) {
       res.writeHead(500, {
@@ -617,6 +636,27 @@ app.get("/savedJobs/get/:jobseekerid", async (req, res) => {
   kafka.make_request(
     "get_saved_jobs_by_jobseeker_id",
     req.params.jobseekerid,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
+// Get Company Details by ID
+app.get("/companydetails/get/:companyid", async (req, res) => {
+  kafka.make_request(
+    "get_company_details_by_id",
+    req.params.companyid,
     function (err, results) {
       if (err) {
         res.writeHead(500, {
@@ -729,6 +769,65 @@ app.get("/reviewsperday", async (req, res, next) => {
       }
     }
   );
+});
+// *****************EMPLOYER'S APIs*********************
+app.get("/getCompanyJobPosts", function (req, res) {
+  // console.log("in app getCompanyJobPosts",req.query);
+  kafka.make_request(
+    "get_jobs_posted_by_company",
+    req.query,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
+app.get("/getJobApplicants", function (req, res) {
+  // console.log("in app getJobApplicants",req.query);
+  kafka.make_request(
+    "get_job_applicants_by_jobId",
+    req.query,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
+app.post("/postJob", function (req, res) {
+  console.log("in app postJob", req.body);
+  kafka.make_request("post_new_job", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify(results));
+    }
+  });
 });
 
 //Top 5 Reviewed Companies

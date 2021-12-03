@@ -15,6 +15,7 @@ var DeleteSavedJob = require("./services/DeleteSavedJob.js");
 var AppliedJobsByJobseeker = require("./services/AppliedJobsByJobseeker.js");
 var ApplyJob = require("./services/ApplyJob.js");
 var FeaturedReviews = require("./services/FeaturedReviews");
+var PutDescEmployer = require("./services/PutDescriptionEmployer");
 
 var PostReply = require("./services/jobSeeker/postReply.js");
 var JobList = require("./services/jobSeeker/getJobList.js");
@@ -39,7 +40,11 @@ var FindCompanyReviews = require("./services/jobSeeker/findCompanyReviews");
 var JobDetails = require("./services/jobSeeker/getJobDetails");
 var UpdateBanner = require("./services/updateCompanyBanner");
 var UpdateLogo = require("./services/updateCompanyLogo");
+var CompanyDetailsById = require("./services/jobSeeker/companyDetailsById");
 
+var getCompanyJobPosts = require("./services/employer/getCompanyJobPosts.js");
+var getJobApplicants = require("./services/employer/getJobApplicants.js");
+var postJob = require("./services/employer/postJob");
 var connection = new require("./Connection");
 
 var options = {
@@ -130,7 +135,14 @@ handleTopicRequest("postReply", PostReply);
 handleTopicRequest("updateBanner", UpdateBanner);
 handleTopicRequest("updateLogo", UpdateLogo);
 
+handleTopicRequest("putDescEmp", PutDescEmployer);
+
 handleTopicRequest("postReview", PostReview);
 handleTopicRequest("postSalary", PostSalary);
 handleTopicRequest("findCompanyReviews", FindCompanyReviews);
 handleTopicRequest("get_job_details_by_id", JobDetails);
+
+handleTopicRequest("get_jobs_posted_by_company", getCompanyJobPosts);
+handleTopicRequest("get_job_applicants_by_jobId", getJobApplicants);
+handleTopicRequest("post_new_job", postJob);
+handleTopicRequest("get_company_details_by_id", CompanyDetailsById);

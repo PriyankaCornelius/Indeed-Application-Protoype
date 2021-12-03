@@ -9,8 +9,14 @@ import { ListItemIcon } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { commonLogoutFunc } from "../../redux/actions/loginActions";
 import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 const ProfileDropDown = (props) => {
+  const name = useSelector((state) => state.login.user.ceoName);
+
+  if (name == undefined) {
+    console.log("Name is undefined");
+  }
   const handleLogout = (e) => {
     e.preventDefault();
     props.commonLogoutFunc();

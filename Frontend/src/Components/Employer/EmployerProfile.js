@@ -76,6 +76,8 @@ const EmployerProfile = (props) => {
       founded: data[0].founded ? data[0].founded : " ",
       mission: data[0].missionAndVision ? data[0].missionAndVision : " ",
       ceoName: data[0].ceoName ? data[0].ceoName : " ",
+      desc: data[0].desc ? data[0].desc : " ",
+      whyJoinUs: data[0].whyJoinUs ? data[0].whyJoinUs : " ",
     });
   };
 
@@ -109,6 +111,8 @@ const EmployerProfile = (props) => {
         founded: employerDetails.founded,
         mission: employerDetails.mission,
         ceoName: employerDetails.ceoName,
+        desc: employerDetails.desc,
+        whyJoinUs: employerDetails.whyJoinUs,
       })
       .then((response) => {
         console.log("Successful Updation :" + response.status);
@@ -166,6 +170,26 @@ const EmployerProfile = (props) => {
     //     setOpenError(true);
     //     console.log(error);
     //   });
+  };
+
+  const updateprofileDescription = async () => {
+    axios
+      .put(
+        `http://${NODE_HOST}:${NODE_PORT}/updateprofileDescription/company`,
+        {
+          emp_id: employerDetails.email,
+          desc: employerDetails.desc,
+          whyJoinUs: employerDetails.whyJoinUs,
+        }
+      )
+      .then((response) => {
+        console.log("Successful Updation :" + response.status);
+        setOpenAdded(true);
+      })
+      .catch((err) => {
+        setOpenError(true);
+        console.log(err);
+      });
   };
 
   const onLogoAdded = (event) => {
@@ -249,17 +273,13 @@ const EmployerProfile = (props) => {
     console.log(employerDetails);
     updateEmployerDetails();
   };
-  const ModalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
+
+  const onWhyJoinUs = (event) => {
+    event.preventDefault();
+    console.log(employerDetails);
+    updateprofileDescription();
   };
+
   useEffect(() => {
     getEmployerDetails();
   }, []);
@@ -497,58 +517,59 @@ const EmployerProfile = (props) => {
           </Stack>
 
           <Stack justifyContent="center" spacing={2} direction="row">
-            {/**            <Card
-              variant="outlined"
-              style={{
-                display: "block",
-                width: "42vw",
-                margin: 15,
-                height: "9vw",
-                textAlign: "left",
-              }}
-            >
-               * <CardContent>
-                <Typography style={{ fontSize: 16, fontWeight: 600 }}>
-                  Why Join Us?
-                  <Button sx={{ ml: 40 }}>
-                    <EditIcon onClick={handleOpen} />
-                    <Modal
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                    >
-                      <Box sx={ModalStyle}>
-                        <Typography
-                          id="modal-modal-title"
-                          variant="h6"
-                          component="h2"
-                        >
-                          Text in a modal
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                          Duis mollis, est non commodo luctus, nisi erat
-                          porttitor ligula.
-                        </Typography>
-                        <Button onClick={onModalsubmit}>Change</Button>
-                      </Box>
-                    </Modal>
-                  </Button>
-                </Typography>
-                <p></p>
-                <Typography
-                  variant="caption"
-                  style={{ fontSize: 14, fontWeight: 400 }}
-                >
-                  Save specific details like desired pay and schedule that help
-                  us match you with better jobs
-                </Typography>
-             </CardContent>
-              <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions>
-            </Card>
-            */}
+            {
+              <Card
+                variant="outlined"
+                style={{
+                  display: "block",
+                  width: "42vw",
+                  margin: 15,
+                  height: "9vw",
+                  textAlign: "left",
+                }}
+              >
+                {" "}
+                <CardContent>
+                  <Typography style={{ fontSize: 16, fontWeight: 600 }}>
+                    Why Join Us?
+                  </Typography>
+                  <p></p>
+                  <Typography
+                    variant="caption"
+                    style={{ fontSize: 14, fontWeight: 400 }}
+                  >
+                    <form onSubmit={onWhyJoinUs}>
+                      <TextField
+                        style={{ margin: 10 }}
+                        name="whyJoinUs"
+                        variant="outlined"
+                        margin="dense"
+                        label="Why Join Us"
+                        value={
+                          employerDetails.whyJoinUs
+                            ? employerDetails.whyJoinUs
+                            : ""
+                        }
+                        onChange={onChangeHandler}
+                      ></TextField>
+
+                      <TextField
+                        style={{ margin: 10 }}
+                        name="desc"
+                        variant="outlined"
+                        margin="dense"
+                        label="Description"
+                        value={employerDetails.desc ? employerDetails.desc : ""}
+                        onChange={onChangeHandler}
+                      ></TextField>
+                    </form>
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small">Learn More</Button>
+                </CardActions>
+              </Card>
+            }
 
             <Snackbar
               open={openAdded}

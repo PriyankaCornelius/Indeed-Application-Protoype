@@ -58,7 +58,6 @@ const JobSeekerProfile = (props) => {
       children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
     };
   }
-
   const getJobSeekerDetails = async () => {
     const response = await fetch(
       `http://${NODE_HOST}:${NODE_PORT}/getJobSeekerDetails?id=${userId}`,

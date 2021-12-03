@@ -202,6 +202,7 @@ router.post("/commonLogin", async (req, res, next) => {
 
 // Common Register
 router.post("/commonRegister", async (req, res, next) => {
+  console.log("in kafka.make_request backend routes");
   kafka.make_request("register_common", req.body, function (err, results) {
     if (err) {
       res.writeHead(500, {

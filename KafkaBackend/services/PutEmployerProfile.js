@@ -4,7 +4,7 @@ function handle_request(msg, callback) {
   console.log("Update Request : ", msg);
 
   const querry =
-    "UPDATE indeed.employers SET employerName = ?, role = ? ,address = ?, website = ?, companyType = ?, companySize = ?, revenue = ?, headquarters =?, industry = ?, founded = ?, missionAndVision = ?,ceoName = ? WHERE email = ?";
+    "UPDATE indeed.employers SET employerName = ?, role = ? ,address = ?, website = ?, companyType = ?, companySize = ?, revenue = ?, headquarters =?, industry = ?, founded = ?, missionAndVision = ?,ceoName = ? ,whyJoinUs = ?, desc = ? WHERE email = ?";
   dbconn.query(
     querry,
     [
@@ -20,6 +20,8 @@ function handle_request(msg, callback) {
       msg.founded,
       msg.mission,
       msg.ceoName,
+      msg.whyJoinUs,
+      msg.desc,
       msg.emp_id,
     ],
     (err, res) => {
