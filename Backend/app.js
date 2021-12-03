@@ -395,6 +395,22 @@ app.post("/deleteReview", function (req, res) {
 
 // anay's
 
+app.post("/findCompanyReviews", function (req, res) {
+  kafka.make_request("findCompanyReviews", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify(results));
+    }
+  });
+});
+
 app.post("/postReview", function (req, res) {
   kafka.make_request("postReview", req.body, function (err, results) {
     if (err) {

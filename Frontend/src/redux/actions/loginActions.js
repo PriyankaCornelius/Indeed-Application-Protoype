@@ -25,7 +25,7 @@ export const commonLoginFunc = (payload, setLoginError) => (dispatch) => {
         if (res.data[0][0].personaType === "a")
           window.location.href = "/admin/dashboard";
         if (res.data[0][0].personaType === "e")
-          window.location.href = "/employerHeader";
+          window.location.href = "/employerLandingPage";
       }
     })
     .catch((err) => {

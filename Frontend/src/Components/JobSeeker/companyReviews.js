@@ -1,15 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MainHeader from "./mainHeader";
+import { NODE_HOST, NODE_PORT } from "../../envConfig";
 import { Grid, Autocomplete, TextField, Button, Divider } from "@mui/material";
+import axios from "axios";
 
 const CompanyReviews = (props) => {
   const [searchFlag, setSearchFlag] = useState(false);
-  const [companies, setCompanies] = useState([1, 2, 3]);
+  const [companies, setCompanies] = useState(null);
+  const [jobFilterWhat, setJobFilterWhat] = useState("");
+  const [jobFilterWhere, setJobFilterWhere] = useState("");
+  const [jobWhatTypeaheadList, setWhatTypeaheadList] = useState([]);
+  const [jobWhereTypeaheadList, setWhereTypeaheadList] = useState([]);
+  const [jobWhatTypeaheadValue, setJobWhatTypeaheadValue] = useState("");
+  const [jobWhereTypeaheadValue, setJobWhereTypeaheadValue] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
     setSearchFlag(true);
+    let data = {};
+    data.what = jobFilterWhat;
+    data.where = jobFilterWhere;
+    axios
+      .post("http://localhost:8080/findCompanyReviews", data)
+      .then((res) => {
+        if (res.data.length) setCompanies(res.data);
+      })
+      .catch((err) => console.log(err));
   };
+
+  const getWhatTypeAheadList = async () => {
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/getWhatTypeAheadList?what=${jobFilterWhat}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    setWhatTypeaheadList(data);
+  };
+
+  const getWhereTypeAheadList = async () => {
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/getWhereTypeAheadList?where=${jobFilterWhere}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    setWhereTypeaheadList(data);
+  };
+
+  useEffect(() => {
+    getWhatTypeAheadList();
+  }, [jobFilterWhat]);
+
+  useEffect(() => {
+    getWhereTypeAheadList();
+  }, [jobFilterWhere]);
 
   return (
     <div>
@@ -92,11 +145,15 @@ const CompanyReviews = (props) => {
                 size="small"
                 id="free-solo-2-demo"
                 disableClearable
-                options={[]}
-                value={""}
-                onChange={() => {}}
-                inputValue={""}
-                onInputChange={() => {}}
+                options={jobWhatTypeaheadList}
+                value={jobWhatTypeaheadValue}
+                onChange={(event, newValue) => {
+                  setJobWhatTypeaheadValue(newValue);
+                }}
+                inputValue={jobFilterWhat}
+                onInputChange={(event, newInputValue) => {
+                  setJobFilterWhat(newInputValue);
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -115,11 +172,15 @@ const CompanyReviews = (props) => {
                 id="free-solo-2-demo"
                 disableClearable
                 size="small"
-                options={[]}
-                value={""}
-                onChange={() => {}}
-                inputValue={""}
-                onInputChange={() => {}}
+                options={jobWhereTypeaheadList}
+                value={jobWhereTypeaheadValue}
+                onChange={(event, newValue) => {
+                  setJobWhereTypeaheadValue(newValue);
+                }}
+                inputValue={jobFilterWhere}
+                onInputChange={(event, newInputValue) => {
+                  setJobFilterWhere(newInputValue);
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -192,6 +253,7 @@ const CompanyReviews = (props) => {
               Based on reviews and recent job openings on Indeed
             </Grid>
             {companies &&
+              companies.length > 0 &&
               companies.map((company) => (
                 <>
                   <Grid
@@ -233,7 +295,7 @@ const CompanyReviews = (props) => {
                           cursor: "pointer",
                         }}
                       >
-                        Amazon.com
+                        {company.companyName}
                       </Grid>
                       <Grid
                         item
@@ -250,7 +312,7 @@ const CompanyReviews = (props) => {
                           textDecoration: "underline",
                         }}
                       >
-                        3.5
+                        {company.averageRating}
                       </Grid>
                     </Grid>
                     <Grid
@@ -268,8 +330,7 @@ const CompanyReviews = (props) => {
                         margin: 0,
                       }}
                     >
-                      Our mission is to be Earth's most customer-centric
-                      company.
+                      {company.missionAndVision}
                     </Grid>
                     <Grid
                       item
@@ -280,6 +341,10 @@ const CompanyReviews = (props) => {
                         cursor: "pointer",
                         textDecoration: "underline",
                         marginTop: "8px",
+                      }}
+                      onClick={() => {
+                        window.location.href =
+                          "/company?id=" + company.id + "&tab=reviews";
                       }}
                     >
                       Reviews
@@ -294,6 +359,10 @@ const CompanyReviews = (props) => {
                         textDecoration: "underline",
                         marginTop: "8px",
                       }}
+                      onClick={() => {
+                        window.location.href =
+                          "/company?id=" + company.id + "&tab=salaries";
+                      }}
                     >
                       Salaries
                     </Grid>
@@ -306,6 +375,10 @@ const CompanyReviews = (props) => {
                         cursor: "pointer",
                         textDecoration: "underline",
                         marginTop: "8px",
+                      }}
+                      onClick={() => {
+                        window.location.href =
+                          "/company?id=" + company.id + "&tab=jobs";
                       }}
                     >
                       Jobs
