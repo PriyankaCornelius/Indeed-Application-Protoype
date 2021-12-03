@@ -38,8 +38,6 @@ const Messaging = (props) => {
   };
 
   const onClickReply = async () => {
-    console.log("messageDetails", messageDetails);
-
     const response = await fetch(`http://${NODE_HOST}:${NODE_PORT}/postReply`, {
       method: "POST",
       headers: {
@@ -74,7 +72,6 @@ const Messaging = (props) => {
       }
     );
     const data = await response.json();
-    console.log("messages received ......", data);
 
     if (data.status === "error") {
       setMessageCards(undefined);

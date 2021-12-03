@@ -106,7 +106,7 @@ const MainHeader = (props) => {
     RIGHT_PROFILE_TABS = [
       {
         label: "Upload your resume",
-        href: "/uploadResume",
+        href: "/login",
         component: <UploadResume />,
         value: "uploadResume",
         style: {

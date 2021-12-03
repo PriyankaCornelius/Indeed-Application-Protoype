@@ -25,6 +25,10 @@ const multer = require("multer");
 const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
 
+const Redis = require("redis");
+const redisClient = Redis.createClient();
+const DEFAULT_EXPIRATION = 3600;
+
 const s3 = new AWS.S3({
   accessKeyId: "AKIAZJZS76WTOJJJGHU3",
   secretAccessKey: "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",
@@ -215,6 +219,38 @@ app.get("/getMessages", function (req, res) {
     }
   });
 });
+
+// app.get("/getMessages", function (req, res) {
+//   let userId = req.query.userId;
+//   redisClient.get(`getMessages?id=${userId}`, async (error, results) => {
+//     if (error) console.log(error);
+//     if (results != null) {
+//       return res.json(JSON.parse(results));
+//     } else {
+//       kafka.make_request("getMessages", req.query, function (err, results) {
+//         console.log("in result");
+//         console.log(results);
+//         if (err) {
+//           console.log("Inside err");
+//           res.json({
+//             status: "error",
+//             msg: "System Error, Try Again.",
+//           });
+//         } else {
+//           console.log("Inside else");
+//           redisClient.setex(
+//             `getMessages?id=${userId}`,
+//             DEFAULT_EXPIRATION,
+//             JSON.stringify(results)
+//           );
+//           // res.json(result);
+//           res.status(200).json(results);
+//           res.end();
+//         }
+//       });
+//     }
+//   });
+// });
 
 app.get("/getAllMessages", function (req, res) {
   kafka.make_request("getAllMessages", req.query, function (err, results) {
