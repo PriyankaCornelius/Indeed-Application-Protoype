@@ -1,7 +1,7 @@
 import React from "react";
 import { Tabs, Tab, Divider, Grid } from "@material-ui/core";
 import SignIn from "./signIn";
-import EmployersHeader from "../Employer/EmployersHeader";
+import EmployersNavBar from "../Employer/employerDashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import MessageIcon from "@mui/icons-material/Message";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -91,7 +91,7 @@ const MainHeader = (props) => {
 
       {
         label: "Employers / Post Job",
-        href: "/employerHeader",
+        href: "/employerLandingPage",
         value: "employersPostJobs",
         style: {
           textTransform: "none",

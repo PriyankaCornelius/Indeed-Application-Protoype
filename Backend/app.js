@@ -25,9 +25,9 @@ const multer = require("multer");
 const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
 
-const Redis = require("redis");
-// const redisClient = Redis.createClient();
-const DEFAULT_EXPIRATION = 3600;
+//const Redis = require("redis");
+//const redisClient = Redis.createClient();
+//const DEFAULT_EXPIRATION = 3600;
 
 const s3 = new AWS.S3({
   accessKeyId: "AKIAZJZS76WTOJJJGHU3",
@@ -220,6 +220,24 @@ app.get("/getMessages", function (req, res) {
   });
 });
 
+app.get("/getEmployerMessages", function (req, res) {
+  kafka.make_request("getEmployerMessages", req.query, function (err, results) {
+    console.log("in result");
+    console.log(results);
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else********************");
+      res.status(200).json(results);
+      res.end();
+    }
+  });
+});
+
 // app.get("/getMessages", function (req, res) {
 //   let userId = req.query.userId;
 //   redisClient.get(`getMessages?id=${userId}`, async (error, results) => {
@@ -346,6 +364,50 @@ app.post("/updateResume", uploadS3.single("file"), function (req, res) {
   });
 });
 
+app.post("/updateBanner", uploadS3.single("banner"), function (req, res) {
+  console.log("req.body", req.body);
+  req.body.file = req.file?.location;
+  req.body.originalname = req.file?.originalname;
+  console.log("req.file", req.file);
+  kafka.make_request("updateBanner", req.body, function (err, results) {
+    console.log("in result");
+    console.log(results);
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else");
+      res.status(200).json(results);
+      res.end();
+    }
+  });
+});
+
+app.post("/updateLogo", uploadS3.single("logo"), function (req, res) {
+  console.log("req.body", req.body);
+  req.body.file = req.file?.location;
+  req.body.originalname = req.file?.originalname;
+  console.log("req.file", req.file);
+  kafka.make_request("updateLogo", req.body, function (err, results) {
+    console.log("in result");
+    console.log(results);
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else");
+      res.status(200).json(results);
+      res.end();
+    }
+  });
+});
+
 app.post("/deleteResume", function (req, res) {
   // console.log("req.body", req.body);
   // req.body.file = req.file?.location;
@@ -426,6 +488,107 @@ app.post("/postReview", function (req, res) {
     }
   });
 });
+app.put("/reviews/featured", function (req, res) {
+  console.log(req.query);
+  kafka.make_request("reviews_featured", req.query, function (err, results) {
+    console.log("in /reviews/featured");
+    console.log(results);
+    if (err) {
+      console.log("Inside err");
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+    } else {
+      console.log("Inside else");
+      res.status(200).json(results);
+      res.end();
+    }
+  });
+});
+
+app.get("/reviews/company/companyid", function (req, res) {
+  kafka.make_request(
+    "get_reviews_by_company_id",
+    req.query,
+    function (err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again.",
+        });
+      } else {
+        console.log("Inside else ", JSON.stringify(results));
+        res.status(200).send(results);
+        res.end();
+      }
+    }
+  );
+});
+
+app.get("/getprofile/company/:companyid", async (req, res, next) => {
+  console.log("GET Request on Profile : ", req.query);
+  kafka.make_request(
+    "get_company_profile_by_company_id",
+    req.query,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
+app.put("/updateprofile/company", async (req, res, next) => {
+  console.log("Request is " + req.body);
+  kafka.make_request(
+    "put_company_profile_by_company_id",
+    req.body,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log("Profile Updated Successfully!");
+        res.status(200).end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
+app.put("/updateprofileDescription/company", async (req, res, next) => {
+  console.log("Request is " + req.body);
+  kafka.make_request("putDescEmp", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log("Profile Updated Successfully!");
+      res.status(200).end(JSON.stringify(results));
+    }
+  });
+});
 
 app.post("/postSalary", function (req, res) {
   kafka.make_request("postSalary", req.body, function (err, results) {
@@ -444,8 +607,10 @@ app.post("/postSalary", function (req, res) {
 });
 
 app.post("/commonLogin", async (req, res) => {
+  console.log("Inside Route in app.js");
   kafka.make_request("login_common", req.body, function (err, results) {
     if (err) {
+      console.log("Error " + err);
       res.writeHead(500, {
         "Content-Type": "text/plain",
       });
@@ -468,6 +633,7 @@ app.post("/commonLogin", async (req, res) => {
 
 // Common Register
 app.post("/commonRegister", async (req, res) => {
+  console.log("in kafka.make_request app.js");
   kafka.make_request("register_common", req.body, function (err, results) {
     if (err) {
       res.writeHead(500, {
@@ -488,6 +654,27 @@ app.get("/savedJobs/get/:jobseekerid", async (req, res) => {
   kafka.make_request(
     "get_saved_jobs_by_jobseeker_id",
     req.params.jobseekerid,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
+// Get Company Details by ID
+app.get("/companydetails/get/:companyid", async (req, res) => {
+  kafka.make_request(
+    "get_company_details_by_id",
+    req.params.companyid,
     function (err, results) {
       if (err) {
         res.writeHead(500, {
@@ -600,6 +787,65 @@ app.get("/reviewsperday", async (req, res, next) => {
       }
     }
   );
+});
+// *****************EMPLOYER'S APIs*********************
+app.post("/getCompanyJobPosts", function (req, res) {
+  // console.log("in app getCompanyJobPosts",req.query);
+  kafka.make_request(
+    "get_jobs_posted_by_company",
+    req.body,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
+app.get("/getJobApplicants", function (req, res) {
+  // console.log("in app getJobApplicants",req.query);
+  kafka.make_request(
+    "get_job_applicants_by_jobId",
+    req.query,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
+app.post("/postJob", function (req, res) {
+  console.log("in app postJob", req.body);
+  kafka.make_request("post_new_job", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify(results));
+    }
+  });
 });
 
 //Top 5 Reviewed Companies
@@ -742,6 +988,26 @@ app.post("/filterreviews", async (req, res, next) => {
   );
 });
 
+app.post("/updateDateAndViewCount", function (req, res) {
+  kafka.make_request(
+    "updateDateAndViewCount",
+    req.body,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end("Success");
+      }
+    }
+  );
+});
+
 //Approve Reject review
 app.post("/reviewactions", async (req, res, next) => {
   console.log("Post Request on reviewactions");
@@ -843,7 +1109,24 @@ app.post("/viewjobstats", async (req, res, next) => {
   );
 });
 
-const PORT = process.env.PORT || 8080;
+//update reviews
+app.put("/reviews/update/helpfulness", async (req, res) => {
+  kafka.make_request("update_reviews", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify(results));
+    }
+  });
+});
+
+const PORT = process.env.PORT |8080;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
 
 module.exports = app;

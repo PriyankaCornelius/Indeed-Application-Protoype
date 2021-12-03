@@ -83,44 +83,75 @@ const ApplyJob = (props) => {
               </Typography>
               <form onSubmit={onSubmit}>
                 <Grid container style={{ marginTop: "15px" }}>
-                  <Grid item xs={12} style={{ marginBottom: "15px" }}>
-                    <TextField
-                      required
-                      id="firstName"
-                      name="firstName"
-                      label="First name"
-                      fullWidth
-                      autoComplete="given-name"
-                      variant="outlined"
-                      defaultValue="Anay"
-                      disabled
-                    />
+                  <Grid
+                    item
+                    container
+                    direction="row"
+                    xs={12}
+                    style={{ marginBottom: "15px" }}
+                    spacing={1}
+                  >
+                    <Grid item xs={6}>
+                      <TextField
+                        required
+                        id="firstName"
+                        name="firstName"
+                        label="First name"
+                        fullWidth
+                        autoComplete="given-name"
+                        variant="outlined"
+                        defaultValue={props.user.firstName}
+                        disabled
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        required
+                        id="lastName"
+                        name="lastName"
+                        label="Last name"
+                        fullWidth
+                        autoComplete="family-name"
+                        variant="outlined"
+                        defaultValue={props.user.lastName}
+                        disabled
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} style={{ marginBottom: "15px" }}>
-                    <TextField
-                      required
-                      id="lastName"
-                      name="lastName"
-                      label="Last name"
-                      fullWidth
-                      autoComplete="family-name"
-                      variant="outlined"
-                      defaultValue="Naik"
-                      disabled
-                    />
-                  </Grid>
-                  <Grid item xs={12} style={{ marginBottom: "15px" }}>
-                    <TextField
-                      required
-                      id="phone"
-                      name="phoneNo"
-                      label="Phone No."
-                      fullWidth
-                      autoComplete="family-name"
-                      variant="outlined"
-                      defaultValue="6693061513"
-                      disabled
-                    />
+                  <Grid
+                    item
+                    container
+                    direction="row"
+                    xs={12}
+                    style={{ marginBottom: "15px" }}
+                    spacing={1}
+                  >
+                    <Grid item xs={6}>
+                      <TextField
+                        required
+                        id="phone"
+                        name="phoneNo"
+                        label="Phone No."
+                        fullWidth
+                        autoComplete="family-name"
+                        variant="outlined"
+                        defaultValue={props.user.phoneNo}
+                        disabled
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        required
+                        id="email"
+                        name="email"
+                        label="Email"
+                        fullWidth
+                        autoComplete="family-name"
+                        variant="outlined"
+                        defaultValue={props.user.email}
+                        disabled
+                      />
+                    </Grid>
                   </Grid>
                   <Grid
                     item

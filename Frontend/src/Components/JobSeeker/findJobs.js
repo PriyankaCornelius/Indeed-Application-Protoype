@@ -65,7 +65,8 @@ const FindJobs = (props) => {
   const onClickHandler = () => {
     if (jobWhatTypeaheadValue.length > 0 || jobWhereTypeaheadValue.length > 0) {
       setShowJobs(true);
-      getJobsList(page);
+      getJobsList(0);
+      setPage(0);
     } else alert("Choose a What or Where filter option for Job Search !!");
   };
 
@@ -84,6 +85,7 @@ const FindJobs = (props) => {
           where: jobFilterWhere,
           skip: skip,
           take: resultsPerPage,
+          // companyId :null,
         }),
       }
     );
@@ -327,7 +329,10 @@ const FindJobs = (props) => {
                       </Typography>
                       <Stack direction="row">
                         <Typography style={{ marginRight: 10, fontSize: 14 }}>
-                          <Link to="/company" style={{ marginRight: 10 }}>
+                          <Link
+                            to={"/company?id=" + jobs.companyId}
+                            style={{ marginRight: 10 }}
+                          >
                             {jobs.companyName}
                           </Link>
                         </Typography>
@@ -397,7 +402,10 @@ const FindJobs = (props) => {
                   </Typography>
 
                   <Stack direction="row">
-                    <Link to="/company" style={{ marginRight: 10 }}>
+                    <Link
+                      to={"/company?id=" + jobDetails.companyId}
+                      style={{ marginRight: 10 }}
+                    >
                       {jobDetails.companyName}
                     </Link>
                     <CompanyRating

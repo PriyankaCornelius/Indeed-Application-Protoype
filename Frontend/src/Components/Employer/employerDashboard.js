@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs, Tab, Divider, Grid } from "@material-ui/core";
+import { Tabs, Tab, Divider, Grid, Button } from "@material-ui/core";
 //import SignIn from "./signIn";
 import EmployersHeader from "./EmployersHeader";
 import { Link } from "react-router-dom";
@@ -37,13 +37,14 @@ const EmployerDashboard = (props) => {
       to: "/employerAnalytics",
       value: "analytics",
     },
-  ];
 
+  ];
+  const JobPostingPageLink = props => <Link to="/employersJobPost" {...props} />
   return (
     <div>
       <EmployersHeader currentTab="dashboard"></EmployersHeader>
-      <Grid container>
-        <Grid item md={5}>
+      <Grid container >
+        <Grid item xs={12} md={10}>
           <Tabs
             value={props.currentTab}
             scrollButtons="false"
@@ -69,6 +70,27 @@ const EmployerDashboard = (props) => {
               />
             ))}
           </Tabs>
+        </Grid>
+        <Grid item md={2}>
+        <Button
+          component={JobPostingPageLink}
+          style={{
+          height: "44px",
+          width: "153.33px",
+          backgroundColor: "rgb(37, 87, 167)",
+          color: "white",
+          fontWeight: "bold",
+          fontSize: "1rem",
+          lineHeight: 0,
+          letterSpacing: 0,
+          textTransform: "none",
+          marginTop: "15px",
+        }}
+        variant="contained"
+        
+        >
+        Post a job
+        </Button>
         </Grid>
       </Grid>
       <Divider></Divider>
