@@ -683,6 +683,9 @@ app.get("/reviewsperday", async (req, res, next) => {
         // console.log("Inside results");
         // console.log(results);
         res.send(results);
+      }
+    })
+});
 // *****************EMPLOYER'S APIs*********************
 app.get("/getCompanyJobPosts", function (req, res) {
   // console.log("in app getCompanyJobPosts",req.query); 
@@ -705,21 +708,6 @@ app.get("/getCompanyJobPosts", function (req, res) {
   );
 });
 
-//Top 5 Reviewed Companies
-app.get("/mostreviewedcompanies", async (req, res, next) => {
-  console.log("GET Request on mostreviews");
-  kafka.make_request(
-    "admin",
-    { path: "mostreviewedcompanies", body: req.body },
-    function (err, results) {
-      console.log("GET Request on mostreviews");
-      // console.log(results);
-      if (err) {
-        console.log("Inside err");
-      } else {
-        // console.log("Inside results");
-        // console.log(results);
-        res.send(results);
 app.get("/getJobApplicants", function (req, res) {
   // console.log("in app getJobApplicants",req.query); 
   kafka.make_request(
@@ -740,22 +728,7 @@ app.get("/getJobApplicants", function (req, res) {
     }
   );
 });
-
-//Top 5 companies based on ratings
-app.get("/avgratings", async (req, res, next) => {
-  console.log("GET Request on avgRatings");
-  kafka.make_request(
-    "admin",
-    { path: "avgratings", body: req.body },
-    function (err, results) {
-      console.log("GET Request on avgratings");
-      // console.log(results);
-      if (err) {
-        console.log("Inside err");
-      } else {
-        // console.log("Inside results");
-        // console.log(results);
-        res.send(results);
+        
 app.post("/postJob", function (req, res) {
   console.log("in app postJob",req.body); 
   kafka.make_request(
@@ -776,6 +749,48 @@ app.post("/postJob", function (req, res) {
     }
   );
 });
+        
+//Top 5 Reviewed Companies
+app.get("/mostreviewedcompanies", async (req, res, next) => {
+  console.log("GET Request on mostreviews");
+  kafka.make_request(
+    "admin",
+    { path: "mostreviewedcompanies", body: req.body },
+    function (err, results) {
+      console.log("GET Request on mostreviews");
+      // console.log(results);
+      if (err) {
+        console.log("Inside err");
+      } else {
+        // console.log("Inside results");
+        // console.log(results);
+        res.send(results);
+      }
+    }
+  );
+});
+
+//Top 5 companies based on ratings
+app.get("/avgratings", async (req, res, next) => {
+  console.log("GET Request on avgRatings");
+  kafka.make_request(
+    "admin",
+    { path: "avgratings", body: req.body },
+    function (err, results) {
+      console.log("GET Request on avgratings");
+      // console.log(results);
+      if (err) {
+        console.log("Inside err");
+      } else {
+        // console.log("Inside results");
+        // console.log(results);
+        res.send(results);
+      }
+    }
+  );
+});
+
+
 
 //Top 5 Job Seekers (reviews)
 app.get("/jobseekerreviews", async (req, res, next) => {
@@ -978,7 +993,6 @@ app.post("/viewjobstats", async (req, res, next) => {
   );
 });
 
-const PORT = process.env.PORT || 8080;
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
 
