@@ -135,12 +135,32 @@ const CompanyLandingPage = (props) => {
 
   useEffect(() => {
     const companyid = new URLSearchParams(search).get("id");
-    if (companyid)
+    if (companyid) {
+      updateDateAndViewCount(companyid);
+
       axios
         .get(`http://${NODE_HOST}:${NODE_PORT}/companydetails/get/${companyid}`)
         .then((res) => setCompanyDetails(res.data[0]))
         .catch((err) => console.log(err));
+    }
   }, []);
+
+  const updateDateAndViewCount = async (companyid) => {
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/updateDateAndViewCount`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          companyid: companyid,
+        }),
+      }
+    );
+
+    const data = await response.json();
+  };
 
   console.log("Hello", companyDetails);
   return (

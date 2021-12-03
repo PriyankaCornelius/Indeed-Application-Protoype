@@ -137,7 +137,11 @@ function dailyviews(msg, callback){
   console.log("Inside dailyviews kafka backend");
   // console.log(msg);
   console.log("In handle request:"+ JSON.stringify(msg));
-  con.query("SELECT employerName, dailyViews FROM indeed.employers order by dailyViews DESC LIMIT 10",
+  var d = new Date();
+  var today = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+  console.log(today);
+  let dailyViewsS = "SELECT employerName, dailyViews FROM indeed.employers WHERE dateVisited = ? order by dailyViews DESC LIMIT 10";
+  con.query(dailyViewsS, [today],
   async (error, results) => {
     // console.log(results);
     if (error){

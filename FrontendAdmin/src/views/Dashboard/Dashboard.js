@@ -408,7 +408,7 @@ class Dashboard extends React.Component {
               <ChartistGraph
                 className="ct-chart"
                 data={this.state.data6}
-                type="Line"
+                type="Bar"
                 options={topCompanies.options}
                 listener={topCompanies.animation}
               />

@@ -6,7 +6,8 @@ import {
   Card,
   CardContent,
   Typography,
-  Button
+  Button,
+  Pagination
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
@@ -14,24 +15,53 @@ import { Link, Redirect } from "react-router-dom";
 const Jobs = (props) => {
   const [showJobApplicants, setShowJobApplicants] = useState([]);
   const [companyJobPostsData, setCompanyJobPostsData] = useState([]);
+  const [redirectVar, setRedirectVar] = useState(" ");
+  const [page, setPage] = useState(0);
+  const resultsPerPage = 2;
   const userId = useSelector((state) => state.login.user.id);
   console.log("userid", userId);
+  if (!userId) {
+    setRedirectVar(<Redirect to={{
+      pathname: '/login'
+    }}/>)
+  }
 
 
-  const getCompanyJobPosts = async () => {
+  const handleChange = async (event, value) => {
+    setPage(value);
+    getCompanyJobPosts(value);
+    console.log("taaaaaaaaaaaaaaaaaa,", value);
+  };
+  const getCompanyJobPosts = async (pageValue) => {
+    let skip = 0;
+    if (pageValue > 0) skip = (pageValue - 1) * resultsPerPage;
+    console.log(">>>>>>>", skip, ">.........", resultsPerPage);
     const response = await fetch(
       `http://${NODE_HOST}:${NODE_PORT}/getCompanyJobPosts?id=${userId}`,
       {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          skip: skip,
+          take: resultsPerPage,
+          id:userId
+        }),
       }
-    ).then(response => response.json())
-      .then(data => {
-        console.log(data.result);
-        setCompanyJobPostsData(data.result);
-      });
+    )
+      // .then(response => response.json())
+      // .then(data => {
+      //   console.log(data.result);
+      //   setCompanyJobPostsData(data.result);
+      // })
+      // .catch((error) => {
+      //   // Your error is here!
+      //   console.log(error)
+      // });
+    
+    const data = await response.json();
+    setCompanyJobPostsData(data);
   }
   const redirectHandler = (e) => {
     e.preventDefault();
@@ -45,12 +75,13 @@ const Jobs = (props) => {
     )
   }   
   useEffect(() => {
-    getCompanyJobPosts();
+    getCompanyJobPosts(1);
   }, []);
 
   return (
     <div>
       <EmployerDashboard currentTab="jobs"></EmployerDashboard>
+      {redirectVar}
       <Grid container
       direction="row"
       justifyContent="center"
@@ -93,6 +124,17 @@ const Jobs = (props) => {
       {" "}
       No jobs posted yet
     </Typography>)}
+    
+    
+            {companyJobPostsData && companyJobPostsData?.length > 0 ? (
+              <Pagination
+                onChange={handleChange}
+                count={20}
+                variant="outlined"
+                shape="rounded"
+                style={{ display: "flex", justifyContent: "center" }}
+              />
+            ) : null}
        </Grid>
     </div>
   );

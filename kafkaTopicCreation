@@ -83,3 +83,4 @@ kafka-topics --create --topic get_job_details_by_id --partitions 1  --replicatio
 
 kafka-topics --create --topic get_job_applicants_by_jobId --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092
 
+bin/kafka-topics.sh --create --topic getEmployerMessages --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092
