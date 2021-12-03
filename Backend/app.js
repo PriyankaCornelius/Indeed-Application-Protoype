@@ -1071,6 +1071,23 @@ app.post("/viewjobstats", async (req, res, next) => {
   );
 });
 
+//update reviews
+app.put("/reviews/update/helpfulness", async (req, res) => {
+  kafka.make_request("update_reviews", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify(results));
+    }
+  });
+});
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
 

@@ -73,18 +73,19 @@ const ResumeActions = (props) => {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem>
-          <ListItemIcon>
-            <a href={props.resumeURI} download style={{ color: "grey" }}>
-              <DownloadIcon fontSize="small" />
-            </a>
-          </ListItemIcon>
-          Download
+          <a href={props.resumeURI} download style={{ textDecoration: "none" }}>
+            <ListItemIcon>
+              <DownloadIcon fontSize="small" style={{ marginRight: 14 }} />
+              Download
+            </ListItemIcon>
+          </a>
         </MenuItem>
+
         <MenuItem>
-          <ListItemIcon>
-            <DeleteIcon fontSize="small" onClick={() => deleteResume()} />
+          <ListItemIcon onClick={() => deleteResume()}>
+            <DeleteIcon fontSize="small" style={{ marginRight: 14 }} />
+            Delete
           </ListItemIcon>
-          Delete
         </MenuItem>
       </Menu>
     </React.Fragment>

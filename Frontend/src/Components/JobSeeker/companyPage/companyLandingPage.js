@@ -7,6 +7,8 @@ import axios from "axios";
 import CompanySnapshots from "./companySnapshot";
 import WhyJoinUs from "./whyJoinUs";
 import { NODE_HOST, NODE_PORT } from "../../../envConfig";
+import CompanyReviewTab from "./CompanyReviewTab";
+import EmployerJobTab from "../../Employer/employerJobTab";
 
 const CompanyLandingPage = (props) => {
   const [selectedTab, setSelectedTab] = useState(null);
@@ -28,7 +30,8 @@ const CompanyLandingPage = (props) => {
     else if (selectedTab === "reviews") return <div>reviews</div>;
     else if (selectedTab === "salaries") return <div>salaries</div>;
     else if (selectedTab === "photos") return <div>photos</div>;
-    else if (selectedTab === "jobs") return <div>jobs</div>;
+    else if (selectedTab === "jobs")
+      return <EmployerJobTab companyId={companyDetails.id} />;
     else return null;
   };
 
@@ -49,7 +52,7 @@ const CompanyLandingPage = (props) => {
         .catch((err) => console.log(err));
   }, []);
 
-  console.log(companyDetails);
+  console.log("Hello", companyDetails);
   return (
     <div>
       <MainHeader currentTab="companyReviews"></MainHeader>
@@ -73,8 +76,13 @@ const CompanyLandingPage = (props) => {
                 backgroundRepeat: "no-repeat",
                 borderBottomLeftRadius: "8px",
                 borderBottomRightRadius: "8px",
+                height: "290px",
               }}
-              src="https://d2q79iu7y748jz.cloudfront.net/s/_headerimage/1960x400/7ddf0e5102834468e93f7022dac2610e"
+              src={
+                companyDetails && companyDetails.companyBanner
+                  ? companyDetails.companyBanner
+                  : "https://d2q79iu7y748jz.cloudfront.net/s/_headerimage/1960x400/7ddf0e5102834468e93f7022dac2610e"
+              }
             />
           </Grid>
           <Grid

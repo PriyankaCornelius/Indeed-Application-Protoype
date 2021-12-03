@@ -77,4 +77,8 @@ bin/kafka-topics.sh --create --topic post_new_job --partitions 1  --replication-
 
 bin/kafka-topics.sh --create --topic get_company_details_by_id --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092
 
+bin/kafka-topics.sh --create --topic update_review --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092
+bin/kafka-topics.sh --create --topic get_job_details_by_id --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092
+
+bin/kafka-topics.sh --create --topic get_job_applicants_by_jobId --partitions 1  --replication-factor 1 --bootstrap-server localhost:9092
 
