@@ -209,6 +209,12 @@ const MyReviews = (props) => {
                                 margin: 10,
                                 fontWeight: 600,
                               }}
+                              onClick={() => {
+                                window.location.href =
+                                  "/company?id=" +
+                                  reviews.companyId +
+                                  "&tab=reviews";
+                              }}
                             >
                               → View on Company Page
                             </Button>
