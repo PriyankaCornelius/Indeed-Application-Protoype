@@ -18,6 +18,8 @@ import UploadResume from "../JobSeeker/uploadResume";
 import Messaging from "../JobSeeker/messaging";
 import JobSeekerProfile from "../JobSeeker/jobSeekerProfile";
 import EmployerDashboard from "../Employer/employerDashboard";
+import Messages from "../Employer/messages";
+import Jobs from "../Employer/jobs";
 import Analytics from "../Employer/analytics";
 import CompanyLandingPage from "../JobSeeker/companyPage/companyLandingPage";
 import MyReviews from "../JobSeeker/myReviews";
@@ -26,6 +28,7 @@ import EmployerReviews from "../Employer/Reviews";
 import EmployerLandingPage from "../Employer/EmployerLandingPage";
 import PostReview from "../JobSeeker/PostReview";
 import PostSalary from "../JobSeeker/PostSalary";
+import Applicants from "../Employer/applicants";
 
 const Routes = () => {
   const history = useHistory();
@@ -48,6 +51,9 @@ const Routes = () => {
         <Route path="/employersPostJobs" component={EmployersJobPost} />
         <Route path="/employerHeader" component={EmployersHeader} />
         <Route path="/employerDashboard" component={EmployerDashboard} />
+        <Route path="/employerMessages" component={Messages} />
+        <Route path="/employerJobs" component={Jobs} />
+        <Route path="/employerApplicants" component={Applicants} />
         <Route path="/employerAnalytics" component={Analytics} />
         <Route path="/myReviews" component={MyReviews} />
         <Route path="/employerProfile" component={EmployerProfile} />

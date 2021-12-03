@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import EmployerDashboard from "./employerDashboard";
 import { Grid, Divider, Typography } from "@material-ui/core";
 import {
   Autocomplete,
@@ -13,13 +14,14 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
+import { Redirect } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormHelperText from '@mui/material/FormHelperText';
+import { Link } from "react-router-dom";
 import OutlinedInput from '@mui/material/OutlinedInput';
 
 const EmployersJobPost = (props) => {
@@ -32,13 +34,13 @@ const EmployersJobPost = (props) => {
   const [showLanguage, setShowLanguage] = useState(true);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [value, setValue] = React.useState('');
-  // const [error, setError] = React.useState(false);
   const [helperText, setHelperText] = React.useState('');
   const [streetAddress, setStreetAddress] = React.useState('');
   const [state, setState] = React.useState(" ");
   const [city, setCity] = React.useState(" ");
   const [zipCode, setZipCode] = React.useState(" ");
   const [jobLocation, setjobLocation] = React.useState(" Remote ");
+  const [next, setNext] = React.useState(" ");
 
   const handleStreetAddressChange = e => {
     e.preventDefault();
@@ -101,15 +103,6 @@ const EmployersJobPost = (props) => {
                 >
                 <strong>City: </strong>
                 </Typography>
-                {/* <TextField
-                    id="state"
-                    label="State"
-                    // value={this.state.re_mooe_value}
-                    // onChange={this.re_mooe_handleChange('value')}
-                    type="text" 
-                    variant = "outlined"
-                    style={{paddingRight: "20px", width: "170px"}}
-                /> */}
                 <OutlinedInput
                 required
                 sx={{ fontSize: 14, borderRadius: 2 }}
@@ -169,6 +162,31 @@ const EmployersJobPost = (props) => {
     e.preventDefault();
     setJobTitle(e.target.value);
   }
+
+  
+  const SaveInfoHandler = e => {
+    e.preventDefault();
+    var jobPosting = {
+      "role": role,
+      "jobTitle": jobTitle,
+      "country":country,
+      "language": language,
+      "value": value,
+      "streetAddress": streetAddress,
+      "state": state,
+      "city": city,
+      "zipCode": zipCode,
+      "isRemote": jobLocation === "Remote" ? 1 : 0,
+      "inInPerson":jobLocation !== "Remote" ? 1 : 0,
+    }
+    sessionStorage.setItem('jobPosting', JSON.stringify(jobPosting));
+    setNext ( <div>
+      <Redirect to={{
+         pathname: "employersJobDetails"
+     }}>
+     </Redirect>
+    </div>)
+  }
   const Country = (
     <React.Fragment>
       {country}
@@ -220,8 +238,12 @@ const EmployersJobPost = (props) => {
     </Typography>
   )
 
-  
+  const JobDetailsPageLink = props => <Link to="/employersJobDetails" {...props} />
+  const JobsPageLink = props => <Link to="/employerJobs" {...props} />
+
   return <div>
+    {next}
+    <EmployerDashboard></EmployerDashboard>
     <Grid container
     direction="row"
     justifyContent="center"
@@ -366,29 +388,38 @@ const EmployersJobPost = (props) => {
             }}
           >
             <CardContent>
-            <Typography
-                sx={{ fontSize: 14, }}
-                color="text.secondary"
-                gutterBottom
-            >
+            <Grid container spacing={2}>
+            <Grid item xs={12} md={8} >
               <Button
-                    variant="outlined"
-                    size="large"
-                    style={{ margin: 10 }}
-                  >
-                    Back
+              component={JobsPageLink}
+              variant="outlined"
+              size="large"
+              style={{ margin: 10}}
+              >
+                Back
               </Button>
-               <Button
-                  variant="contained"
-                  size="large"
-                  style={{ float: "right", margin: 10}}
-                >
-                  <a href={'#'} style={{ color: "white" }}>
-                    {" "}
-                    Save and Continue
-                  </a>
-                </Button>
-            </Typography>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Button
+              component={JobDetailsPageLink}
+              style={{
+              height: "44px",
+              
+              backgroundColor: "rgb(37, 87, 167)",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "1rem",
+              lineHeight: 0,
+              letterSpacing: 0,
+              textTransform: "none",
+              margin: 10
+            }}
+              variant="contained"
+              onClick={SaveInfoHandler}
+            >
+              Save and continue
+            </Button>
+            </Grid></Grid>
             </CardContent>
           </Card>
       </Grid>

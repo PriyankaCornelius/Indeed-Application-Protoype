@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Divider, Typography } from "@material-ui/core";
+import EmployerDashboard from "./employerDashboard";
+import { Redirect } from "react-router-dom";
 import {
   Autocomplete,
   TextField,
@@ -20,7 +22,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import { Link } from "react-router-dom";
 
 const EmployersJobDetails = (props) => {
   const [jobTitle, setJobTitle] = useState('Job Title');
@@ -30,6 +32,7 @@ const EmployersJobDetails = (props) => {
   const [whatYouWillDo, setWhatYouWillDo] = React.useState(" Remote ");
   const [whatYouWillNeed, setWhatYouWillNeed] = React.useState(" Remote ");
   const [whatYouWillLoveWorkingFor, setWhatYouWillLoveWorkingFor] = React.useState(" Remote ");
+  const [next, setNext] = React.useState(" ");
 
   
   const handleRadioChange = (event) => {
@@ -56,8 +59,33 @@ const EmployersJobDetails = (props) => {
     setWhatYouWillLoveWorkingFor(e.target.value);
   }
 
-  
+  const SaveInfoHandler = e => {
+    e.preventDefault();
+
+    const jobPosting = JSON.parse(sessionStorage.getItem("jobPosting"));
+
+    jobPosting["jobType"] =jobType;
+    jobPosting["jobDescription"] = jobDescription;
+    jobPosting["whatYouWillDo"] = whatYouWillDo;
+    jobPosting["whatYouWillNeed"] = whatYouWillNeed;
+    jobPosting["whatYouWillLoveWorkingFor"] = whatYouWillLoveWorkingFor;
+    
+    sessionStorage.setItem('jobPosting', JSON.stringify(jobPosting));
+    setNext ( <div>
+      <Redirect to={{
+         pathname: "employersJobCompensation"
+     }}>
+      </Redirect>
+      </div>
+      )
+  }
+
+  const JobCompensationPageLink = props => <Link to="/employersJobCompensation" {...props} />
+  const JobPostingPageLink = props => <Link to="/employersJobPost" {...props} />
+
   return <div>
+    {next}
+    <EmployerDashboard></EmployerDashboard>
     <Grid container
     direction="row"
     justifyContent="center"
@@ -146,6 +174,7 @@ const EmployersJobDetails = (props) => {
                <strong>What you will do</strong>
             </Typography>
             <TextField
+              multiline
               style={{ paddingRight: "20px", width: "45vw", height: "20vw" }}
               onChange={handleWhatYouWillDoChange}
             ></TextField>
@@ -171,6 +200,7 @@ const EmployersJobDetails = (props) => {
                <strong>What you will need</strong>
             </Typography>
             <TextField
+              multiline
               style={{ paddingRight: "20px", width: "45vw", height: "20vw" }}
               onChange={handleWhatYouWillNeedChange}
             ></TextField>
@@ -196,6 +226,7 @@ const EmployersJobDetails = (props) => {
                <strong>What you will love working for</strong>
             </Typography>
             <TextField
+              multiline
               style={{ paddingRight: "20px", width: "45vw", height: "20vw" }}
               onChange={handleWhatYouWillLoveWorkingForChange}
             ></TextField>
@@ -213,29 +244,38 @@ const EmployersJobDetails = (props) => {
             }}
           >
             <CardContent>
-            <Typography
-                sx={{ fontSize: 14, }}
-                color="text.secondary"
-                gutterBottom
-            >
+            <Grid container spacing={2}>
+            <Grid item xs={12} md={8} >
               <Button
-                    variant="outlined"
-                    size="large"
-                    style={{ margin: 10 }}
-                  >
-                    Back
+              component={JobPostingPageLink}
+              variant="outlined"
+              size="large"
+              style={{ margin: 10}}
+              >
+                Back
               </Button>
-               <Button
-                  variant="contained"
-                  size="large"
-                  style={{ float: "right", margin: 10}}
-                >
-                  <a href={'#'} style={{ color: "white" }}>
-                    {" "}
-                    Save and Continue
-                  </a>
-                </Button>
-            </Typography>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Button
+              component={JobCompensationPageLink}
+              style={{
+              height: "44px",
+              
+              backgroundColor: "rgb(37, 87, 167)",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "1rem",
+              lineHeight: 0,
+              letterSpacing: 0,
+              textTransform: "none",
+              margin: 10
+            }}
+              variant="contained"
+              onClick={SaveInfoHandler}
+            >
+              Save and continue
+            </Button>
+            </Grid></Grid>
             </CardContent>
           </Card>
       </Grid>
