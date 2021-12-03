@@ -26,7 +26,7 @@ const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
 
 const Redis = require("redis");
-const redisClient = Redis.createClient();
+// const redisClient = Redis.createClient();
 const DEFAULT_EXPIRATION = 3600;
 
 const s3 = new AWS.S3({
