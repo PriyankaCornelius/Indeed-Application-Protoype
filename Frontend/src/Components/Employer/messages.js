@@ -62,7 +62,7 @@ const Messaging = (props) => {
     //   });;
     const data = await response.json();
     console.log("applicants for the job", data);
-    setJobApplicantsData(data.result);
+    setJobApplicantsData(data);
   };
 
   const onChangeReplyHandler = (event) => {
