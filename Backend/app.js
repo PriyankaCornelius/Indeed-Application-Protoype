@@ -926,6 +926,22 @@ app.post("/filterreviews", async (req, res, next) => {
   );
 });
 
+app.put("/reviews/update/helpfulness", async (req, res) => {
+  kafka.make_request("update_reviews", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify(results));
+    }
+  });
+});
+
 app.post("/updateDateAndViewCount", function (req, res) {
   kafka.make_request(
     "updateDateAndViewCount",

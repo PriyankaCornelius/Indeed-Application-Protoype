@@ -1,6 +1,7 @@
 import React from "react";
 import { Tabs, Tab, Divider, Grid } from "@material-ui/core";
 import SignIn from "./signIn";
+import Register from "./register";
 import EmployersNavBar from "../Employer/employerDashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import MessageIcon from "@mui/icons-material/Message";
@@ -122,6 +123,20 @@ const MainHeader = (props) => {
         href: "/login",
         component: <SignIn />,
         value: "signIn",
+        style: {
+          textTransform: "none",
+          padding: 0,
+          margin: 10,
+          minWidth: "20px",
+          color: "#121858",
+          fontWeight: 600,
+        },
+      },
+      {
+        label: "Register",
+        href: "/register",
+        component: <Register />,
+        value: "register",
         style: {
           textTransform: "none",
           padding: 0,

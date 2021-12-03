@@ -101,7 +101,7 @@ const MyJobs = ({ user }) => {
                         }}
                         variant="contained"
                         onClick={() => {
-                          window.location.href = "/apply?jobid=" + job.id;
+                          window.location.href = "/apply?jobid=" + job._id;
                         }}
                       >
                         Apply now
