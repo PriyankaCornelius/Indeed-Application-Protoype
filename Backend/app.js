@@ -504,6 +504,27 @@ app.get("/savedJobs/get/:jobseekerid", async (req, res) => {
   );
 });
 
+// Get Job Details by ID
+app.get("/jobdetails/get/:jobid", async (req, res) => {
+  kafka.make_request(
+    "get_job_details_by_id",
+    req.params.jobid,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
 // Delete saved job
 app.post("/savedJobs/delete/:savedjobid", async (req, res) => {
   req.body.savedjobid = req.params.savedjobid;

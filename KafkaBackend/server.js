@@ -32,6 +32,8 @@ var DeleteReview = require("./services/jobSeeker/deleteReview");
 var PostReview = require("./services/jobSeeker/postReview");
 var PostSalary = require("./services/jobSeeker/postSalary");
 var FindCompanyReviews = require("./services/jobSeeker/findCompanyReviews");
+var JobDetails = require("./services/jobSeeker/getJobDetails");
+
 var connection = new require("./Connection");
 
 var options = {
@@ -120,3 +122,4 @@ handleTopicRequest("postReply", PostReply);
 handleTopicRequest("postReview", PostReview);
 handleTopicRequest("postSalary", PostSalary);
 handleTopicRequest("findCompanyReviews", FindCompanyReviews);
+handleTopicRequest("get_job_details_by_id", JobDetails);

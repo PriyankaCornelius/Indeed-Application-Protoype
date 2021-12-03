@@ -3,6 +3,7 @@ import MainHeader from "./mainHeader";
 import { NODE_HOST, NODE_PORT } from "../../envConfig";
 import { Grid, Autocomplete, TextField, Button, Divider } from "@mui/material";
 import axios from "axios";
+import StarIcon from "../../Images/star.jpeg";
 
 const CompanyReviews = (props) => {
   const [searchFlag, setSearchFlag] = useState(false);
@@ -21,7 +22,7 @@ const CompanyReviews = (props) => {
     data.what = jobFilterWhat;
     data.where = jobFilterWhere;
     axios
-      .post("http://localhost:8080/findCompanyReviews", data)
+      .post(`http://${NODE_HOST}:${NODE_PORT}/findCompanyReviews`, data)
       .then((res) => {
         if (res.data.length) setCompanies(res.data);
       })
@@ -273,7 +274,16 @@ const CompanyReviews = (props) => {
                           marginRight: "1rem",
                           backgroundColor: "white",
                         }}
-                      />
+                      >
+                        <img
+                          src={
+                            company.companyLogo
+                              ? company.companyLogo
+                              : "https://forcebrands.com/assets/fallback/company-default-4549373b79625823b56e48c7918608f77be903ad2fd38cfc9b6929d095994013.png"
+                          }
+                          style={{ width: "3rem", height: "3rem" }}
+                        />
+                      </div>
                     </Grid>
                     <Grid
                       item
@@ -294,6 +304,9 @@ const CompanyReviews = (props) => {
                           textOverflow: "ellipsis",
                           cursor: "pointer",
                         }}
+                        onClick={() => {
+                          window.location.href = "/company?id=" + company.id;
+                        }}
                       >
                         {company.companyName}
                       </Grid>
@@ -312,7 +325,11 @@ const CompanyReviews = (props) => {
                           textDecoration: "underline",
                         }}
                       >
-                        {company.averageRating}
+                        {company.averageRating}&nbsp;
+                        <img
+                          src={StarIcon}
+                          style={{ width: "15px", height: "15px" }}
+                        />
                       </Grid>
                     </Grid>
                     <Grid
