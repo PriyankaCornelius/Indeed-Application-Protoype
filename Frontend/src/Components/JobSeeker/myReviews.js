@@ -1,10 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MainHeader from "./mainHeader";
+import { NODE_HOST, NODE_PORT } from "../../envConfig";
 import { Grid, Stack, Card, CardContent, Button } from "@mui/material";
-import { Typography, ListItemIcon } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const MyReviews = (props) => {
+  const [jobSeekerReviews, setJobSeekerReviews] = useState();
+
+  const getJobSeekerReviews = async () => {
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/getJobSeekerReviews?id=${1}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: session.token,
+        },
+      }
+    );
+
+    const data = await response.json();
+    console.log("jobseeker details", data);
+    setJobSeekerReviews();
+
+    console.log("jobSeekerReviews", jobSeekerReviews);
+  };
+
+  useEffect(() => {
+    getJobSeekerReviews();
+  }, []);
+
   return (
     <div>
       {" "}

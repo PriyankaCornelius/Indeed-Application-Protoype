@@ -2,7 +2,7 @@ const CompanyReviews = require("../models/CompanyReviews");
 
 function handle_request(msg, callback) {
   console.log("Message is : ", msg);
-  CompanyReviews.find({ companyId: msg }, (error, result) => {
+  CompanyReviews.find({ companyId: msg.companyId }, (error, result) => {
     if (error) {
       callback(error, "Error");
     }

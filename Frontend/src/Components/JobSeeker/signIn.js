@@ -9,13 +9,27 @@ import Paper from "@mui/material/Paper";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
+import { connect } from "react-redux";
+import { commonLoginFunc } from "../../redux/actions/loginActions";
 
-const SignIn = ({}) => {
+const SignIn = ({ commonLoginFunc }) => {
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const [personaType, setPersonaType] = useState("js");
+  const [loginError, setLoginError] = useState(null);
 
   const handleChange = (e) => {
     e.preventDefault();
     setPersonaType(e.target.value);
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    let data = {};
+    data.email = email;
+    data.password = password;
+    data.personaType = personaType;
+    commonLoginFunc(data, setLoginError);
   };
 
   return (
@@ -29,7 +43,7 @@ const SignIn = ({}) => {
         overflow: "hidden",
       }}
     >
-      <form>
+      <form onSubmit={onSubmit}>
         <Container
           component="main"
           maxWidth="xs"
@@ -46,7 +60,7 @@ const SignIn = ({}) => {
               border: "1px solid #d4d2d0",
               padding: "24px",
               width: "480px",
-              height: "550px",
+              height: loginError ? "575px" : "550px",
             }}
           >
             <CssBaseline />
@@ -86,6 +100,9 @@ const SignIn = ({}) => {
                   name="email"
                   autoComplete="email"
                   autoFocus
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                   required
                 />
                 <TextField
@@ -96,6 +113,9 @@ const SignIn = ({}) => {
                   label="Password"
                   type="password"
                   id="password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   autoComplete="current-password"
                   required
                 />
@@ -161,6 +181,17 @@ const SignIn = ({}) => {
                     Sign In
                   </span>
                 </Button>
+                {loginError ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontWeight: "bold",
+                      marginTop: 0,
+                    }}
+                  >
+                    {loginError}
+                  </p>
+                ) : null}
               </Box>
             </Box>
           </Paper>
@@ -170,4 +201,4 @@ const SignIn = ({}) => {
   );
 };
 
-export default SignIn;
+export default connect(null, { commonLoginFunc })(SignIn);

@@ -46,7 +46,7 @@ const ProfileIconData = (props) => {
         >
           company@email.com
         </Typography>
-        <Link to="/jobSeekerProfile" style={{ textDecoration: "none" }}>
+        <Link to="/employerProfile" style={{ textDecoration: "none" }}>
           <MenuItem>
             <ListItemIcon>
               <DescriptionIcon fontSize="small" />
@@ -54,13 +54,14 @@ const ProfileIconData = (props) => {
             Company Profile
           </MenuItem>
         </Link>
-        <MenuItem>
-          <ListItemIcon>
-            <ReviewsIcon fontSize="small" />
-          </ListItemIcon>
-          Reviews
-        </MenuItem>
-
+        <Link to="/employerReviews" style={{ textDecoration: "none" }}>
+          <MenuItem>
+            <ListItemIcon>
+              <ReviewsIcon fontSize="small" />
+            </ListItemIcon>
+            Reviews
+          </MenuItem>
+        </Link>
         <MenuItem>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />

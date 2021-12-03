@@ -115,6 +115,8 @@ const CompanyLandingPage = (props) => {
                 marginTop: "35px",
                 width: "203px",
                 height: "44px",
+                textTransform: "none",
+                fontWeight: "bold",
               }}
             >
               <b>Write a review</b>
