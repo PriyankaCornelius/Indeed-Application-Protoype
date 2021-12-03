@@ -38,6 +38,15 @@ const CompanyReviewTab = ({ companyDetails }) => {
     getReviewsFunc();
   }, []);
 
+  useEffect(() => {
+    if (reviews) {
+      let arr = reviews;
+      if (filter === "h") arr.sort((a, b) => b.isHelpful - a.isHelpful);
+      else if (filter === "r") arr.sort((a, b) => b.rating - a.rating);
+      setReviews(arr);
+    }
+  }, [filter]);
+
   return reviews ? (
     reviews.length > 0 ? (
       <>
