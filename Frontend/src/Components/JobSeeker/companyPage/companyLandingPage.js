@@ -61,8 +61,13 @@ const CompanyLandingPage = (props) => {
                 backgroundRepeat: "no-repeat",
                 borderBottomLeftRadius: "8px",
                 borderBottomRightRadius: "8px",
+                height: "290px",
               }}
-              src="https://d2q79iu7y748jz.cloudfront.net/s/_headerimage/1960x400/7ddf0e5102834468e93f7022dac2610e"
+              src={
+                companyDetails && companyDetails.companyBanner
+                  ? companyDetails.companyBanner
+                  : "https://d2q79iu7y748jz.cloudfront.net/s/_headerimage/1960x400/7ddf0e5102834468e93f7022dac2610e"
+              }
             />
           </Grid>
           <Grid
