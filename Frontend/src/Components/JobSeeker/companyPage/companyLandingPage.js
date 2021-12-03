@@ -29,6 +29,53 @@ const CompanyLandingPage = (props) => {
       );
     else if (selectedTab === "reviews") return <div>reviews</div>;
     else if (selectedTab === "salaries") return <div>salaries</div>;
+    if (selectedTab === "snapshot") return <div>snapshot</div>;
+    else if (selectedTab === "whyjoinus") return <div>whyjoinus</div>;
+    else if (selectedTab === "reviews")
+      return <CompanyReviewTab companyDetails={companyDetails} />;
+    else if (selectedTab === "salaries")
+      return (
+        <Grid
+          item
+          xs={12}
+          style={{
+            backgroundColor: "#FAF9F8",
+            height: "300px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "20px",
+              color: "#2D2D2D",
+              fontWeight: "bold",
+              paddingTop: "15px",
+            }}
+          >
+            {companyDetails.companyName} salaries: How much does{" "}
+            {companyDetails.companyName} pay?
+          </div>
+          <Button
+            variant="outlined"
+            size="large"
+            style={{
+              backgroundColor: "white",
+              marginTop: "15px",
+              width: "203px",
+              height: "44px",
+              textTransform: "none",
+              fontWeight: "bold",
+              color: "#2557A7",
+              fontSize: "16px",
+            }}
+            onClick={() => {
+              window.location.href =
+                "/postSalary?companyname=" + companyDetails.companyName;
+            }}
+          >
+            <b>Add a salary</b>
+          </Button>
+        </Grid>
+      );
     else if (selectedTab === "photos") return <div>photos</div>;
     else if (selectedTab === "jobs")
       return <EmployerJobTab companyId={companyDetails.id} />;
