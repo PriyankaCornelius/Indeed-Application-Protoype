@@ -5,6 +5,7 @@ import CompanyAppbar from "./companyAppbar";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { NODE_HOST, NODE_PORT } from "../../../envConfig";
+import EmployerJobTab from "../../Employer/employerJobTab";
 
 const CompanyLandingPage = (props) => {
   const [selectedTab, setSelectedTab] = useState(null);
@@ -16,7 +17,8 @@ const CompanyLandingPage = (props) => {
     else if (selectedTab === "reviews") return <div>reviews</div>;
     else if (selectedTab === "salaries") return <div>salaries</div>;
     else if (selectedTab === "photos") return <div>photos</div>;
-    else if (selectedTab === "jobs") return <div>jobs</div>;
+    else if (selectedTab === "jobs")
+      return <EmployerJobTab companyId={companyDetails.id} />;
     else return null;
   };
 
@@ -37,7 +39,7 @@ const CompanyLandingPage = (props) => {
         .catch((err) => console.log(err));
   }, []);
 
-  console.log(companyDetails);
+  console.log("Hello", companyDetails);
   return (
     <div>
       <MainHeader currentTab="companyReviews"></MainHeader>
