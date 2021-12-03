@@ -2,11 +2,10 @@ const con = require("../../sqldbConfig.js");
 
 const handle_request = async (msg, callback) => {
   try {
-    console.log("incoming message", msg);
     let sqlSelect = `SELECT  * FROM jobseekers where id = ?`;
 
     con.query(sqlSelect, [msg.id], (err, result) => {
-      if (result) {
+      if (result.length > 0) {
         callback(null, {
           email: result[0].email,
           // password: result[0].password,
@@ -18,8 +17,9 @@ const handle_request = async (msg, callback) => {
           state: result[0].state,
           zip: result[0].zip,
           resumeURI: result[0].resumeURI,
+          resumeFilename: result[0].resumeFilename,
         });
-      } else throw err;
+      }
     });
   } catch (exception) {
     callback({ message: exception }, null);

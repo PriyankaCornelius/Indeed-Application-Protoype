@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 import {
   Grid,
@@ -19,7 +20,9 @@ import { TextField, Typography, Box } from "@material-ui/core";
 import EditIcon from "@mui/icons-material/Edit";
 
 const EmployerProfile = (props) => {
-  let id = "primary@accenture.com";
+  const email = useSelector((state) => state.login.user.email);
+  console.log("The email id is " + email);
+  //let id = "primary@accenture.com";
   const [employerDetails, setemployerDetails] = useState({});
   const [open, setOpen] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
@@ -42,7 +45,7 @@ const EmployerProfile = (props) => {
   };
   const getEmployerDetails = async () => {
     const response = await fetch(
-      `http://${NODE_HOST}:${NODE_PORT}/getprofile/company/:companyid?emp_id=${id}`,
+      `http://${NODE_HOST}:${NODE_PORT}/getprofile/company/:companyid?emp_id=${email}`,
       {
         method: "GET",
         headers: {

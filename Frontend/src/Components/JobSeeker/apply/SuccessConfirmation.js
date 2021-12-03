@@ -6,7 +6,7 @@ import Paper from "@mui/material/Paper";
 import { Divider } from "@material-ui/core";
 import noDataApplied from "../../../Images/noDataApplied.png";
 
-const SuccessConfirmation = ({}) => {
+const SuccessConfirmation = ({ review, salary }) => {
   return (
     <div
       style={{
@@ -35,7 +35,7 @@ const SuccessConfirmation = ({}) => {
               border: "1px solid #d4d2d0",
               padding: "24px",
               width: "480px",
-              height: "550px",
+              height: !review && !salary ? "550px" : "400px",
             }}
           >
             <CssBaseline />
@@ -62,7 +62,8 @@ const SuccessConfirmation = ({}) => {
                   fontWeight: "bold",
                 }}
               >
-                Your application has been submitted!
+                Your {review ? "review" : salary ? "salary" : "application"} has
+                been submitted!
               </div>
             </Box>
             <Divider />
@@ -75,28 +76,50 @@ const SuccessConfirmation = ({}) => {
                 marginTop: "25px",
               }}
             >
-              <div>
-                <b>Keep track of all your applications</b>
-              </div>
-              <div style={{ marginTop: "5px" }}>
-                You will receive a status update in an email from Indeed within
-                a few weeks of submitting your application. In the meantime, you
-                can view and track all your applications in the Indeed My jobs
-                section at any time
-              </div>
-              <div
-                style={{
-                  marginTop: "5px",
-                  color: "blue",
-                  cursor: "pointer",
-                  textDecoration: "underline",
-                }}
-                onClick={() => {
-                  window.location.href = "/myjobs?tab=applied";
-                }}
-              >
-                View your applications on My jobs
-              </div>
+              {!review && !salary ? (
+                <>
+                  <div>
+                    <b>Keep track of all your applications</b>
+                  </div>
+                  <div style={{ marginTop: "5px" }}>
+                    You will receive a status update in an email from Indeed
+                    within a few weeks of submitting your application. In the
+                    meantime, you can view and track all your applications in
+                    the Indeed My jobs section at any time
+                  </div>
+                </>
+              ) : null}
+              {salary ? (
+                <div
+                  style={{
+                    marginTop: "5px",
+                    color: "blue",
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  }}
+                  onClick={() => {
+                    window.location.href = "/";
+                  }}
+                >
+                  Back to Home
+                </div>
+              ) : (
+                <div
+                  style={{
+                    marginTop: "5px",
+                    color: "blue",
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  }}
+                  onClick={() => {
+                    window.location.href = review
+                      ? "/myreviews"
+                      : "/myjobs?tab=applied";
+                  }}
+                >
+                  View your {review ? "reviews" : "applications"}
+                </div>
+              )}
             </Box>
           </Paper>
         </Container>

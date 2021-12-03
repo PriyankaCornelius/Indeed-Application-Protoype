@@ -4,6 +4,8 @@ import EmpHeader from "./EmployersHeader";
 import Modal from "@mui/material/Modal";
 import Alert from "@mui/material/Alert";
 import ReviewsCard from "./ReviewsCard";
+import { useSelector } from "react-redux";
+
 import {
   Grid,
   Avatar,
@@ -17,8 +19,10 @@ import { TextField, Typography, Box } from "@material-ui/core";
 import EditIcon from "@mui/icons-material/Edit";
 
 const EmployerReviews = (props) => {
+  const company_id = useSelector((state) => state.login.user.id);
+  console.log("The id is " + company_id);
   var allreviews = [];
-  let id = 7;
+  //let id = 7;
   const [reviews, setreviews] = useState({});
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -29,7 +33,7 @@ const EmployerReviews = (props) => {
 
   const getReviews = async () => {
     const response = await fetch(
-      `http://${NODE_HOST}:${NODE_PORT}/reviews/company/companyid?companyId=${id}`,
+      `http://${NODE_HOST}:${NODE_PORT}/reviews/company/companyid?companyId=${company_id}`,
       {
         method: "GET",
         headers: {

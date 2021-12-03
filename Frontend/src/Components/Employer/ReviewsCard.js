@@ -146,7 +146,7 @@ const ReviewsCard = (props) => {
                     display: "block",
                     width: "42vw",
                     margin: 15,
-                    height: "18vw",
+                    height: "28vw",
                     textAlign: "center",
                   }}
                 >

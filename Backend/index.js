@@ -10,6 +10,7 @@ const cors = require("cors");
 //   credentials: true,
 //   origin: true,
 // };
+// app.use(cors());
 app.use(cors());
 
 const apiRouter = require("./routes/routes");
