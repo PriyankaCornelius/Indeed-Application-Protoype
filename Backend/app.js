@@ -590,6 +590,27 @@ app.get("/savedJobs/get/:jobseekerid", async (req, res) => {
   );
 });
 
+// Get Company Details by ID
+app.get("/companydetails/get/:companyid", async (req, res) => {
+  kafka.make_request(
+    "get_company_details_by_id",
+    req.params.companyid,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end(JSON.stringify(results));
+      }
+    }
+  );
+});
+
 // Get Job Details by ID
 app.get("/jobdetails/get/:jobid", async (req, res) => {
   kafka.make_request(
@@ -684,11 +705,12 @@ app.get("/reviewsperday", async (req, res, next) => {
         // console.log(results);
         res.send(results);
       }
-    })
+    }
+  );
 });
 // *****************EMPLOYER'S APIs*********************
 app.get("/getCompanyJobPosts", function (req, res) {
-  // console.log("in app getCompanyJobPosts",req.query); 
+  // console.log("in app getCompanyJobPosts",req.query);
   kafka.make_request(
     "get_jobs_posted_by_company",
     req.query,
@@ -709,7 +731,7 @@ app.get("/getCompanyJobPosts", function (req, res) {
 });
 
 app.get("/getJobApplicants", function (req, res) {
-  // console.log("in app getJobApplicants",req.query); 
+  // console.log("in app getJobApplicants",req.query);
   kafka.make_request(
     "get_job_applicants_by_jobId",
     req.query,
@@ -728,28 +750,24 @@ app.get("/getJobApplicants", function (req, res) {
     }
   );
 });
-        
+
 app.post("/postJob", function (req, res) {
-  console.log("in app postJob",req.body); 
-  kafka.make_request(
-    "post_new_job",
-    req.body,
-    function (err, results) {
-      if (err) {
-        res.writeHead(500, {
-          "Content-Type": "text/plain",
-        });
-        res.end("Error Occured");
-      } else {
-        res.writeHead(200, {
-          "Content-Type": "application/json",
-        });
-        res.end(JSON.stringify(results));
-      }
+  console.log("in app postJob", req.body);
+  kafka.make_request("post_new_job", req.body, function (err, results) {
+    if (err) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end("Error Occured");
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      res.end(JSON.stringify(results));
     }
-  );
+  });
 });
-        
+
 //Top 5 Reviewed Companies
 app.get("/mostreviewedcompanies", async (req, res, next) => {
   console.log("GET Request on mostreviews");
@@ -789,8 +807,6 @@ app.get("/avgratings", async (req, res, next) => {
     }
   );
 });
-
-
 
 //Top 5 Job Seekers (reviews)
 app.get("/jobseekerreviews", async (req, res, next) => {
@@ -993,7 +1009,7 @@ app.post("/viewjobstats", async (req, res, next) => {
   );
 });
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
 
 module.exports = app;

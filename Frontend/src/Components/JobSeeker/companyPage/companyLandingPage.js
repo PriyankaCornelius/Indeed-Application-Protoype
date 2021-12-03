@@ -3,10 +3,12 @@ import MainHeader from "../mainHeader";
 import { Grid, Button, Divider } from "@material-ui/core";
 import CompanyAppbar from "./companyAppbar";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { NODE_HOST, NODE_PORT } from "../../../envConfig";
 
 const CompanyLandingPage = (props) => {
   const [selectedTab, setSelectedTab] = useState(null);
-  const [companyDetails, setCompanyDetails] = useState([]);
+  const [companyDetails, setCompanyDetails] = useState(null);
 
   const SelectedTab = () => {
     if (selectedTab === "snapshot") return <div>snapshot</div>;
@@ -26,6 +28,16 @@ const CompanyLandingPage = (props) => {
     else setSelectedTab("snapshot");
   }, [new URLSearchParams(search).get("tab")]);
 
+  useEffect(() => {
+    const companyid = new URLSearchParams(search).get("id");
+    if (companyid)
+      axios
+        .get(`http://${NODE_HOST}:${NODE_PORT}/companydetails/get/${companyid}`)
+        .then((res) => setCompanyDetails(res.data[0]))
+        .catch((err) => console.log(err));
+  }, []);
+
+  console.log(companyDetails);
   return (
     <div>
       <MainHeader currentTab="companyReviews"></MainHeader>
@@ -105,14 +117,14 @@ const CompanyLandingPage = (props) => {
                     marginBottom: "15px",
                   }}
                 >
-                  Best Buy
+                  {companyDetails.companyName}
                 </Grid>
                 <Grid item container direction="row">
                   <Grid item xs={1}>
-                    69 |
+                    {companyDetails.totalReviews} |
                   </Grid>
                   <Grid item xs={4}>
-                    3.8
+                    {companyDetails.averageRating}
                   </Grid>
                 </Grid>
               </Grid>
