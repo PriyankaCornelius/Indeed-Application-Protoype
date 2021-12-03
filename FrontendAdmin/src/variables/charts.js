@@ -302,57 +302,41 @@ const topCEO = {
 
 const topCompanies = {
   data: {
-    labels: ["AB", "CD", "EF", "GH", "IJ", "KL", "MN", "OP", "QR", "ST"],
-    series: [[10,9,8,7,6,5,4,3,2,1]],
+    labels: [
+      "AB",
+      "CD",
+      "EF",
+      "GH",
+      "IJ",
+      "KL",
+      "MN",
+      "OP",
+      "QR",
+      "ST"
+    ],
+    series: [[20, 17, 15, 14, 12, 10, 9, 7, 6, 5]],
   },
+
   options: {
-    axisX: {
-      showGrid: false,
-    },
+    lineSmooth: Chartist.Interpolation.cardinal({
+      tension: 0,
+    }),
     low: 0,
-    high: 12,
+    high: 102, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
     chartPadding: {
       top: 0,
-      right: 5,
+      right: 0,
       bottom: 0,
       left: 0,
     },
   },
-  responsiveOptions: [
-    [
-      "screen and (max-width: 640px)",
-      {
-        seriesBarDistance: 5,
-        axisX: {
-          labelInterpolationFnc: function (value) {
-            return value[0];
-          },
-        },
-      },
-    ],
-  ],
   animation: {
     draw: function (data) {
-      
-      if (data.type === "line" || data.type === "area") {
-        data.element.animate({
-          d: {
-            begin: 600,
-            dur: 700,
-            from: data.path
-              .clone()
-              .scale(1, 0)
-              .translate(0, data.chartRect.height())
-              .stringify(),
-            to: data.path.clone().stringify(),
-            easing: Chartist.Svg.Easing.easeOutQuint,
-          },
-        });
-      } else if (data.type === "point") {
+      if (data.type === "bar") {
         data.element.animate({
           opacity: {
-            begin: (data.index + 1) * delays,
-            dur: durations,
+            begin: (data.index + 1) * delays2,
+            dur: durations2,
             from: 0,
             to: 1,
             easing: "ease",
@@ -360,6 +344,7 @@ const topCompanies = {
         });
       }
     },
+    
   },
 };
 
