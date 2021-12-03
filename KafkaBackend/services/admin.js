@@ -35,8 +35,9 @@ function reviewsperday(msg, callback){
         { "$project": {createdAt: { $dateToString: { format: "%m-%d", date: "$createdAt"}}}},
         { "$group": { _id: { createdAt: "$createdAt"} , count: { $sum: 1 }}},
         { "$addFields": { createdAt: "$_id.createdAt" }},
-        { "$sort" : {date: -1}},
+        { "$sort" : {createdAt: -1}},
         { "$limit" : 7},
+        { "$sort" : {createdAt: 1}},
         { "$project": {createdAt: "$createdAt", count: 1, _id: false}},
       ],async (error, results) => {
         // console.log(results);
