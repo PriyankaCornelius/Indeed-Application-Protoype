@@ -789,11 +789,11 @@ app.get("/reviewsperday", async (req, res, next) => {
   );
 });
 // *****************EMPLOYER'S APIs*********************
-app.get("/getCompanyJobPosts", function (req, res) {
+app.post("/getCompanyJobPosts", function (req, res) {
   // console.log("in app getCompanyJobPosts",req.query);
   kafka.make_request(
     "get_jobs_posted_by_company",
-    req.query,
+    req.body,
     function (err, results) {
       if (err) {
         res.writeHead(500, {

@@ -29,7 +29,6 @@ import EmployerLandingPage from "../Employer/EmployerLandingPage";
 import PostReview from "../JobSeeker/PostReview";
 import PostSalary from "../JobSeeker/PostSalary";
 import Applicants from "../Employer/applicants";
-import CompanyHome from "../Employer/companyHome";
 const Routes = () => {
   const history = useHistory();
 
@@ -62,7 +61,6 @@ const Routes = () => {
         <Route path="/postReview" component={PostReview} />
         <Route path="/postSalary" component={PostSalary} />
         <Route path="*" component={ProtectedRouter} />
-        <Route path="/companyHome" component={CompanyHome} />
       </Switch>
     </Router>
   );
