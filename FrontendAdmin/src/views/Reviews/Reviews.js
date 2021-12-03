@@ -14,6 +14,7 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import withStyles from "@material-ui/core/styles/withStyles"
+import { endpoint } from "views/util/port";
 import {
     Form,
     // Card,
@@ -46,7 +47,7 @@ import {
     allReviews() {
       const revList = [];
       // Axios.defaults.withCredentials = true;
-      Axios.get('http://localhost:8080/allreviews')
+      Axios.get(endpoint+"/allreviews")
         .then((res) => {
           if (res) {
             console.log(res.data);
@@ -66,7 +67,7 @@ import {
     finalSearch = (userData) => {
       console.log(userData);
       // Axios.defaults.withCredentials = true;
-      Axios.post('http://localhost:8080/filterreviews', userData)
+      Axios.post(endpoint+'/filterreviews', userData)
         .then((res) => {
           if (res.status === 200) {
             console.log(res.data);
@@ -82,7 +83,7 @@ import {
       console.log(e.currentTarget.id,  e.currentTarget.value)
       const action = {id: e.currentTarget.id, status: e.currentTarget.value};
       // Axios.defaults.withCredentials = true;
-      Axios.post('http://localhost:8080/reviewactions', action)
+      Axios.post(endpoint+ '/reviewactions', action)
         .then((res) => {
           if (res.status === 200) {
             console.log(res.data);
@@ -138,7 +139,7 @@ import {
             <Form inline>
               <GridContainer >
                 {this.state.allReviews.map((reviews) => <GridItem xs={12} sm={12} md={4}>
-                 <Card>
+                 <Card style={{overflow: "auto"}}>
                   <CardBody>
                     <CardHeader color="info"><b>{reviews.companyName}</b></CardHeader>
                     <CardBody>

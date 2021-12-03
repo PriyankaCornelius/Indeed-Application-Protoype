@@ -29,6 +29,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+import { endpoint } from "views/util/port";
 
 import { bugs, website, server } from "variables/general.js";
 
@@ -73,7 +74,7 @@ class Dashboard extends React.Component {
     const topCEO = [];
     const views = [];
     // Axios.defaults.withCredentials = true;
-    Axios.get('http://localhost:8080/reviewsperday')
+    Axios.get(endpoint+'/reviewsperday')
       .then((res) => {
         if (res) {
           console.log(res.data);
@@ -91,7 +92,7 @@ class Dashboard extends React.Component {
       });
 
     // Axios.defaults.withCredentials = true;
-    Axios.get('http://localhost:8080/mostreviewedcompanies')
+    Axios.get(endpoint+'/mostreviewedcompanies')
       .then((res) => {
         if (res) {
           console.log(res.data);
@@ -109,7 +110,7 @@ class Dashboard extends React.Component {
       });
 
     // Axios.defaults.withCredentials = true;
-    Axios.get('http://localhost:8080/avgratings')
+    Axios.get(endpoint+'/avgratings')
       .then((res) => {
         if (res) {
           console.log(res.data);
@@ -127,7 +128,7 @@ class Dashboard extends React.Component {
       });
 
     // Axios.defaults.withCredentials = true;
-    Axios.get('http://localhost:8080/jobseekerreviews')
+    Axios.get(endpoint+'/jobseekerreviews')
       .then((res) => {
         if (res) {
           console.log(res.data);
@@ -145,7 +146,7 @@ class Dashboard extends React.Component {
       });
 
     // Axios.defaults.withCredentials = true;
-    Axios.get('http://localhost:8080/topceos')
+    Axios.get(endpoint+'/topceos')
       .then((res) => {
         if (res) {
           console.log(res.data);
@@ -163,7 +164,7 @@ class Dashboard extends React.Component {
       });
 
     // Axios.defaults.withCredentials = true;
-    Axios.get('http://localhost:8080/dailyviews')
+    Axios.get(endpoint+'/dailyviews')
       .then((res) => {
         if (res) {
           console.log(res.data);
