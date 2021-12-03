@@ -1,4 +1,4 @@
-const CompanyReviews = require("../models/CompanyReviews");
+const CompanyReviews = require("../Models/CompanyReviews");
 
 function handle_request(msg, callback) {
   console.log("For puting reviews, Message is : ", msg);

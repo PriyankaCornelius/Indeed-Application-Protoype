@@ -1,4 +1,4 @@
-export const semiEndpoint = "http://localhost:8000";
+export const semiEndpoint = "http://18.191.158.78:8000";
 // process.env.REACT_APP_PROTOCOL +
 // "://" +
 // process.env.REACT_APP_HOST +

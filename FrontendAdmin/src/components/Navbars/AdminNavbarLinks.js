@@ -212,7 +212,8 @@ export default function AdminNavbarLinks() {
                     <Divider light /> */}
                     <MenuItem
                       onClick={() => {
-                        window.location.href = "http://localhost:3000/login";
+                        window.location.href =
+                          "http://18.191.158.78:3000/login";
                       }}
                       className={classes.dropdownItem}
                     >
