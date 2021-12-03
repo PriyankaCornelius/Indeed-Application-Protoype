@@ -74,12 +74,15 @@ const Applicants = (props) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
-    ).then(response => response.json())
-      .then(data => {
-        console.log("applicants for the job",data.result);
-        setJobApplicantsData(data.result);
-      });
+      })
+    // ).then(response => response.json())
+    //   .then(data => {
+    //     console.log("applicants for the job",data.result);
+    //     setJobApplicantsData(data.result);
+    //   });
+    const data = await response.json();
+    console.log("applicants for the job",data);
+    setJobApplicantsData(data);
   }
   // const handleApplicantStatusChange = e => {
   //   e.preventDefault();
@@ -99,8 +102,8 @@ const Applicants = (props) => {
       }
     ).then(response => response.json())
       .then(data => {
-        console.log("applicants for the job",data.result);
-        setJobApplicantsData(data.result);
+        console.log("applicants for the job",data);
+        setJobApplicantsData(data);
       })
       .catch((error) => {
         // Your error is here!

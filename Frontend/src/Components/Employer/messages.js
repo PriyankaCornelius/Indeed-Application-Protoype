@@ -15,6 +15,7 @@ import {
   CardMedia,
   Avatar,
   TextField,
+  OutlinedInput
 } from "@mui/material";
 import messagePicture from "../../Images/message_image.png";
 import { makeStyles } from "@material-ui/core/styles";
@@ -25,6 +26,10 @@ const Messaging = (props) => {
   const [messageDetails, setMessageDetails] = useState([]);
   const [cardColor, setCardColor] = useState({ 0: "blue" });
   const [employerReply, setEmployerReply] = useState("");
+  const [jobsDropdown, setJobsDropdown] = useState([]);
+  const [displayJobsDropdown, setDisplayJobsDropdown] = useState(false);
+  const [jobSelection, setJobSelection] = useState("");
+  const [jobApplicantsData, setJobApplicantsData] = useState([]);
 
   const useStyles = makeStyles({
     textarea: {
@@ -32,6 +37,30 @@ const Messaging = (props) => {
     },
   });
   const classes = useStyles();
+
+  const getJobApplicants = async (jobId) => {
+    console.log("applicant api call")
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/getJobApplicants?id=${jobId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    // ).then(response => response.json())
+    //   .then(data => {
+    //     console.log("applicants for the job",data);
+    //     setJobApplicantsData(data);
+    //   })
+    //   .catch((error) => {
+    //     // Your error is here!
+    //     console.log(error)
+    //   });;
+    const data = await response.json();
+    console.log("applicants for the job",data);
+    setJobApplicantsData(data);
+  }
 
   const onChangeReplyHandler = (event) => {
     setEmployerReply(event.target.value);
@@ -60,7 +89,14 @@ const Messaging = (props) => {
       setEmployerReply("");
     }
   };
-
+ 
+  const jobSelectionChangeHandler = e => {
+    e.preventDefault();
+   setJobSelection(e.target.value.jobTitle);
+   console.log("jobSelection", jobSelection);
+   var jobId = e.target.value.id;
+   getJobApplicants(jobId);
+ }
   const getMessages = async () => {
     const response = await fetch(
       `http://${NODE_HOST}:${NODE_PORT}/getEmployerMessages?id=${userId}`,
@@ -80,10 +116,10 @@ const Messaging = (props) => {
     if (applicantIdsList.length > 0) {
       console.log(applicantIdsList,"****************")
       setMessageCards(
-        applicantIdsList.map((companyIdData) => {
+        applicantIdsList.map((applicantIdData) => {
           return {
-            companyId: companyIdData,
-            companyName: data[companyIdData],
+            applicantId: applicantIdData,
+            applicantName: data[applicantIdData],
           };
         })
       );
@@ -106,8 +142,39 @@ const Messaging = (props) => {
     const data = await response.json();
     setMessageDetails(data);
   };
+
+  let val = 1;
+  const getCompanyJobPosts = async (val) => {
+    let skip = 0;
+    const resultsPerPage = 20000;
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/getCompanyJobPosts?id=${userId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          skip: skip,
+          take: resultsPerPage,
+          id:userId
+        }),
+      }
+    ).then(response => response.json())
+      .then(data => {
+        console.log("company job posts",data.result);
+        setJobsDropdown(data)
+        console.log("lennnnn", jobsDropdown.length);
+      })
+      .catch((error) => {
+        // Your error is here!
+        console.log(error)
+      });;
+  }
+
   useEffect(() => {
     getMessages();
+    getCompanyJobPosts(1);
   }, []);
 
   return (
@@ -130,14 +197,40 @@ const Messaging = (props) => {
               <CardContent>
                 <Typography variant="h5" component="div"></Typography>
                 <FormControl sx={{ m: 1 }} fullWidth>
-                  <Select
+                  {/* <Select
                     id="messageType"
                     variant="outlined"
                     defaultValue="Inbox"
                   >
                     <MenuItem value={"Inbox"}>Inbox</MenuItem>
                     <MenuItem value={"Archive"}>Archive</MenuItem>
-                  </Select>
+                  </Select> */}
+
+        {jobsDropdown.length !== 0 ?
+          <Select
+          displayEmpty
+          value={jobSelection.jobTitle}
+          onChange={jobSelectionChangeHandler}
+          input={<OutlinedInput />}
+          renderValue={(jobSelection) => {
+            if (jobSelection) {
+              return jobSelection.jobTitle
+            }
+            return <em>Select Job</em>;
+          }}
+          inputProps={{ 'aria-label': 'Without label' }}
+        >
+          <MenuItem disabled value="Placeholder" >
+            <em>Select Job</em>
+          </MenuItem>
+          {
+           jobsDropdown.map((job, index) => {
+              return (
+                <MenuItem key={index} value={job}>{job.jobTitle}</MenuItem>
+              )
+            })
+          }
+        </Select> : <h1></h1>}
                 </FormControl>
                 <Divider></Divider>
 
@@ -172,13 +265,60 @@ const Messaging = (props) => {
                               fontWeight: 600,
                             }}
                           >
-                            {message.companyName}
+                            {message.applicantName}
                           </Typography>
                         </Stack>
                       </CardContent>
                     </Card>
                   );
                 })}
+
+                        {jobApplicantsData.length !==0 ?jobApplicantsData.map((applicant, index) => {
+                          return (
+                          //   <Typography
+                          //   style={{
+                          //     fontSize: 14,
+                          //     marginLeft: 10,
+                          //     marginTop: 10,
+                          //     fontWeight: 600,
+                          //   }}
+                          // >
+                          //   {applicant.firstName}
+                          //   </Typography>
+                          <Card
+                          sx={{ mt: 3 }}
+                          variant="outlined"
+                          style={{
+                            display: "block",
+                            borderColor: cardColor[index],
+                            width: "22vw",
+                            height: "6vw",
+                            textAlign: "left",
+                          }}
+                          onClick={() => {
+                            setCardColor({ [index]: "blue" });
+                            // retriveMessages(userId, message.companyId);
+                            retriveMessages(userId, applicant.applicantId);
+                          }}
+                        >
+                          <CardContent>
+                            <Stack direction="row">
+                              <Avatar />
+                              <Typography
+                                style={{
+                                  fontSize: 14,
+                                  marginLeft: 10,
+                                  marginTop: 10,
+                                  fontWeight: 600,
+                                }}
+                              >
+                                {applicant.firstName} {applicant.lastName}
+                              </Typography>
+                            </Stack>
+                          </CardContent>
+                        </Card>
+                            )
+                          }):<p>No other active applicants for this job in chat</p>}
               </CardContent>
             </Card>
           </Grid>
@@ -207,7 +347,7 @@ const Messaging = (props) => {
                         src={messagePicture}
                       />
                     </Stack>
-                    <Typography
+                    {/* <Typography
                       style={{
                         fontSize: 18,
                         fontWeight: 600,
@@ -216,16 +356,16 @@ const Messaging = (props) => {
                       }}
                     >
                       Welcome to Messages
-                    </Typography>
+                    </Typography> */}
 
                     <Typography
                       style={{
                         fontSize: 14,
                       }}
                     >
-                      When an employer contacts you, you will see messages here.
+                      Send a message
                     </Typography>
-                    <Link to="/" style={{ textDecoration: "none" }}>
+                    {/* <Link to="/" style={{ textDecoration: "none" }}>
                       <Button
                         sx={{ mt: 5 }}
                         variant="contained"
@@ -235,9 +375,9 @@ const Messaging = (props) => {
                       >
                         Find Jobs
                       </Button>
-                    </Link>
+                    </Link> */}
                     <br />
-                    <Link
+                    {/* <Link
                       to="/jobSeekerProfile"
                       style={{ textDecoration: "none" }}
                     >
@@ -250,7 +390,7 @@ const Messaging = (props) => {
                       >
                         Upload Resume
                       </Button>
-                    </Link>
+                    </Link> */}
                   </CardContent>
                 </Grid>
               </Card>
@@ -281,13 +421,14 @@ const Messaging = (props) => {
                         style={{
                           fontSize: 18,
                           fontWeight: 600,
-                          marginTop: 10,
+                          marginTop: 20,
                           marginBottom: 5,
+                          marginLeft: 30
                         }}
                       >
                         Welcome to Messages
                       </Typography>
-                      <Link to="/" style={{ textDecoration: "none" }}>
+                      {/* <Link to="/" style={{ textDecoration: "none" }}>
                         <Button
                           sx={{ mt: 1 }}
                           variant="contained"
@@ -298,9 +439,9 @@ const Messaging = (props) => {
                         >
                           Find Jobs
                         </Button>
-                      </Link>
+                      </Link> */}
                       <br />
-                      <Link
+                      {/* <Link
                         to="/jobSeekerProfile"
                         style={{ textDecoration: "none" }}
                       >
@@ -314,7 +455,7 @@ const Messaging = (props) => {
                         >
                           Upload Resume
                         </Button>
-                      </Link>
+                      </Link> */}
                     </Stack>
                     <Card
                       variant="outlined"

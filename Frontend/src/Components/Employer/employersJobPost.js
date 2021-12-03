@@ -322,6 +322,7 @@ const EmployersJobPost = (props) => {
           >
             <CardContent>
             <Typography
+              required
                 sx={{ fontSize: 14, }}
                 color="text.secondary"
                 gutterBottom
