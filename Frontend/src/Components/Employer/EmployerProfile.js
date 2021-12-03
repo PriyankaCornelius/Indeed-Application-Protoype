@@ -26,6 +26,9 @@ const EmployerProfile = (props) => {
   const [employerDetails, setemployerDetails] = useState({});
   const [open, setOpen] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
+  const [openUploadError, setOpenUploadError] = React.useState(false);
+  const [openBannerAdded, setOpenBannerAdded] = React.useState(false);
+  const [openLogoAdded, setOpenLogoAdded] = React.useState(false);
 
   const [openAdded, setOpenAdded] = React.useState(false);
 
@@ -39,7 +42,9 @@ const EmployerProfile = (props) => {
     if (reason === "clickaway") {
       return;
     }
-
+    setOpenUploadError(false);
+    setOpenLogoAdded(false);
+    setOpenBannerAdded(false);
     setOpenAdded(false);
     setOpenError(false);
   };
@@ -75,6 +80,20 @@ const EmployerProfile = (props) => {
   };
 
   const updateEmployerDetails = async () => {
+    if (isNaN(employerDetails.size)) {
+      alert("Company Size should be a Number!");
+      return;
+    }
+    if (isNaN(employerDetails.revenue)) {
+      alert("Company Revenue should be a Number!");
+      return;
+    }
+
+    if (isNaN(employerDetails.founded)) {
+      alert("Founded should be a Number!");
+      return;
+    }
+
     axios
       .put(`http://${NODE_HOST}:${NODE_PORT}/updateprofile/company`, {
         emp_id: employerDetails.email,
@@ -149,6 +168,71 @@ const EmployerProfile = (props) => {
     //   });
   };
 
+  const onLogoAdded = (event) => {
+    event.preventDefault();
+
+    if (event.target.files && event.target.files[0]) {
+      console.log("Update Logo");
+      updateLogo(event);
+    }
+  };
+  const updateLogo = async (event) => {
+    console.log("Logo Called");
+    const formData = new FormData();
+    formData.append("logo", event.target.files[0]);
+    formData.append("id", email);
+
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/updateLogo`,
+      {
+        method: "POST",
+        body: formData,
+        headers: {
+          // Authorization: session.token,
+          id: email,
+        },
+      }
+    ).then((response) => {
+      if (response.ok) {
+        setOpenLogoAdded(true);
+        console.log("Logo ADDED !!!");
+      }
+    });
+  };
+
+  const onBannerAdded = (event) => {
+    event.preventDefault();
+
+    if (event.target.files && event.target.files[0]) {
+      updateBanner(event);
+    }
+  };
+  const updateBanner = async (event) => {
+    console.log("Banner Called");
+    const formData = new FormData();
+    formData.append("banner", event.target.files[0]);
+    formData.append("id", email);
+
+    const response = await fetch(
+      `http://${NODE_HOST}:${NODE_PORT}/updateBanner`,
+      {
+        method: "POST",
+        body: formData,
+        headers: {
+          // Authorization: session.token,
+          id: email,
+        },
+      }
+    ).then((response) => {
+      if (response.ok) {
+        setOpenBannerAdded(true);
+        console.log("Banner ADDED !!!");
+      }
+    });
+
+    //const data = await response.json();
+    //getJobSeekerDetails();
+  };
   const onChangeHandler = (event) => {
     console.log("Here");
     const { name, value } = event.target;
@@ -185,6 +269,58 @@ const EmployerProfile = (props) => {
       <Grid container sx={{ mt: 3, mb: 3 }}>
         <Grid item md={3}></Grid>
         <Grid style={{ margin: 10 }}>
+          <Stack justifyContent="center" spacing={1} direction="row">
+            <Card
+              variant="outlined"
+              style={{
+                width: "42vw",
+                // margin: 15,
+                height: "12vw",
+                textAlign: "left",
+              }}
+            >
+              <CardContent>
+                <Typography style={{ fontSize: 20, fontWeight: 600 }}>
+                  Get started
+                </Typography>
+                <Stack justifyContent="center">
+                  <input
+                    type="file"
+                    id="sampleFile"
+                    style={{ display: "none" }}
+                    onChange={onBannerAdded}
+                  />
+                  <Button
+                    variant="outlined"
+                    htmlFor="sampleFile"
+                    component="label"
+                    type={"submit"}
+                    style={{ width: "50%", marginTop: 10 }}
+                  >
+                    Upload the Banner
+                  </Button>
+                </Stack>
+                <Stack justifyContent="center">
+                  <input
+                    type="file"
+                    id="sampleFile2"
+                    style={{ display: "none" }}
+                    onChange={onLogoAdded}
+                  />
+                  <Button
+                    variant="outlined"
+                    htmlFor="sampleFile2"
+                    component="label"
+                    type={"submit"}
+                    style={{ width: "50%", marginTop: 10 }}
+                  >
+                    Upload Icon
+                  </Button>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Stack>
+
           <Stack justifyContent="center" spacing={2} direction="row">
             <Card
               variant="outlined"
@@ -201,9 +337,7 @@ const EmployerProfile = (props) => {
                     Company Information
                   </Typography>
                 </Stack>
-                <Typography style={{ fontSize: 16, fontWeight: 400 }}>
-                  * Required fields
-                </Typography>
+
                 <p> </p>
                 <form onSubmit={onSubmitHandler}>
                   <Box
@@ -216,7 +350,6 @@ const EmployerProfile = (props) => {
                       name="name"
                       variant="outlined"
                       margin="dense"
-                      required
                       label="Name of Employer"
                       value={employerDetails.name ? employerDetails.name : ""}
                       // value="hello"
@@ -227,7 +360,6 @@ const EmployerProfile = (props) => {
                       name="role"
                       variant="outlined"
                       margin="dense"
-                      required
                       label="Role in the Company"
                       value={employerDetails.role ? employerDetails.role : ""}
                       // value="hello"
@@ -238,7 +370,6 @@ const EmployerProfile = (props) => {
                       name="address"
                       variant="outlined"
                       margin="dense"
-                      required
                       label="Company Address"
                       value={
                         employerDetails.address ? employerDetails.address : ""
@@ -253,7 +384,6 @@ const EmployerProfile = (props) => {
                       name="website"
                       variant="outlined"
                       margin="dense"
-                      required
                       type="url"
                       label="Website Url"
                       value={
@@ -266,7 +396,6 @@ const EmployerProfile = (props) => {
                       name="companyType"
                       variant="outlined"
                       margin="dense"
-                      required
                       label="Company Type"
                       value={
                         employerDetails.companyType
@@ -278,9 +407,9 @@ const EmployerProfile = (props) => {
                     <TextField
                       style={{ margin: 10 }}
                       name="size"
+                      type="number"
                       variant="outlined"
                       margin="dense"
-                      required
                       label="Size of Company"
                       value={employerDetails.size ? employerDetails.size : ""}
                       onChange={onChangeHandler}
@@ -288,9 +417,9 @@ const EmployerProfile = (props) => {
                     <TextField
                       style={{ margin: 10 }}
                       name="revenue"
+                      type="number"
                       variant="outlined"
                       margin="dense"
-                      required
                       label="Revenue"
                       value={
                         employerDetails.revenue ? employerDetails.revenue : ""
@@ -302,7 +431,6 @@ const EmployerProfile = (props) => {
                       name="headquarters"
                       variant="outlined"
                       margin="dense"
-                      required
                       label="Head Quarters"
                       value={
                         employerDetails.headquarters
@@ -327,6 +455,7 @@ const EmployerProfile = (props) => {
                     <TextField
                       style={{ margin: 10 }}
                       name="founded"
+                      type="number"
                       variant="outlined"
                       margin="dense"
                       label="Founded"
@@ -368,7 +497,7 @@ const EmployerProfile = (props) => {
           </Stack>
 
           <Stack justifyContent="center" spacing={2} direction="row">
-            <Card
+            {/**            <Card
               variant="outlined"
               style={{
                 display: "block",
@@ -378,7 +507,7 @@ const EmployerProfile = (props) => {
                 textAlign: "left",
               }}
             >
-              <CardContent>
+               * <CardContent>
                 <Typography style={{ fontSize: 16, fontWeight: 600 }}>
                   Why Join Us?
                   <Button sx={{ ml: 40 }}>
@@ -414,37 +543,78 @@ const EmployerProfile = (props) => {
                   Save specific details like desired pay and schedule that help
                   us match you with better jobs
                 </Typography>
-              </CardContent>
+             </CardContent>
               <CardActions>
                 <Button size="small">Learn More</Button>
               </CardActions>
-              <Snackbar
-                open={openAdded}
-                autoHideDuration={2000}
-                onClose={handleCloseAdded}
-              >
-                <Alert
-                  onClose={handleCloseAdded}
-                  severity="success"
-                  sx={{ width: "100%" }}
-                >
-                  Profile Updated Successfully !
-                </Alert>
-              </Snackbar>
-              <Snackbar
-                open={openError}
-                autoHideDuration={2000}
-                onClose={handleCloseAdded}
-              >
-                <Alert
-                  onClose={handleCloseAdded}
-                  severity="error"
-                  sx={{ width: "100%" }}
-                >
-                  Error Occured While Updating !
-                </Alert>
-              </Snackbar>
             </Card>
+            */}
+
+            <Snackbar
+              open={openAdded}
+              autoHideDuration={2000}
+              onClose={handleCloseAdded}
+            >
+              <Alert
+                onClose={handleCloseAdded}
+                severity="success"
+                sx={{ width: "100%" }}
+              >
+                Profile Updated Successfully !
+              </Alert>
+            </Snackbar>
+            <Snackbar
+              open={openBannerAdded}
+              autoHideDuration={2000}
+              onClose={handleCloseAdded}
+            >
+              <Alert
+                onClose={handleCloseAdded}
+                severity="success"
+                sx={{ width: "100%" }}
+              >
+                Banner Uploaded Successfully !
+              </Alert>
+            </Snackbar>
+            <Snackbar
+              open={openLogoAdded}
+              autoHideDuration={2000}
+              onClose={handleCloseAdded}
+            >
+              <Alert
+                onClose={handleCloseAdded}
+                severity="success"
+                sx={{ width: "100%" }}
+              >
+                Logo Uploaded Successfully !
+              </Alert>
+            </Snackbar>
+            <Snackbar
+              open={openUploadError}
+              autoHideDuration={2000}
+              onClose={handleCloseAdded}
+            >
+              <Alert
+                onClose={handleCloseAdded}
+                severity="error"
+                sx={{ width: "100%" }}
+              >
+                Upload Failed!
+              </Alert>
+            </Snackbar>
+            <Snackbar
+              open={openError}
+              autoHideDuration={2000}
+              onClose={handleCloseAdded}
+            >
+              <Alert
+                onClose={handleCloseAdded}
+                severity="error"
+                sx={{ width: "100%" }}
+              >
+                Error Occured While Updating !
+              </Alert>
+            </Snackbar>
           </Stack>
         </Grid>
       </Grid>

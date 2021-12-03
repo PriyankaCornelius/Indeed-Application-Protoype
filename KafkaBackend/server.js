@@ -37,6 +37,8 @@ var PostReview = require("./services/jobSeeker/postReview");
 var PostSalary = require("./services/jobSeeker/postSalary");
 var FindCompanyReviews = require("./services/jobSeeker/findCompanyReviews");
 var JobDetails = require("./services/jobSeeker/getJobDetails");
+var UpdateBanner = require("./services/updateCompanyBanner");
+var UpdateLogo = require("./services/updateCompanyLogo");
 
 var connection = new require("./Connection");
 
@@ -124,6 +126,9 @@ handleTopicRequest("deleteReview", DeleteReview);
 handleTopicRequest("getMessages", GetMessages);
 handleTopicRequest("getAllMessages", GetAllMessages);
 handleTopicRequest("postReply", PostReply);
+
+handleTopicRequest("updateBanner", UpdateBanner);
+handleTopicRequest("updateLogo", UpdateLogo);
 
 handleTopicRequest("postReview", PostReview);
 handleTopicRequest("postSalary", PostSalary);
