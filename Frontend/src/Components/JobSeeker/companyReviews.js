@@ -21,7 +21,7 @@ const CompanyReviews = (props) => {
     data.what = jobFilterWhat;
     data.where = jobFilterWhere;
     axios
-      .post("http://localhost:8080/findCompanyReviews", data)
+      .post(`http://${NODE_HOST}:${NODE_PORT}/findCompanyReviews`, data)
       .then((res) => {
         if (res.data.length) setCompanies(res.data);
       })
