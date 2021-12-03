@@ -988,6 +988,26 @@ app.post("/filterreviews", async (req, res, next) => {
   );
 });
 
+app.post("/updateDateAndViewCount", function (req, res) {
+  kafka.make_request(
+    "updateDateAndViewCount",
+    req.body,
+    function (err, results) {
+      if (err) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end("Error Occured");
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        res.end("Success");
+      }
+    }
+  );
+});
+
 //Approve Reject review
 app.post("/reviewactions", async (req, res, next) => {
   console.log("Post Request on reviewactions");
