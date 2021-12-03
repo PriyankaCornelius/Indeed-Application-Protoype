@@ -42,7 +42,9 @@ export const commonLogoutFunc = () => (dispatch) => {
   dispatch({
     type: LOGOUT_USER,
   });
-  window.location.href = "/login";
+  setTimeout(() => {
+    window.location.href = "/login";
+  }, 1000);
 };
 
 export const updateResume = (payload) => (dispatch) => {
