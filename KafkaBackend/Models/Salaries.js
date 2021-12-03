@@ -7,7 +7,7 @@ var SalariesSchema = new Schema(
     applicantName: { type: String, required: true },
     companyName: { type: String, required: true },
     isCurrent: { type: Boolean, required: false },
-    endDate: { type: Date, required: false },
+    endDate: { type: String, required: false },
     jobTitle: { type: String, required: true },
     location: { type: String, required: false },
     salary: { type: Number, required: true },
