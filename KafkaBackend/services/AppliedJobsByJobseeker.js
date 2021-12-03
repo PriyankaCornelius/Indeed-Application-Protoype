@@ -2,7 +2,7 @@ const con = require("../sqldbConfig");
 
 function handle_request(msg, callback) {
   let query =
-    "select ja.id, e.id as companyId, j.id as jobId, j.jobTitle, e.companyName, e.address " +
+    "select ja.id, e.id as companyId, j.id as jobId, j.jobTitle, e.companyLogo, e.companyName, e.address " +
     "from jobapplications ja, jobs j, employers e " +
     "where ja.jobId = j.id and j.companyId = e.id and ja.applicantId = " +
     msg +

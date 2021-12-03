@@ -2,7 +2,7 @@ const con = require("../../sqldbConfig.js");
 
 const handle_request = async (msg, callback) => {
   let query =
-    "select id, companyName, missionAndVision, averageRating " +
+    "select id, companyName, companyLogo, missionAndVision, averageRating " +
     "from employers " +
     "where averageRating is not null " +
     "and (address like '%" +
