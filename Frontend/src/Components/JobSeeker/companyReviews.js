@@ -121,7 +121,7 @@ const CompanyReviews = (props) => {
               marginBottom: "5px",
             }}
           >
-            Company name or job title
+            Company name
           </Grid>
           <Grid
             item
